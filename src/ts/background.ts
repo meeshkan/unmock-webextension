@@ -143,6 +143,6 @@ chrome.runtime.onMessage.addListener(messageHandler);
 chrome.commands.onCommand.addListener(command => {
   console.log("Command:", command);
   if (command === "toggle-unmock") {
-    sendMessageToActiveCurrentWindowTab({ type: "selection requested" });
+    sendMessageToActiveCurrentWindowTab(messages.selectionRequest.build({}));
   }
 });
