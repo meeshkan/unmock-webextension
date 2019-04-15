@@ -17,15 +17,12 @@ interface InitializeProps {
 
 interface Initialize extends MessageGeneric<InitializeProps> {}
 
-type MessageBuilderMatcher<M extends MessageGeneric<P>, P> = {
+type MessageCreator<M extends MessageGeneric<P>, P> = {
   build(props: P): M;
   matches(msg: MessageGeneric<any>): msg is M;
 };
 
-export const initializeStore: MessageBuilderMatcher<
-  Initialize,
-  InitializeProps
-> = {
+export const initializeStore: MessageCreator<Initialize, InitializeProps> = {
   build(props: InitializeProps): Initialize {
     return { type: INITIALIZE, props };
   },
