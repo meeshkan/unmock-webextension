@@ -1,4 +1,5 @@
-import "../css/popup.css";
+// import "../css/popup.css";
+import "../scss/popup.scss";
 import * as messages from "./messages";
 
 const initialize = document.getElementById("initialize");

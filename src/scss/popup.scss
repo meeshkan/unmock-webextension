@@ -1,0 +1,31 @@
+$font-stack: Helvetica, sans-serif;
+$primary-color: #333;
+
+body {
+  font: 100% $font-stack;
+  // color: $primary-color;
+}
+
+button {
+  background-color: white;
+  color: #008cba;
+  border: 2px solid #008cba;
+  background: transparent;
+  border-radius: 6px;
+  padding: 8px 16px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  -webkit-transition-duration: 0.4s;
+  /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+button:hover {
+  background-color: #008cba;
+  color: white;
+}
