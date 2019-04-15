@@ -61,16 +61,3 @@ function colorSelection() {
     console.log("Nothing to color.");
   }
 }
-
-let LAST_SELECTION: any;
-let LAST_ELEMENT: any;
-
-document.body.addEventListener(
-  "contextmenu",
-  e => {
-    LAST_SELECTION = window.getSelection();
-    LAST_ELEMENT = e.target;
-    console.log(`Last selection and element updated`);
-  },
-  false
-);
