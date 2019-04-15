@@ -129,8 +129,9 @@ const handleSelectEndpoint = (request, senderUrl) => {
 };
 
 const messageHandler = (request, sender) => {
-  if (request.type === messages.INITIALIZE) {
-    initialize(request.url);
+  if (messages.initializeStore.matches(request)) {
+    const url = request.props.url;
+    initialize(url);
   } else if (request.type === messages.SELECT_ENDPOINT) {
     handleSelectEndpoint(request, sender.tab.url);
   }
