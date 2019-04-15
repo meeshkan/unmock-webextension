@@ -5,8 +5,8 @@ var webpack = require("webpack"),
   CleanWebpackPlugin = require("clean-webpack-plugin"),
   CopyWebpackPlugin = require("copy-webpack-plugin"),
   HtmlWebpackPlugin = require("html-webpack-plugin"),
-  WriteFilePlugin = require("write-file-webpack-plugin");
-
+  WriteFilePlugin = require("write-file-webpack-plugin"),
+  SourceMapDevToolPlugin = webpack.SourceMapDevToolPlugin;
 // load the secrets
 var alias = {};
 
@@ -37,6 +37,7 @@ var options = {
     window: path.join(__dirname, "src", "ts", "window.ts"),
     contentScript: "./src/ts/contentScript.ts",
   },
+  devtool: false,
   chromeExtensionBoilerplate: {
     notHotReload: ["contentScript"],
   },
@@ -120,11 +121,8 @@ var options = {
       chunks: ["window"],
     }),
     new WriteFilePlugin(),
+    new SourceMapDevToolPlugin({}),
   ],
 };
-
-if (env.NODE_ENV === "development") {
-  options.devtool = "cheap-module-eval-source-map";
-}
 
 module.exports = options;
