@@ -27,7 +27,7 @@ activateIfFound("API");
 // Listening to message
 chrome.runtime.onMessage.addListener((request, _, __) => {
   console.log(`Got message: ${JSON.stringify(request)}`);
-  if (request.type === messages.SELECTION_HANDLED) {
+  if (request.type === messages.MessageType.SELECTION_HANDLED.valueOf()) {
     colorSelection();
   }
   if (messages.SelectionRequest.matches(request)) {
@@ -37,7 +37,7 @@ chrome.runtime.onMessage.addListener((request, _, __) => {
       return;
     }
     sendMessage({
-      type: messages.SELECT_ENDPOINT,
+      type: messages.MessageType.SELECT_ENDPOINT.valueOf(),
       selection: selection.toString(),
     });
   }

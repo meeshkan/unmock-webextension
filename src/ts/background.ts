@@ -97,7 +97,9 @@ const STORAGE_SELECTIONS_KEY = "selections";
 
 const saveAndMessageTab = selection => {
   const callback = () => {
-    sendMessageToActiveCurrentWindowTab({ type: messages.SELECTION_HANDLED });
+    sendMessageToActiveCurrentWindowTab({
+      type: messages.MessageType.SELECTION_HANDLED.valueOf(),
+    });
   };
   chrome.storage.local.get([STORAGE_SELECTIONS_KEY], items => {
     const previous = (items && items[STORAGE_SELECTIONS_KEY]) || [];
@@ -132,7 +134,7 @@ const messageHandler = (request, sender) => {
   if (messages.InitializeStore.matches(request)) {
     const url = request.props.url;
     initialize(url);
-  } else if (request.type === messages.SELECT_ENDPOINT) {
+  } else if (request.type === messages.MessageType.SELECT_ENDPOINT.valueOf()) {
     handleSelectEndpoint(request, sender.tab.url);
   }
 };
