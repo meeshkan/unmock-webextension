@@ -1,5 +1,5 @@
-import * as messages from "./messages";
-import { MessageGeneric } from "./messages/types";
+import * as messages from "../messages";
+import { MessageGeneric } from "../messages/types";
 import { browser } from "webextension-polyfill-ts";
 
 console.log("Running content script.");
