@@ -1,26 +1,13 @@
 import * as messages from "../messages";
-import { MessageGeneric } from "../messages/types";
 import { SelectEndpoint } from "../messages/selectEndpoint";
 import { browser, Runtime } from "webextension-polyfill-ts";
 import { setupContextMenus } from "./contextMenus";
 import { addToSelection, checkIsActiveUrl, initialize } from "../browser/store";
-import { getActiveTab } from "../browser/utils";
+import { sendMessageToActiveCurrentWindowTab } from "../browser/sender";
 
 // Add context menus
 browser.runtime.onInstalled.addListener(async () => {
   await setupContextMenus();
-});
-
-const sendMessageToActiveCurrentWindowTab = async (
-  message: MessageGeneric<any>
-) => {
-  console.log(`Sending message: ${JSON.stringify(message)}`);
-  const tab = await getActiveTab();
-  await browser.tabs.sendMessage(tab.id, message);
-};
-
-chrome.runtime.onSuspend.addListener(() => {
-  console.log("Suspending.");
 });
 
 const messageLogger = (request: any, sender: Runtime.MessageSender) => {
