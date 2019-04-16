@@ -1,4 +1,3 @@
-// import "../css/popup.css";
 import "../scss/popup.scss";
 import * as messages from "./messages";
 
@@ -7,7 +6,8 @@ const initialize = document.getElementById("initialize");
 initialize.onclick = () => {
   chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
     const tab = tabs[0];
-    chrome.runtime.sendMessage({ type: messages.INITIALIZE, url: tab.url });
+    const initializeMsg = messages.InitializeStore.build({ url: tab.url });
+    chrome.runtime.sendMessage(initializeMsg);
   });
 };
 

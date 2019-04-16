@@ -1,14 +1,8 @@
-$font-stack: Helvetica, sans-serif;
-$primary-color: #333;
-
-body {
-  font: 100% $font-stack;
-  // color: $primary-color;
-}
+@import "variables";
 
 button {
   background-color: white;
-  color: #08252e;
+  color: $primary-color;
   border: 2px solid #008cba;
   background: transparent;
   border-radius: 6px;

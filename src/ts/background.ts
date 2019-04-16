@@ -1,4 +1,6 @@
 import * as messages from "./messages";
+import { MessageGeneric } from "./messages/types";
+import { SelectEndpoint } from "./messages/selectEndpoint";
 
 // Holds the data structure for all the context menus used in the app
 const CONTEXT_MENU_CONTENTS = {
@@ -25,7 +27,10 @@ chrome.runtime.onInstalled.addListener(() => {
   setupContextMenus();
 });
 
-const sendMessageToActiveCurrentWindowTab = (message, callback?: any) => {
+const sendMessageToActiveCurrentWindowTab = (
+  message: MessageGeneric<any>,
+  callback?: any
+) => {
   console.log(`Sending message: ${JSON.stringify(message)}`);
   chrome.tabs.query(
     {
@@ -66,14 +71,6 @@ const messageLogger = (request, sender) => {
 
 chrome.runtime.onMessage.addListener(messageLogger);
 
-const greetingReplier = (request, _, sendResponse) => {
-  if (request.greeting === "hello") {
-    sendResponse({ farewell: "goodbye" });
-  }
-};
-
-chrome.runtime.onMessage.addListener(greetingReplier);
-
 const badgeUpdater = request => {
   if (!request.activate) {
     return;
@@ -95,9 +92,10 @@ const initialize = url => {
 const STORAGE_ACTIVE_URL_KEY = "active_url";
 const STORAGE_SELECTIONS_KEY = "selections";
 
-const saveAndMessageTab = selection => {
+const saveAndMessageTab = (selection: string) => {
   const callback = () => {
-    sendMessageToActiveCurrentWindowTab({ type: messages.SELECTION_HANDLED });
+    const message = messages.SelectionHandled.build({});
+    sendMessageToActiveCurrentWindowTab(message);
   };
   chrome.storage.local.get([STORAGE_SELECTIONS_KEY], items => {
     const previous = (items && items[STORAGE_SELECTIONS_KEY]) || [];
@@ -123,15 +121,16 @@ const ifActiveUrl = (url, callback) => {
   });
 };
 
-const handleSelectEndpoint = (request, senderUrl) => {
+const handleSelectEndpoint = (request: SelectEndpoint, senderUrl) => {
   const url = senderUrl;
-  ifActiveUrl(url, () => saveAndMessageTab(request.selection));
+  ifActiveUrl(url, () => saveAndMessageTab(request.props.selection));
 };
 
 const messageHandler = (request, sender) => {
-  if (request.type === messages.INITIALIZE) {
-    initialize(request.url);
-  } else if (request.type === messages.SELECT_ENDPOINT) {
+  if (messages.InitializeStore.matches(request)) {
+    const url = request.props.url;
+    initialize(url);
+  } else if (messages.SelectEndpoint.matches(request)) {
     handleSelectEndpoint(request, sender.tab.url);
   }
 };
@@ -142,6 +141,6 @@ chrome.runtime.onMessage.addListener(messageHandler);
 chrome.commands.onCommand.addListener(command => {
   console.log("Command:", command);
   if (command === "toggle-unmock") {
-    sendMessageToActiveCurrentWindowTab({ type: "selection requested" });
+    sendMessageToActiveCurrentWindowTab(messages.SelectionRequest.build({}));
   }
 });
