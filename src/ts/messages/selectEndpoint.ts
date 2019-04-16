@@ -1,6 +1,4 @@
-import { Builder, MessageGeneric } from "./types";
-
-const SELECT_ENDPOINT = "Select endpoint";
+import { Builder, MessageGeneric, MessageType } from "./types";
 
 interface SelectEndpointProps {
   selection: string;
@@ -8,6 +6,8 @@ interface SelectEndpointProps {
 
 interface SelectEndpoint extends MessageGeneric<SelectEndpointProps> {}
 
-const builder = Builder<SelectEndpoint, SelectEndpointProps>(SELECT_ENDPOINT);
+const builder = Builder<SelectEndpoint, SelectEndpointProps>(
+  MessageType.SELECT_ENDPOINT
+);
 
 export default builder;

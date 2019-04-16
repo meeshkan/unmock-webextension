@@ -1,21 +1,11 @@
-import { MessageCreator, MessageGeneric } from "./types";
-
-const SELECTION_REQUESTED = "selection requested";
+import { Builder, MessageGeneric, MessageType } from "./types";
 
 interface SelectionRequestProps {}
 
 interface SelectionRequest extends MessageGeneric<SelectionRequestProps> {}
 
-const selectionRequest: MessageCreator<
-  SelectionRequest,
-  SelectionRequestProps
-> = {
-  build(props: SelectionRequestProps): SelectionRequest {
-    return { type: SELECTION_REQUESTED, props };
-  },
-  matches(msg: MessageGeneric<any>): msg is SelectionRequest {
-    return msg.type === SELECTION_REQUESTED;
-  },
-};
+const builder = Builder<SelectionRequest, SelectionRequestProps>(
+  MessageType.SELECTION_REQUEST
+);
 
-export default selectionRequest;
+export default builder;

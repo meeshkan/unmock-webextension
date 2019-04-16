@@ -1,4 +1,5 @@
 import * as messages from "./messages";
+import { MessageGeneric } from "./messages/types";
 
 // Holds the data structure for all the context menus used in the app
 const CONTEXT_MENU_CONTENTS = {
@@ -25,7 +26,10 @@ chrome.runtime.onInstalled.addListener(() => {
   setupContextMenus();
 });
 
-const sendMessageToActiveCurrentWindowTab = (message, callback?: any) => {
+const sendMessageToActiveCurrentWindowTab = (
+  message: MessageGeneric<any>,
+  callback?: any
+) => {
   console.log(`Sending message: ${JSON.stringify(message)}`);
   chrome.tabs.query(
     {
@@ -95,11 +99,10 @@ const initialize = url => {
 const STORAGE_ACTIVE_URL_KEY = "active_url";
 const STORAGE_SELECTIONS_KEY = "selections";
 
-const saveAndMessageTab = selection => {
+const saveAndMessageTab = (selection: string) => {
   const callback = () => {
-    sendMessageToActiveCurrentWindowTab({
-      type: messages.MessageType.SELECTION_HANDLED.valueOf(),
-    });
+    const message = messages.SelectionHandled.build({});
+    sendMessageToActiveCurrentWindowTab(message);
   };
   chrome.storage.local.get([STORAGE_SELECTIONS_KEY], items => {
     const previous = (items && items[STORAGE_SELECTIONS_KEY]) || [];

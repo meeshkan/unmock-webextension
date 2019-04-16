@@ -1,7 +1,4 @@
-import { MessageCreator, MessageGeneric } from "./types";
-
-/* Initialization message */
-const INITIALIZE = "initialize";
+import { Builder, MessageGeneric, MessageType } from "./types";
 
 interface InitializeProps {
   url: string;
@@ -9,13 +6,8 @@ interface InitializeProps {
 
 interface Initialize extends MessageGeneric<InitializeProps> {}
 
-const initializeStore: MessageCreator<Initialize, InitializeProps> = {
-  build(props: InitializeProps): Initialize {
-    return { type: INITIALIZE, props };
-  },
-  matches(msg: MessageGeneric<any>): msg is Initialize {
-    return msg.type === INITIALIZE;
-  },
-};
+const builder = Builder<Initialize, InitializeProps>(
+  MessageType.INITIALIZE_STORE
+);
 
-export default initializeStore;
+export default builder;

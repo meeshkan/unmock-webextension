@@ -1,33 +1,17 @@
 import * as messages from "./messages";
+import { MessageGeneric } from "./messages/types";
 
 console.log("Running content script.");
 
-const sendMessage = (msg, callback?: any) => {
+const sendMessage = (msg: MessageGeneric<any>, callback?: any) => {
   console.log(`Sending message: ${JSON.stringify(msg)}`);
   chrome.runtime.sendMessage(msg, callback);
 };
 
-// Sending messages
-const message = { greeting: "hello" };
-sendMessage(message, response => {
-  console.log(`Got response: ${response.farewell}`);
-});
-
-const title = document.title;
-sendMessage({ title });
-
-function activateIfFound(text) {
-  const htmlString = document.documentElement.outerHTML.toString();
-  const activate = new RegExp(text).test(htmlString);
-  sendMessage({ activate });
-}
-
-activateIfFound("API");
-
 // Listening to message
 chrome.runtime.onMessage.addListener((request, _, __) => {
   console.log(`Got message: ${JSON.stringify(request)}`);
-  if (request.type === messages.MessageType.SELECTION_HANDLED) {
+  if (messages.SelectionHandled.matches(request)) {
     colorSelection();
   }
   if (messages.SelectionRequest.matches(request)) {
