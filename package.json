@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "react": "^16.7.0",
-    "react-dom": "^16.7.0"
+    "react-dom": "^16.7.0",
+    "webextension-polyfill": "^0.4.0",
+    "webextension-polyfill-ts": "^0.9.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.5",

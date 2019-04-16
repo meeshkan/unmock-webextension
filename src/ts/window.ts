@@ -1,6 +1,8 @@
+import { browser } from "webextension-polyfill-ts";
+
 const stored = document.getElementById("stored");
 
-chrome.storage.onChanged.addListener((changes, namespace) => {
+browser.storage.onChanged.addListener((changes, namespace) => {
   Object.keys(changes).forEach(key => {
     const storageChange = changes[key];
     console.log(
@@ -15,11 +17,10 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
   updateShownSaved();
 });
 
-function updateShownSaved() {
-  chrome.storage.local.get(null, items => {
-    console.log(`Stored: ${JSON.stringify(items)}`);
-    stored.innerHTML = JSON.stringify(items);
-  });
-}
+const updateShownSaved = async () => {
+  const items = await browser.storage.local.get(null);
+  console.log(`Stored: ${JSON.stringify(items)}`);
+  stored.innerHTML = JSON.stringify(items);
+};
 
 updateShownSaved();
