@@ -1,6 +1,6 @@
-import * as messages from "./messages";
-import { MessageGeneric } from "./messages/types";
-import { SelectEndpoint } from "./messages/selectEndpoint";
+import * as messages from "../messages";
+import { MessageGeneric } from "../messages/types";
+import { SelectEndpoint } from "../messages/selectEndpoint";
 import { browser, Runtime } from "webextension-polyfill-ts";
 
 // Holds the data structure for all the context menus used in the app
