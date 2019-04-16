@@ -1,9 +1,9 @@
 import SelectionRequest from "./selectionRequest";
 import InitializeStore from "./initializeStore";
+import SelectEndpoint from "./selectEndpoint";
 
 enum MessageType {
-  SELECTION_HANDLED = "Selection handled",
-  SELECT_ENDPOINT = "Select endpoint",
+  SELECTION_HANDLED,
 }
 
-export { SelectionRequest, InitializeStore, MessageType };
+export { SelectionRequest, InitializeStore, MessageType, SelectEndpoint };

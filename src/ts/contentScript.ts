@@ -27,7 +27,7 @@ activateIfFound("API");
 // Listening to message
 chrome.runtime.onMessage.addListener((request, _, __) => {
   console.log(`Got message: ${JSON.stringify(request)}`);
-  if (request.type === messages.MessageType.SELECTION_HANDLED.valueOf()) {
+  if (request.type === messages.MessageType.SELECTION_HANDLED) {
     colorSelection();
   }
   if (messages.SelectionRequest.matches(request)) {
@@ -36,10 +36,10 @@ chrome.runtime.onMessage.addListener((request, _, __) => {
       console.log("Nothing selected, skipping request.");
       return;
     }
-    sendMessage({
-      type: messages.MessageType.SELECT_ENDPOINT.valueOf(),
+    const msg = messages.SelectEndpoint.build({
       selection: selection.toString(),
     });
+    sendMessage(msg);
   }
 });
 

@@ -134,7 +134,7 @@ const messageHandler = (request, sender) => {
   if (messages.InitializeStore.matches(request)) {
     const url = request.props.url;
     initialize(url);
-  } else if (request.type === messages.MessageType.SELECT_ENDPOINT.valueOf()) {
+  } else if (messages.SelectEndpoint.matches(request)) {
     handleSelectEndpoint(request, sender.tab.url);
   }
 };
