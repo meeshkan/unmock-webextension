@@ -30,7 +30,7 @@ chrome.runtime.onMessage.addListener((request, _, __) => {
   if (request.type === messages.SELECTION_HANDLED) {
     colorSelection();
   }
-  if (messages.selectionRequest.matches(request)) {
+  if (messages.SelectionRequest.matches(request)) {
     const selection = window.getSelection();
     if (!selection) {
       console.log("Nothing selected, skipping request.");

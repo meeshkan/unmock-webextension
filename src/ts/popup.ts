@@ -6,7 +6,7 @@ const initialize = document.getElementById("initialize");
 initialize.onclick = () => {
   chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
     const tab = tabs[0];
-    const initializeMsg = messages.initializeStore.build({ url: tab.url });
+    const initializeMsg = messages.InitializeStore.build({ url: tab.url });
     chrome.runtime.sendMessage(initializeMsg);
   });
 };

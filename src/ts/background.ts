@@ -129,7 +129,7 @@ const handleSelectEndpoint = (request, senderUrl) => {
 };
 
 const messageHandler = (request, sender) => {
-  if (messages.initializeStore.matches(request)) {
+  if (messages.InitializeStore.matches(request)) {
     const url = request.props.url;
     initialize(url);
   } else if (request.type === messages.SELECT_ENDPOINT) {
@@ -143,6 +143,6 @@ chrome.runtime.onMessage.addListener(messageHandler);
 chrome.commands.onCommand.addListener(command => {
   console.log("Command:", command);
   if (command === "toggle-unmock") {
-    sendMessageToActiveCurrentWindowTab(messages.selectionRequest.build({}));
+    sendMessageToActiveCurrentWindowTab(messages.SelectionRequest.build({}));
   }
 });
