@@ -4,7 +4,7 @@ interface SelectEndpointProps {
   selection: string;
 }
 
-interface SelectEndpoint extends MessageGeneric<SelectEndpointProps> {}
+export interface SelectEndpoint extends MessageGeneric<SelectEndpointProps> {}
 
 const builder = Builder<SelectEndpoint, SelectEndpointProps>(
   MessageType.SELECT_ENDPOINT

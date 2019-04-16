@@ -1,5 +1,6 @@
 import * as messages from "./messages";
 import { MessageGeneric } from "./messages/types";
+import { SelectEndpoint } from "./messages/selectEndpoint";
 
 // Holds the data structure for all the context menus used in the app
 const CONTEXT_MENU_CONTENTS = {
@@ -70,14 +71,6 @@ const messageLogger = (request, sender) => {
 
 chrome.runtime.onMessage.addListener(messageLogger);
 
-const greetingReplier = (request, _, sendResponse) => {
-  if (request.greeting === "hello") {
-    sendResponse({ farewell: "goodbye" });
-  }
-};
-
-chrome.runtime.onMessage.addListener(greetingReplier);
-
 const badgeUpdater = request => {
   if (!request.activate) {
     return;
@@ -128,9 +121,9 @@ const ifActiveUrl = (url, callback) => {
   });
 };
 
-const handleSelectEndpoint = (request, senderUrl) => {
+const handleSelectEndpoint = (request: SelectEndpoint, senderUrl) => {
   const url = senderUrl;
-  ifActiveUrl(url, () => saveAndMessageTab(request.selection));
+  ifActiveUrl(url, () => saveAndMessageTab(request.props.selection));
 };
 
 const messageHandler = (request, sender) => {
