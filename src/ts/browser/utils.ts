@@ -7,3 +7,17 @@ export const getActiveTab = async (): Promise<Tabs.Tab> => {
   });
   return tabs[0];
 };
+
+export const downloadTo = ({ url }) => {
+  browser.downloads.download({
+    url,
+    filename: "export.json",
+  });
+};
+
+export const openExplorer = async () => {
+  return await browser.windows.create({
+    url: browser.runtime.getURL("explorer.html"),
+    type: "popup",
+  });
+};

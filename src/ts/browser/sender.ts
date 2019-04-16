@@ -11,3 +11,7 @@ export const sendMessageToActiveCurrentWindowTab = async (
   });
   await browser.tabs.sendMessage(tabs[0].id, message);
 };
+
+export const sendRuntimeMessage = async (msg: MessageGeneric<any>) => {
+  await browser.runtime.sendMessage(msg);
+};

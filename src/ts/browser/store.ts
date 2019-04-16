@@ -16,6 +16,10 @@ export const getSelections = async () => {
   return await browser.storage.local.get([STORAGE_SELECTIONS_KEY]);
 };
 
+export const getLocalStorage = async () => {
+  return await browser.storage.local.get(null);
+};
+
 export const addToSelection = async (selection: string) => {
   const items = await getSelections();
   const previous = (items && items[STORAGE_SELECTIONS_KEY]) || [];
