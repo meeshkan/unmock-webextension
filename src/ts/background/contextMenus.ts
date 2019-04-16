@@ -2,7 +2,6 @@ import { browser } from "webextension-polyfill-ts";
 import { getActiveTab } from "../browser/utils";
 import { handleSelection } from "./selection";
 
-// Holds the data structure for all the context menus used in the app
 const CONTEXT_MENU_CONTENTS = {
   forSelection: ["Add endpoint"],
 };
