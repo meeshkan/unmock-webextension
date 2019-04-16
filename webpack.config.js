@@ -32,10 +32,10 @@ if (fileSystem.existsSync(secretsPath)) {
 var options = {
   mode: process.env.NODE_ENV || "development",
   entry: {
-    popup: path.join(__dirname, "src", "ts", "popup.ts"),
-    background: path.join(__dirname, "src", "ts", "background.ts"),
-    window: path.join(__dirname, "src", "ts", "window.ts"),
-    contentScript: "./src/ts/contentScript.ts",
+    popup: path.join(__dirname, "src", "ts", "popup", "index.ts"),
+    background: path.join(__dirname, "src", "ts", "background", "index.ts"),
+    explorer: path.join(__dirname, "src", "ts", "explorer", "index.ts"),
+    contentScript: path.join(__dirname, "src", "ts", "contentScript.ts"),
   },
   devtool: false,
   chromeExtensionBoilerplate: {
@@ -124,9 +124,9 @@ var options = {
       chunks: ["background"],
     }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "window.html"),
-      filename: "window.html",
-      chunks: ["window"],
+      template: path.join(__dirname, "src", "explorer.html"),
+      filename: "explorer.html",
+      chunks: ["explorer"],
     }),
     new WriteFilePlugin(),
     new SourceMapDevToolPlugin({}),

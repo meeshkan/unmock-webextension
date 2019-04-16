@@ -1,5 +1,5 @@
-import "../scss/popup.scss";
-import * as messages from "./messages";
+import "../../scss/popup.scss";
+import * as messages from "../messages";
 import { browser } from "webextension-polyfill-ts";
 
 const initialize = document.getElementById("initialize");
@@ -29,7 +29,7 @@ const openButton = document.getElementById("open");
 
 openButton.onclick = () => {
   browser.windows.create({
-    url: browser.runtime.getURL("window.html"),
+    url: browser.runtime.getURL("explorer.html"),
     type: "popup",
   });
 };

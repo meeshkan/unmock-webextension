@@ -1,7 +1,7 @@
-import * as messages from "./messages";
-import { MessageGeneric } from "./messages/types";
-import { SelectEndpoint } from "./messages/selectEndpoint";
-import { browser } from "webextension-polyfill-ts";
+import * as messages from "../messages";
+import { MessageGeneric } from "../messages/types";
+import { SelectEndpoint } from "../messages/selectEndpoint";
+import { browser, Runtime } from "webextension-polyfill-ts";
 
 // Holds the data structure for all the context menus used in the app
 const CONTEXT_MENU_CONTENTS = {
@@ -49,14 +49,19 @@ browser.contextMenus.onClicked.addListener(async item => {
   const tabs = await browser.tabs.query({ active: true, currentWindow: true });
   const tab = tabs[0];
   const url = tab.url;
-  ifActiveUrl(url, () => saveAndMessageTab(item.selectionText));
+  const isActiveUrl = await checkIsActiveUrl(url);
+  if (isActiveUrl) {
+    await saveAndMessageTab(item.selectionText);
+  } else {
+    console.warn(`Ignoring context menu click from inactive URL: ${url}`);
+  }
 });
 
 chrome.runtime.onSuspend.addListener(() => {
   console.log("Suspending.");
 });
 
-const messageLogger = (request, sender) => {
+const messageLogger = (request: any, sender: Runtime.MessageSender) => {
   let logMessage = `Got message '${JSON.stringify(request)}' from `;
   logMessage += sender.tab
     ? "from a content script at: " + sender.tab.url
@@ -66,13 +71,13 @@ const messageLogger = (request, sender) => {
 
 browser.runtime.onMessage.addListener(messageLogger);
 
-const badgeUpdater = request => {
+const badgeUpdater = async (request: any) => {
   if (!request.activate) {
     return;
   }
   console.log(`Activating badge as got: ${JSON.stringify(request)}`);
-  browser.browserAction.setBadgeText({ text: "API" });
-  browser.browserAction.setBadgeBackgroundColor({ color: "#4688F1" });
+  await browser.browserAction.setBadgeText({ text: "API" });
+  await browser.browserAction.setBadgeBackgroundColor({ color: "#4688F1" });
 };
 
 browser.runtime.onMessage.addListener(badgeUpdater);
@@ -95,38 +100,41 @@ const saveAndMessageTab = async (selection: string) => {
   await sendMessageToActiveCurrentWindowTab(message);
 };
 
-const ifActiveUrl = async (url, callback) => {
+const checkIsActiveUrl = async (url: string): Promise<boolean> => {
   const activeUrlResult = await browser.storage.local.get([
     STORAGE_ACTIVE_URL_KEY,
   ]);
   const activeUrl = activeUrlResult[STORAGE_ACTIVE_URL_KEY];
   console.log(`Active url: ${JSON.stringify(activeUrl)}, comparing to: ${url}`);
-  if (url !== activeUrl) {
-    console.log(`Message from inactive url: ${url}`);
-    return;
+  return url === activeUrl;
+};
+
+const handleSelectEndpoint = async (
+  request: SelectEndpoint,
+  senderUrl: string
+) => {
+  const isActiveUrl = await checkIsActiveUrl(senderUrl);
+  if (isActiveUrl) {
+    await saveAndMessageTab(request.props.selection);
+  } else {
+    console.warn(`Ignoring select endpoint from inactive URL: ${senderUrl}`);
   }
-  callback();
 };
 
-const handleSelectEndpoint = (request: SelectEndpoint, senderUrl) => {
-  const url = senderUrl;
-  ifActiveUrl(url, () => saveAndMessageTab(request.props.selection));
-};
-
-const messageHandler = async (request, sender) => {
+const messageHandler = async (request: any, sender: Runtime.MessageSender) => {
   if (messages.InitializeStore.matches(request)) {
     const url = request.props.url;
     await initialize(url);
   } else if (messages.SelectEndpoint.matches(request)) {
-    handleSelectEndpoint(request, sender.tab.url);
+    await handleSelectEndpoint(request, sender.tab.url);
   }
 };
 
 browser.runtime.onMessage.addListener(messageHandler);
 
 // Commands from keyboard shortcuts
-browser.commands.onCommand.addListener(async command => {
-  console.log("Command:", command);
+browser.commands.onCommand.addListener(async (command: string) => {
+  console.log("Got command:", command);
   if (command === "toggle-unmock") {
     await sendMessageToActiveCurrentWindowTab(
       messages.SelectionRequest.build({})
