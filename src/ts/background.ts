@@ -1,6 +1,7 @@
 import * as messages from "./messages";
 import { MessageGeneric } from "./messages/types";
 import { SelectEndpoint } from "./messages/selectEndpoint";
+import { browser } from "webextension-polyfill-ts";
 
 // Holds the data structure for all the context menus used in the app
 const CONTEXT_MENU_CONTENTS = {
@@ -9,12 +10,12 @@ const CONTEXT_MENU_CONTENTS = {
 
 const setupContextMenus = () => {
   CONTEXT_MENU_CONTENTS.forSelection.forEach(commandId => {
-    chrome.contextMenus.create({
+    browser.contextMenus.create({
       type: "separator",
       id: "sep1",
       contexts: ["selection"],
     });
-    chrome.contextMenus.create({
+    browser.contextMenus.create({
       title: commandId + ' "%s"',
       id: commandId,
       contexts: ["selection"],
@@ -23,38 +24,33 @@ const setupContextMenus = () => {
 };
 
 // Add context menus
-chrome.runtime.onInstalled.addListener(() => {
+browser.runtime.onInstalled.addListener(() => {
   setupContextMenus();
 });
 
-const sendMessageToActiveCurrentWindowTab = (
+const sendMessageToActiveCurrentWindowTab = async (
   message: MessageGeneric<any>,
   callback?: any
 ) => {
   console.log(`Sending message: ${JSON.stringify(message)}`);
-  chrome.tabs.query(
-    {
-      active: true,
-      currentWindow: true,
-    },
-    tabs => {
-      chrome.tabs.sendMessage(tabs[0].id, message, callback);
-    }
-  );
+  const tabs = await browser.tabs.query({
+    active: true,
+    currentWindow: true,
+  });
+  browser.tabs.sendMessage(tabs[0].id, message, callback);
 };
 
-chrome.contextMenus.onClicked.addListener(item => {
+browser.contextMenus.onClicked.addListener(async item => {
   console.log(
     `Selection menu '${item.menuItemId}' got selection: '${item.selectionText}'`
   );
   if (!item.selectionText) {
     return;
   }
-  chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-    const tab = tabs[0];
-    const url = tab.url;
-    ifActiveUrl(url, () => saveAndMessageTab(item.selectionText));
-  });
+  const tabs = await browser.tabs.query({ active: true, currentWindow: true });
+  const tab = tabs[0];
+  const url = tab.url;
+  ifActiveUrl(url, () => saveAndMessageTab(item.selectionText));
 });
 
 chrome.runtime.onSuspend.addListener(() => {
@@ -69,56 +65,51 @@ const messageLogger = (request, sender) => {
   console.log(logMessage);
 };
 
-chrome.runtime.onMessage.addListener(messageLogger);
+browser.runtime.onMessage.addListener(messageLogger);
 
 const badgeUpdater = request => {
   if (!request.activate) {
     return;
   }
   console.log(`Activating badge as got: ${JSON.stringify(request)}`);
-  chrome.browserAction.setBadgeText({ text: "API" });
-  chrome.browserAction.setBadgeBackgroundColor({ color: "#4688F1" });
+  browser.browserAction.setBadgeText({ text: "API" });
+  browser.browserAction.setBadgeBackgroundColor({ color: "#4688F1" });
 };
 
-chrome.runtime.onMessage.addListener(badgeUpdater);
+browser.runtime.onMessage.addListener(badgeUpdater);
 
-const initialize = url => {
+const initialize = async url => {
   console.log(`Initializing for URL: ${url}`);
-  chrome.storage.local.clear(() => {
-    chrome.storage.local.set({ [STORAGE_ACTIVE_URL_KEY]: url });
-  });
+  await browser.storage.local.clear();
+  await browser.storage.local.set({ [STORAGE_ACTIVE_URL_KEY]: url });
 };
 
 const STORAGE_ACTIVE_URL_KEY = "active_url";
 const STORAGE_SELECTIONS_KEY = "selections";
 
-const saveAndMessageTab = (selection: string) => {
+const saveAndMessageTab = async (selection: string) => {
   const callback = () => {
     const message = messages.SelectionHandled.build({});
     sendMessageToActiveCurrentWindowTab(message);
   };
-  chrome.storage.local.get([STORAGE_SELECTIONS_KEY], items => {
-    const previous = (items && items[STORAGE_SELECTIONS_KEY]) || [];
-    const newSelections = previous.concat(selection);
-    chrome.storage.local.set(
-      { [STORAGE_SELECTIONS_KEY]: newSelections },
-      callback
-    );
-  });
+  const items = await browser.storage.local.get([STORAGE_SELECTIONS_KEY]);
+  const previous = (items && items[STORAGE_SELECTIONS_KEY]) || [];
+  const newSelections = previous.concat(selection);
+  await browser.storage.local.set({ [STORAGE_SELECTIONS_KEY]: newSelections });
+  callback();
 };
 
-const ifActiveUrl = (url, callback) => {
-  chrome.storage.local.get([STORAGE_ACTIVE_URL_KEY], activeUrlResult => {
-    const activeUrl = activeUrlResult[STORAGE_ACTIVE_URL_KEY];
-    console.log(
-      `Active url: ${JSON.stringify(activeUrl)}, comparing to: ${url}`
-    );
-    if (url !== activeUrl) {
-      console.log(`Message from inactive url: ${url}`);
-      return;
-    }
-    callback();
-  });
+const ifActiveUrl = async (url, callback) => {
+  const activeUrlResult = await browser.storage.local.get([
+    STORAGE_ACTIVE_URL_KEY,
+  ]);
+  const activeUrl = activeUrlResult[STORAGE_ACTIVE_URL_KEY];
+  console.log(`Active url: ${JSON.stringify(activeUrl)}, comparing to: ${url}`);
+  if (url !== activeUrl) {
+    console.log(`Message from inactive url: ${url}`);
+    return;
+  }
+  callback();
 };
 
 const handleSelectEndpoint = (request: SelectEndpoint, senderUrl) => {
@@ -126,19 +117,19 @@ const handleSelectEndpoint = (request: SelectEndpoint, senderUrl) => {
   ifActiveUrl(url, () => saveAndMessageTab(request.props.selection));
 };
 
-const messageHandler = (request, sender) => {
+const messageHandler = async (request, sender) => {
   if (messages.InitializeStore.matches(request)) {
     const url = request.props.url;
-    initialize(url);
+    await initialize(url);
   } else if (messages.SelectEndpoint.matches(request)) {
     handleSelectEndpoint(request, sender.tab.url);
   }
 };
 
-chrome.runtime.onMessage.addListener(messageHandler);
+browser.runtime.onMessage.addListener(messageHandler);
 
 // Commands from keyboard shortcuts
-chrome.commands.onCommand.addListener(command => {
+browser.commands.onCommand.addListener(command => {
   console.log("Command:", command);
   if (command === "toggle-unmock") {
     sendMessageToActiveCurrentWindowTab(messages.SelectionRequest.build({}));
