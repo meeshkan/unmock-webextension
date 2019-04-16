@@ -1,15 +1,16 @@
 import * as messages from "./messages";
 import { MessageGeneric } from "./messages/types";
+import { browser } from "webextension-polyfill-ts";
 
 console.log("Running content script.");
 
-const sendMessage = (msg: MessageGeneric<any>, callback?: any) => {
+const sendMessage = async (msg: MessageGeneric<any>) => {
   console.log(`Sending message: ${JSON.stringify(msg)}`);
-  chrome.runtime.sendMessage(msg, callback);
+  await browser.runtime.sendMessage(msg);
 };
 
 // Listening to message
-chrome.runtime.onMessage.addListener((request, _, __) => {
+browser.runtime.onMessage.addListener(async (request, _) => {
   console.log(`Got message: ${JSON.stringify(request)}`);
   if (messages.SelectionHandled.matches(request)) {
     colorSelection();
@@ -23,7 +24,7 @@ chrome.runtime.onMessage.addListener((request, _, __) => {
     const msg = messages.SelectEndpoint.build({
       selection: selection.toString(),
     });
-    sendMessage(msg);
+    await sendMessage(msg);
   }
 });
 

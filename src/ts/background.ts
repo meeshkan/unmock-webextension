@@ -29,15 +29,14 @@ browser.runtime.onInstalled.addListener(() => {
 });
 
 const sendMessageToActiveCurrentWindowTab = async (
-  message: MessageGeneric<any>,
-  callback?: any
+  message: MessageGeneric<any>
 ) => {
   console.log(`Sending message: ${JSON.stringify(message)}`);
   const tabs = await browser.tabs.query({
     active: true,
     currentWindow: true,
   });
-  browser.tabs.sendMessage(tabs[0].id, message, callback);
+  await browser.tabs.sendMessage(tabs[0].id, message);
 };
 
 browser.contextMenus.onClicked.addListener(async item => {
@@ -88,15 +87,12 @@ const STORAGE_ACTIVE_URL_KEY = "active_url";
 const STORAGE_SELECTIONS_KEY = "selections";
 
 const saveAndMessageTab = async (selection: string) => {
-  const callback = () => {
-    const message = messages.SelectionHandled.build({});
-    sendMessageToActiveCurrentWindowTab(message);
-  };
   const items = await browser.storage.local.get([STORAGE_SELECTIONS_KEY]);
   const previous = (items && items[STORAGE_SELECTIONS_KEY]) || [];
   const newSelections = previous.concat(selection);
   await browser.storage.local.set({ [STORAGE_SELECTIONS_KEY]: newSelections });
-  callback();
+  const message = messages.SelectionHandled.build({});
+  await sendMessageToActiveCurrentWindowTab(message);
 };
 
 const ifActiveUrl = async (url, callback) => {
@@ -129,9 +125,11 @@ const messageHandler = async (request, sender) => {
 browser.runtime.onMessage.addListener(messageHandler);
 
 // Commands from keyboard shortcuts
-browser.commands.onCommand.addListener(command => {
+browser.commands.onCommand.addListener(async command => {
   console.log("Command:", command);
   if (command === "toggle-unmock") {
-    sendMessageToActiveCurrentWindowTab(messages.SelectionRequest.build({}));
+    await sendMessageToActiveCurrentWindowTab(
+      messages.SelectionRequest.build({})
+    );
   }
 });
