@@ -1,10 +1,10 @@
 import * as messages from "../messages";
 import { MessageGeneric } from "../messages/types";
-import { sendRuntimeMessage } from "../browser/sender";
+import { sender } from "../browser";
 
 const sendMessage = async (msg: MessageGeneric<any>) => {
   console.log(`Sending message: ${JSON.stringify(msg)}`);
-  await sendRuntimeMessage(msg);
+  await sender.sendRuntimeMessage(msg);
 };
 
 const handleSelectionRequest = async () => {
