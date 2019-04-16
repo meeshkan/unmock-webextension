@@ -5,12 +5,16 @@ export enum MessageType {
   SELECT_ENDPOINT = "Select endpoint",
 }
 
-export interface MessageGeneric<Props> {
-  type: string;
+interface MessageProps {}
+
+export interface MessageGeneric<Props extends MessageProps> {
+  type: MessageType;
   props: Props;
 }
 
-export function Builder<M extends MessageGeneric<P>, P>(type: MessageType) {
+export function Builder<M extends MessageGeneric<P>, P extends MessageProps>(
+  type: MessageType
+) {
   return {
     build(props: P): MessageGeneric<P> {
       return { type, props };
