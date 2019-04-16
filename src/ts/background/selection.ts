@@ -1,11 +1,10 @@
 import { SelectionHandled } from "../messages";
-import { addToSelection, checkIsActiveUrl } from "../browser/store";
-import { sendMessageToActiveCurrentWindowTab } from "../browser/sender";
+import { store, sender } from "../browser";
 
 const saveAndMessageTab = async (selection: string) => {
-  await addToSelection(selection);
+  await store.addToSelection(selection);
   const message = SelectionHandled.build({});
-  await sendMessageToActiveCurrentWindowTab(message);
+  await sender.sendMessageToActiveCurrentWindowTab(message);
 };
 
 interface ISelectionInput {
@@ -14,7 +13,7 @@ interface ISelectionInput {
 }
 
 export const handleSelection = async ({ url, selection }: ISelectionInput) => {
-  const isActiveUrl = await checkIsActiveUrl(url);
+  const isActiveUrl = await store.checkIsActiveUrl(url);
   if (isActiveUrl) {
     await saveAndMessageTab(selection);
   } else {

@@ -1,5 +1,5 @@
 import { browser } from "webextension-polyfill-ts";
-import { getActiveTab } from "../browser/utils";
+import { utils } from "../browser";
 import { handleSelection } from "./selection";
 
 const CONTEXT_MENU_CONTENTS = {
@@ -33,7 +33,7 @@ const addContextMenuClickedHandler = () => {
     if (!item.selectionText) {
       return;
     }
-    const tab = await getActiveTab();
+    const tab = await utils.getActiveTab();
     const url = tab.url;
     await handleSelection({ url, selection: item.selectionText });
   });

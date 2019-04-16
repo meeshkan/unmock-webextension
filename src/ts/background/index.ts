@@ -1,8 +1,7 @@
 import * as messages from "../messages";
 import { browser, Runtime } from "webextension-polyfill-ts";
 import { setupContextMenus } from "./contextMenus";
-import { initialize } from "../browser/store";
-import { sendMessageToActiveCurrentWindowTab } from "../browser/sender";
+import { store, sender as messageSender } from "../browser";
 import { handleSelection } from "./selection";
 
 // Add context menus
@@ -34,7 +33,7 @@ browser.runtime.onMessage.addListener(badgeUpdater);
 const messageHandler = async (request: any, sender: Runtime.MessageSender) => {
   if (messages.InitializeStore.matches(request)) {
     const url = request.props.url;
-    await initialize(url);
+    await store.initialize(url);
   } else if (messages.SelectEndpoint.matches(request)) {
     await handleSelection({
       url: sender.tab.url,
@@ -49,7 +48,7 @@ browser.runtime.onMessage.addListener(messageHandler);
 browser.commands.onCommand.addListener(async (command: string) => {
   console.log("Got command:", command);
   if (command === "toggle-unmock") {
-    await sendMessageToActiveCurrentWindowTab(
+    await messageSender.sendMessageToActiveCurrentWindowTab(
       messages.SelectionRequest.build({})
     );
   }
