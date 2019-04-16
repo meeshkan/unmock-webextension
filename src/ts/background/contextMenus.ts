@@ -1,8 +1,6 @@
-import * as messages from "../messages";
-import { checkIsActiveUrl, addToSelection } from "../browser/store";
-import { sendMessageToActiveCurrentWindowTab } from "../browser/sender";
 import { browser } from "webextension-polyfill-ts";
 import { getActiveTab } from "../browser/utils";
+import { handleSelection } from "./selection";
 
 // Holds the data structure for all the context menus used in the app
 const CONTEXT_MENU_CONTENTS = {
@@ -26,12 +24,6 @@ export const setupContextMenus = () => {
   addContextMenuClickedHandler();
 };
 
-const saveAndMessageTab = async (selection: string) => {
-  await addToSelection(selection);
-  const selectionHandledMessage = messages.SelectionHandled.build({});
-  await sendMessageToActiveCurrentWindowTab(selectionHandledMessage);
-};
-
 const addContextMenuClickedHandler = () => {
   browser.contextMenus.onClicked.addListener(async item => {
     console.log(
@@ -44,11 +36,6 @@ const addContextMenuClickedHandler = () => {
     }
     const tab = await getActiveTab();
     const url = tab.url;
-    const isActiveUrl = await checkIsActiveUrl(url);
-    if (isActiveUrl) {
-      await saveAndMessageTab(item.selectionText);
-    } else {
-      console.warn(`Ignoring context menu click from inactive URL: ${url}`);
-    }
+    await handleSelection({ url, selection: item.selectionText });
   });
 };

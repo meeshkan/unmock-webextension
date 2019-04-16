@@ -1,9 +1,9 @@
 import * as messages from "../messages";
-import { SelectEndpoint } from "../messages/selectEndpoint";
 import { browser, Runtime } from "webextension-polyfill-ts";
 import { setupContextMenus } from "./contextMenus";
-import { addToSelection, checkIsActiveUrl, initialize } from "../browser/store";
+import { initialize } from "../browser/store";
 import { sendMessageToActiveCurrentWindowTab } from "../browser/sender";
+import { handleSelection } from "./selection";
 
 // Add context menus
 browser.runtime.onInstalled.addListener(async () => {
@@ -31,30 +31,15 @@ const badgeUpdater = async (request: any) => {
 
 browser.runtime.onMessage.addListener(badgeUpdater);
 
-const saveAndMessageTab = async (selection: string) => {
-  await addToSelection(selection);
-  const message = messages.SelectionHandled.build({});
-  await sendMessageToActiveCurrentWindowTab(message);
-};
-
-const handleSelectEndpoint = async (
-  request: SelectEndpoint,
-  senderUrl: string
-) => {
-  const isActiveUrl = await checkIsActiveUrl(senderUrl);
-  if (isActiveUrl) {
-    await saveAndMessageTab(request.props.selection);
-  } else {
-    console.warn(`Ignoring select endpoint from inactive URL: ${senderUrl}`);
-  }
-};
-
 const messageHandler = async (request: any, sender: Runtime.MessageSender) => {
   if (messages.InitializeStore.matches(request)) {
     const url = request.props.url;
     await initialize(url);
   } else if (messages.SelectEndpoint.matches(request)) {
-    await handleSelectEndpoint(request, sender.tab.url);
+    await handleSelection({
+      url: sender.tab.url,
+      selection: request.props.selection,
+    });
   }
 };
 
