@@ -118,6 +118,6 @@ export const initialize = async (url: string) => {
   console.log(`Initializing for URL: ${url}`);
   await browser.storage.local.clear();
   const active: Active = await getActiveState();
-  _.set(active, "url", url);
-  await browser.storage.local.set({ [STORAGE_ACTIVE_KEY]: active });
+  active.url = url;
+  await setActive(active);
 };
