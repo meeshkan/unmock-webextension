@@ -1,6 +1,8 @@
+import "bootstrap/dist/css/bootstrap.css";
 import * as React from "react";
 import { hot } from "react-hot-loader";
 import { State as StorageState } from "../browser/state";
+import { Button } from "react-bootstrap";
 
 interface Props {
   localStorage: StorageState;
@@ -36,7 +38,10 @@ class Clock extends React.Component<Props, State> {
       <div>
         <h1>Welcome to Unmock API labeling explorer!</h1>
         <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
-        <h3> Current state: {JSON.stringify(this.props)}</h3>
+        <h3>Current state: {JSON.stringify(this.props)}</h3>
+        <Button onClick={() => console.log("Button pressed!")}>
+          My first button!
+        </Button>
       </div>
     );
   }

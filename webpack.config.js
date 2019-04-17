@@ -50,7 +50,6 @@ var options = {
       {
         test: /\.css$/,
         loader: "style-loader!css-loader",
-        exclude: /node_modules/,
       },
       {
         test: /\.scss$/,
