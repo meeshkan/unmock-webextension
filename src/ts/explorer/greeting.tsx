@@ -1,10 +1,15 @@
 import * as React from "react"; // import { hot } from "react-hot-loader";
 
-class GreetingComponent extends React.Component {
+interface Props {
+  who: string;
+}
+
+class GreetingComponent extends React.Component<Props> {
   public render() {
+    const { who } = this.props;
     return (
       <div>
-        <p>Hello, find me on src/js/popup/greeting_component.jsx</p>
+        <p>Hello, {who}!</p>
       </div>
     );
   }
