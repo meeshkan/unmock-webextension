@@ -2,7 +2,7 @@ import { SelectionHandled } from "../messages";
 import { store, sender } from "../browser";
 
 const saveAndMessageTab = async (selection: string) => {
-  await store.addToSelection(selection);
+  await store.addToLabeled(selection);
   const message = SelectionHandled.build({});
   await sender.sendMessageToActiveCurrentWindowTab(message);
 };

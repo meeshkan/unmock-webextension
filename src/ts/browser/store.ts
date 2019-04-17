@@ -1,6 +1,6 @@
 import { browser } from "webextension-polyfill-ts";
 import * as _ from "lodash";
-import { Active } from "./state";
+import { Active, Labeled } from "./state";
 
 const STORAGE_SELECTIONS_KEY = "selections";
 
@@ -16,6 +16,13 @@ export const getSelections = async () => {
   return await browser.storage.local.get([STORAGE_SELECTIONS_KEY]);
 };
 
+const STORAGE_LABELED_KEY = "labeled";
+
+export const getLabeled = async (): Promise<Labeled> => {
+  const labeledResult = await browser.storage.local.get([STORAGE_LABELED_KEY]);
+  return labeledResult[STORAGE_LABELED_KEY] || {};
+};
+
 export const getLocalStorage = async () => {
   return await browser.storage.local.get(null);
 };
@@ -27,12 +34,30 @@ export const addToSelection = async (selection: string) => {
   await browser.storage.local.set({ [STORAGE_SELECTIONS_KEY]: newSelections });
 };
 
+const setLabeled = async (labeled: Labeled) => {
+  await browser.storage.local.set({ [STORAGE_LABELED_KEY]: labeled });
+};
+
+export const addToLabeled = async (selection: string) => {
+  const labeled = await getLabeled();
+  const active = await getActive();
+  const activeUrl = active.url;
+  if (!activeUrl) {
+    console.warn("No active url, returning");
+    return;
+  }
+  const activePath = active.activePath || [];
+  _.set(labeled, [].concat(activeUrl, ...activePath), selection);
+  await setLabeled(labeled);
+};
+
 const STORAGE_ACTIVE_KEY = "active";
 
 const getActive = async (): Promise<Active> => {
   const state = (await browser.storage.local.get(STORAGE_ACTIVE_KEY)) || {};
   console.log(`Active state: ${JSON.stringify(state)}`);
-  return { url: state.active.url };
+  const active = state.active || {};
+  return { url: active.url };
 };
 
 export const initialize = async (url: string) => {

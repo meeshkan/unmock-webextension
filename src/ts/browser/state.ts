@@ -11,14 +11,18 @@ export interface Active {
   activePath?: string[];
 }
 
-interface State {
-  // Current active state: what is being selected.
-  // Defined by the explorer UI
+export interface State {
+  /**
+   * Current active state: what is being labeled.
+   */
   active: Active;
-  selected: Selected;
+  /**
+   * What has been labeled.
+   */
+  labeled: Labeled;
 }
 
-interface Selected {
+export interface Labeled {
   [url: string]: Paths;
 }
 
