@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import * as React from "react";
 import { hot } from "react-hot-loader";
 import { State as StorageState } from "../browser/state";
-import { Button } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 
 interface Props {
   localStorage: StorageState;
@@ -34,11 +34,34 @@ class Clock extends React.Component<Props, State> {
   }
 
   public render() {
+    const { active, labeled } = this.props.localStorage;
+    const { activePath, url, phase } = active;
     return (
       <div>
         <h1>Welcome to Unmock API labeling explorer!</h1>
-        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
-        <h3>Current state: {JSON.stringify(this.props)}</h3>
+        <h3>It is {this.state.date.toLocaleTimeString()}.</h3>
+        <div id="active">
+          <p>Active URL: {url}</p>
+          <p>Active phase: {phase}</p>
+          <p>Active path: {activePath}</p>
+        </div>
+        <div id="labeled">
+          <p>Labeled URLs: {Object.keys(labeled).join(", ")}</p>
+        </div>
+        <div>
+          <Form>
+            <Form.Group controlId="textarea">
+              <Form.Label>Current state</Form.Label>
+              <Form.Control
+                as="textarea"
+                plaintext
+                readOnly
+                rows="5"
+                value={JSON.stringify(this.props, null, 2)}
+              />
+            </Form.Group>
+          </Form>
+        </div>
         <Button onClick={() => console.log("Button pressed!")}>
           My first button!
         </Button>
