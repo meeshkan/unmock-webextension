@@ -1,4 +1,5 @@
 import { browser } from "webextension-polyfill-ts";
+import { store } from "../browser";
 
 const stored = document.getElementById("stored");
 
@@ -18,7 +19,7 @@ browser.storage.onChanged.addListener((changes, namespace) => {
 });
 
 const updateShownSaved = async () => {
-  const items = await browser.storage.local.get(null);
+  const items = await store.getLocalStorage();
   console.log(`Stored: ${JSON.stringify(items)}`);
   stored.innerHTML = JSON.stringify(items);
 };
