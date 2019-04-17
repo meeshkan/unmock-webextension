@@ -34,7 +34,7 @@ var options = {
   entry: {
     popup: path.join(__dirname, "src", "ts", "popup", "index.ts"),
     background: path.join(__dirname, "src", "ts", "background", "index.ts"),
-    explorer: path.join(__dirname, "src", "ts", "explorer", "index.ts"),
+    explorer: path.join(__dirname, "src", "ts", "explorer", "index.tsx"),
     contentScript: path.join(__dirname, "src", "ts", "content", "index.ts"),
   },
   devtool: false,
@@ -71,8 +71,11 @@ var options = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(js|jsx)$/,
-        loader: "babel-loader",
+        test: /\.(js)$/,
+        loaders: [
+          "react-hot",
+          "babel-loader?presets[]=react,presets[]=es2015']",
+        ],
         exclude: /node_modules/,
       },
       {

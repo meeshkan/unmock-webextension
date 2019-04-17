@@ -1,5 +1,10 @@
 import { browser } from "webextension-polyfill-ts";
 import { store } from "../browser";
+import Greeting from "./greeting";
+import * as React from "react"; // import { hot } from "react-hot-loader";
+import { render } from "react-dom";
+
+render(<Greeting />, window.document.getElementById("app"));
 
 const stored = document.getElementById("stored");
 

@@ -11,6 +11,7 @@
     "format": "prettier --write src/**/*.{ts,html,css}"
   },
   "dependencies": {
+    "@types/react": "^16.8.13",
     "lodash": "^4.17.11",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
@@ -20,8 +21,11 @@
   "devDependencies": {
     "@babel/core": "^7.1.5",
     "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.3.3",
     "@types/chrome": "^0.0.82",
     "@types/lodash": "^4.14.123",
+    "@types/node": "^11.13.4",
+    "@types/react-dom": "^16.8.4",
     "babel-loader": "8.0.5",
     "clean-webpack-plugin": "^1.0.0",
     "copy-webpack-plugin": "^4.6.0",
