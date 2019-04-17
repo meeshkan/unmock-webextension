@@ -53,5 +53,3 @@ browser.commands.onCommand.addListener(async (command: string) => {
     );
   }
 });
-
-store.addToStorage();

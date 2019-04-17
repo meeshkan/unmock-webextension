@@ -1,3 +1,8 @@
+export enum Phase {
+  ADD_PATH = "Add path",
+  ADD_OPERATION = "Add operation",
+}
+
 export interface Active {
   url?: string;
   /**
@@ -9,6 +14,7 @@ export interface Active {
    */
   //
   activePath?: string[];
+  phase: Phase;
 }
 
 export interface State {
