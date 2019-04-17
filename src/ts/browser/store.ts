@@ -1,13 +1,13 @@
 import { browser } from "webextension-polyfill-ts";
+import * as _ from "lodash";
+import { Active } from "./state";
 
-const STORAGE_ACTIVE_URL_KEY = "active_url";
 const STORAGE_SELECTIONS_KEY = "selections";
 
 export const checkIsActiveUrl = async (url: string): Promise<boolean> => {
-  const activeUrlResult = await browser.storage.local.get([
-    STORAGE_ACTIVE_URL_KEY,
-  ]);
-  const activeUrl = activeUrlResult[STORAGE_ACTIVE_URL_KEY];
+  const activeResult = await getActive();
+  console.log(`Active: ${JSON.stringify(activeResult)}`);
+  const activeUrl = activeResult.url;
   console.log(`Active url: ${JSON.stringify(activeUrl)}, comparing to: ${url}`);
   return url === activeUrl;
 };
@@ -27,8 +27,28 @@ export const addToSelection = async (selection: string) => {
   await browser.storage.local.set({ [STORAGE_SELECTIONS_KEY]: newSelections });
 };
 
+const STORAGE_ACTIVE_KEY = "active";
+
+const getActive = async (): Promise<Active> => {
+  const state = (await browser.storage.local.get(STORAGE_ACTIVE_KEY)) || {};
+  console.log(`Active state: ${JSON.stringify(state)}`);
+  return { url: state.active.url };
+};
+
 export const initialize = async (url: string) => {
   console.log(`Initializing for URL: ${url}`);
   await browser.storage.local.clear();
-  await browser.storage.local.set({ [STORAGE_ACTIVE_URL_KEY]: url });
+  const active: Active = await getActive();
+  _.set(active, "url", url);
+  await browser.storage.local.set({ [STORAGE_ACTIVE_KEY]: active });
+};
+
+export const addToStorage = async () => {
+  const storage = await browser.storage.local.get(["selectionsPlay"]);
+  const selections = storage.selectionsPlay || {};
+  _.updateWith(selections, ["test", "value"], value => (value || "") + "value");
+  console.log(`Selections: ${JSON.stringify(selections)}`);
+  await browser.storage.local.set({ selectionsPlay: selections });
+  const items = await browser.storage.local.get(["selectionsPlay"]);
+  console.log(`Got selections with: ${JSON.stringify(items)}`);
 };
