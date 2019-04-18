@@ -7,8 +7,7 @@ import ActiveStateComponent from "./activeStateComponent";
 import LabeledComponent from "./list-item/labeledComponent";
 
 const ExplorerComponent = () => {
-  const initialState: State = defaultState;
-  const [state, setState] = React.useState(initialState);
+  const [state, setState] = React.useState(null);
 
   function handleStateChange(newState: State) {
     setState(newState);
@@ -21,7 +20,7 @@ const ExplorerComponent = () => {
       setState(newState);
     };
     fetchState();
-  }, []);
+  }, []); // Does not depend on any state changes so only called once
 
   // Subscribe to store changes
   React.useEffect(() => {
@@ -32,8 +31,14 @@ const ExplorerComponent = () => {
   return (
     <div>
       <h1>Welcome to Unmock API labeling explorer!</h1>
-      <ActiveStateComponent active={state.active} />
-      <LabeledComponent labeled={state.labeled} />
+      {state === null ? (
+        <div>"Loading..."</div>
+      ) : (
+        <div>
+          <ActiveStateComponent active={state.active} />
+          <LabeledComponent labeled={state.labeled} />
+        </div>
+      )}
     </div>
   );
 };
