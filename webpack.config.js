@@ -71,10 +71,7 @@ var options = {
       },
       {
         test: /\.(js)$/,
-        loaders: [
-          "react-hot",
-          "babel-loader?presets[]=react,presets[]=es2015']",
-        ],
+        loader: "babel-loader",
         exclude: /node_modules/,
       },
       {
