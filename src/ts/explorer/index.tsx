@@ -1,9 +1,10 @@
 import { browser } from "webextension-polyfill-ts";
 import { store } from "../browser";
+import Explorer from "./explorer";
+import * as React from "react";
+import { render } from "react-dom";
 
-const stored = document.getElementById("stored");
-
-browser.storage.onChanged.addListener((changes, namespace) => {
+browser.storage.onChanged.addListener(async (changes, namespace) => {
   Object.keys(changes).forEach(key => {
     const storageChange = changes[key];
     console.log(
@@ -15,13 +16,15 @@ browser.storage.onChanged.addListener((changes, namespace) => {
       JSON.stringify(storageChange.newValue)
     );
   });
-  updateShownSaved();
+  updateView();
 });
 
-const updateShownSaved = async () => {
-  const items = await store.getLocalStorage();
-  console.log(`Stored: ${JSON.stringify(items)}`);
-  stored.innerHTML = JSON.stringify(items);
+const updateView = async () => {
+  const localStorage = await store.getLocalStorage();
+  render(
+    <Explorer localStorage={localStorage} />,
+    window.document.getElementById("app")
+  );
 };
 
-updateShownSaved();
+updateView();

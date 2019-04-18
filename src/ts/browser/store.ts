@@ -1,6 +1,6 @@
 import { browser } from "webextension-polyfill-ts";
 import * as _ from "lodash";
-import { Active, Labeled, Phase } from "./state";
+import { Active, Labeled, Phase, State } from "./state";
 
 /**
  * These must match with the keys of `State` interface
@@ -21,8 +21,14 @@ export const getLabeled = async (): Promise<Labeled> => {
   return labeledResult[STORAGE_LABELED_KEY] || {};
 };
 
-export const getLocalStorage = async () => {
-  return await browser.storage.local.get(null);
+const labeledDefaults = {};
+
+export const getLocalStorage = async (): Promise<State> => {
+  const items = await browser.storage.local.get(null);
+  return _.defaults(items, {
+    active: activeDefaults,
+    labeled: labeledDefaults,
+  });
 };
 
 const setLabeled = async (labeled: Labeled) => {
@@ -103,13 +109,15 @@ export const addNewPath = async (selection: string) => {
   await updateActivePath(newActivePath);
 };
 
+const activeDefaults = {
+  activePath: [],
+  phase: Phase.ADD_PATH,
+};
+
 const getActiveState = async (): Promise<Active> => {
   const state = (await browser.storage.local.get(STORAGE_ACTIVE_KEY)) || {};
   console.log(`Got active state from storage: ${JSON.stringify(state)}`);
-  const newActive = _.defaults(state.active || {}, {
-    activePath: [],
-    phase: Phase.ADD_PATH,
-  });
+  const newActive = _.defaults(state.active || {}, activeDefaults);
   console.log(`Parsed active: ${JSON.stringify(newActive)}`);
   return newActive;
 };
