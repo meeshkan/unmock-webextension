@@ -1,18 +1,10 @@
 import * as React from "react";
-import { State, Phase } from "../browser/state";
+import { defaultState, State } from "../state";
 import { store } from "../browser";
 import ActiveStateComponent from "./activeStateComponent";
 
-interface Props {}
-
-const ExplorerComponent = (props: Props) => {
-  const [count, setCount] = React.useState(0);
-  const initialState: State = {
-    active: {
-      phase: Phase.ADD_PATH,
-    },
-    labeled: {},
-  };
+const ExplorerComponent = () => {
+  const initialState: State = defaultState;
   const [state, setState] = React.useState(initialState);
 
   function handleStateChange(newState: State) {
@@ -36,8 +28,6 @@ const ExplorerComponent = (props: Props) => {
 
   return (
     <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>Click me</button>
       <ActiveStateComponent active={state.active} />
     </div>
   );

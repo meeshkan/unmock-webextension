@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.css";
 import * as React from "react";
 import { hot } from "react-hot-loader";
-import { State as StorageState } from "../browser/state";
+import { State as StorageState } from "../state";
 import ActiveStateComponent from "./activeStateComponent";
 import LabeledComponent from "./list-item/labeledComponent";
 
