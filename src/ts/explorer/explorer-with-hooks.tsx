@@ -1,7 +1,10 @@
+import "bootstrap/dist/css/bootstrap.css";
 import * as React from "react";
 import { defaultState, State } from "../state";
 import { store } from "../browser";
+import { hot } from "react-hot-loader";
 import ActiveStateComponent from "./activeStateComponent";
+import LabeledComponent from "./list-item/labeledComponent";
 
 const ExplorerComponent = () => {
   const initialState: State = defaultState;
@@ -28,9 +31,11 @@ const ExplorerComponent = () => {
 
   return (
     <div>
+      <h1>Welcome to Unmock API labeling explorer!</h1>
       <ActiveStateComponent active={state.active} />
+      <LabeledComponent labeled={state.labeled} />
     </div>
   );
 };
 
-export default ExplorerComponent;
+export default hot(module)(ExplorerComponent);
