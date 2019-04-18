@@ -15,6 +15,16 @@ import {
 const STORAGE_ACTIVE_KEY = "active";
 const STORAGE_LABELED_KEY = "labeled";
 
+export const setActiveUrl = async (url: string) => {
+  const active: Active = await getActiveState();
+  console.log(`Active: ${JSON.stringify(active)}`);
+  const newActive = { ...active, url };
+  console.log(
+    `Setting new active for url: ${url}: ${JSON.stringify(newActive)}`
+  );
+  await setActive(newActive);
+};
+
 export const checkIsActiveUrl = async (url: string): Promise<boolean> => {
   const activeResult: Active = await getActiveState();
   console.log(`Active: ${JSON.stringify(activeResult)}`);
