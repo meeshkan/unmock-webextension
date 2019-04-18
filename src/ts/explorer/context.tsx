@@ -21,11 +21,13 @@ const useData = (): { state: ExplorerState; actions: Actions } => {
     initialState
   );
 
+  const actions = useActions(state, dispatch);
+
   const fetchData: () => Promise<void> = async () => {
     dispatch({ type: "FETCH_INIT" });
     try {
       const newData = await store.getLocalStorage();
-      dispatch({ type: "FETCH_SUCCESS", payload: newData });
+      actions.triggerFetchSuccess(newData);
     } catch (err) {
       dispatch({ type: "FETCH_ERROR" });
     }
@@ -44,7 +46,7 @@ const useData = (): { state: ExplorerState; actions: Actions } => {
     const listener = store.subscribeToChanges(handleDataChange);
     return () => store.unsubscribeToChanges(listener);
   });
-  const actions = useActions(state, dispatch);
+
   return { state, actions };
 };
 
