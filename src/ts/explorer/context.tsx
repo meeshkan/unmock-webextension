@@ -21,7 +21,7 @@ const useData = (): { state: ExplorerState; actions: Actions } => {
     initialState
   );
 
-  const actions = useActions(state, dispatch);
+  const actions = useActions(dispatch);
 
   const fetchData: () => Promise<void> = async () => {
     dispatch({ type: "FETCH_INIT" });

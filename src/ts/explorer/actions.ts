@@ -1,14 +1,19 @@
-import { ExplorerState } from "./context";
 import { ReducerActionType } from "./reducer";
 import { State } from "../state";
 
+/**
+ * Actions to dispatch state changes.
+ */
 export type Actions = {
   triggerFetchSuccess(data: State): void;
   triggerSetActiveUrl(url: string): void;
 };
 
+/**
+ * Convert plain-english actions to dispatches.
+ * @param dispatch
+ */
 export const useActions = (
-  state: ExplorerState,
   dispatch: React.Dispatch<ReducerActionType>
 ): Actions => ({
   triggerFetchSuccess: (data: State) =>
