@@ -1,6 +1,7 @@
 import { browser } from "webextension-polyfill-ts";
 import { store } from "../browser";
-import Explorer from "./explorer";
+// import Explorer from "./explorer";
+import Explorer from "./explorer-with-hooks";
 import * as React from "react";
 import { render } from "react-dom";
 
@@ -16,15 +17,12 @@ browser.storage.onChanged.addListener(async (changes, namespace) => {
       JSON.stringify(storageChange.newValue)
     );
   });
-  updateView();
 });
 
 const updateView = async () => {
-  const localStorage = await store.getLocalStorage();
-  render(
-    <Explorer localStorage={localStorage} />,
-    window.document.getElementById("app")
-  );
+  // const localStorage = await store.getLocalStorage();
+  // const subscribeToChanges = store.subscribeToChanges;
+  render(<Explorer />, window.document.getElementById("app"));
 };
 
 updateView();

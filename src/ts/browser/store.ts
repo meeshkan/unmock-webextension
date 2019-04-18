@@ -31,6 +31,28 @@ export const getLocalStorage = async (): Promise<State> => {
   });
 };
 
+type StateChangeHandler = (state: State) => void;
+
+export const buildStateChangeHandler = (
+  stateChangeHandler: (state: State) => void
+) => {
+  return async (_, __) => {
+    const state = await getLocalStorage();
+    stateChangeHandler(state);
+  };
+};
+
+export const subscribeToChanges = (stateChangeHandler: StateChangeHandler) => {
+  // TODO Provide a way to unsubscribe
+  const listener = buildStateChangeHandler(stateChangeHandler);
+  browser.storage.onChanged.addListener(listener);
+  return listener;
+};
+
+export const unsubscribeToChanges = (listener: any) => {
+  browser.storage.onChanged.removeListener(listener);
+};
+
 const setLabeled = async (labeled: Labeled) => {
   await browser.storage.local.set({ [STORAGE_LABELED_KEY]: labeled });
 };
