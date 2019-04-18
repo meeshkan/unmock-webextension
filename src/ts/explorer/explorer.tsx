@@ -1,12 +1,12 @@
 import "bootstrap/dist/css/bootstrap.css";
 import * as React from "react";
-import { defaultState, State } from "../state";
+import { State } from "../state";
 import { store } from "../browser";
 import { hot } from "react-hot-loader";
 import ActiveStateComponent from "./activeStateComponent";
 import LabeledComponent from "./list-item/labeledComponent";
 
-const ExplorerComponent = () => {
+const useState = () => {
   const [state, setState] = React.useState(null);
 
   function handleStateChange(newState: State) {
@@ -27,6 +27,11 @@ const ExplorerComponent = () => {
     const listener = store.subscribeToChanges(handleStateChange);
     return () => store.unsubscribeToChanges(listener);
   });
+  return { state, setState };
+};
+
+const ExplorerComponent = () => {
+  const { state } = useState();
 
   return (
     <div>
