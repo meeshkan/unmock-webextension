@@ -11,7 +11,8 @@ export type Actions = {
 
 /**
  * Convert plain-english actions to dispatches.
- * @param dispatch
+ * @param dispatch Message dispatcher
+ * @returns Actions.
  */
 export const useActions = (
   dispatch: React.Dispatch<ReducerActionType>
