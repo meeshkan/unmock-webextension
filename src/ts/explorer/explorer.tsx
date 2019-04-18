@@ -9,10 +9,6 @@ import LabeledComponent from "./list-item/labeledComponent";
 const useState = () => {
   const [state, setState] = React.useState(null);
 
-  function handleStateChange(newState: State) {
-    setState(newState);
-  }
-
   // Set initial state, only called in the first time
   React.useEffect(() => {
     const fetchState: () => Promise<void> = async () => {
@@ -21,6 +17,10 @@ const useState = () => {
     };
     fetchState();
   }, []); // Does not depend on any state changes so only called once
+
+  const handleStateChange = (newState: State) => {
+    setState(newState);
+  };
 
   // Subscribe to store changes
   React.useEffect(() => {
