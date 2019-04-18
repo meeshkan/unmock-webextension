@@ -1,50 +1,41 @@
 import "bootstrap/dist/css/bootstrap.css";
 import * as React from "react";
+import { defaultState, State } from "../state";
+import { store } from "../browser";
 import { hot } from "react-hot-loader";
-import { State as StorageState } from "../state";
 import ActiveStateComponent from "./activeStateComponent";
 import LabeledComponent from "./list-item/labeledComponent";
 
-interface Props {
-  localStorage: StorageState;
-}
+const ExplorerComponent = () => {
+  const initialState: State = defaultState;
+  const [state, setState] = React.useState(initialState);
 
-interface State {
-  date: Date;
-}
-
-class Explorer extends React.Component<Props, State> {
-  private timerID: any;
-  constructor(props: Props) {
-    super(props);
-    this.state = { date: new Date() };
+  function handleStateChange(newState: State) {
+    setState(newState);
   }
 
-  public componentDidMount() {
-    this.timerID = setInterval(() => this.tick(), 1000);
-  }
+  // Set initial state, only called in the first time
+  React.useEffect(() => {
+    const fetchState: () => Promise<void> = async () => {
+      const newState = await store.getLocalStorage();
+      setState(newState);
+    };
+    fetchState();
+  }, []);
 
-  public componentWillUnmount() {
-    clearInterval(this.timerID);
-  }
+  // Subscribe to store changes
+  React.useEffect(() => {
+    const listener = store.subscribeToChanges(handleStateChange);
+    return () => store.unsubscribeToChanges(listener);
+  });
 
-  public tick() {
-    this.setState({
-      date: new Date(),
-    });
-  }
+  return (
+    <div>
+      <h1>Welcome to Unmock API labeling explorer!</h1>
+      <ActiveStateComponent active={state.active} />
+      <LabeledComponent labeled={state.labeled} />
+    </div>
+  );
+};
 
-  public render() {
-    const { active, labeled } = this.props.localStorage;
-    return (
-      <div>
-        <h1>Welcome to Unmock API labeling explorer!</h1>
-        <h3>It is {this.state.date.toLocaleTimeString()}.</h3>
-        <ActiveStateComponent active={active} />
-        <LabeledComponent labeled={labeled} />
-      </div>
-    );
-  }
-}
-
-export default hot(module)(Explorer);
+export default hot(module)(ExplorerComponent);

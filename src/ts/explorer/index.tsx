@@ -1,5 +1,5 @@
 import { browser } from "webextension-polyfill-ts";
-import Explorer from "./explorer-with-hooks";
+import Explorer from "./explorer";
 import * as React from "react";
 import { render } from "react-dom";
 
