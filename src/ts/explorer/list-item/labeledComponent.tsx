@@ -14,7 +14,7 @@ function ActiveStateComponent(props: Props) {
   const { actions } = React.useContext(ExplorerActionsContext);
 
   function handleClick() {
-    actions.setActiveUrl("https://www.unmock.io");
+    actions.triggerSetActiveUrl("https://www.unmock.io");
   }
 
   return (

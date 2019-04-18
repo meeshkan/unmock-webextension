@@ -20,7 +20,9 @@ const ExplorerComponent = () => {
         <div>
           <ActiveStateComponent active={data.active} />
           <LabeledComponent labeled={data.labeled} />
-          <Button onClick={() => actions.setActiveUrl("https://www.unmock.io")}>
+          <Button
+            onClick={() => actions.triggerSetActiveUrl("https://www.unmock.io")}
+          >
             Set active URL
           </Button>
         </div>

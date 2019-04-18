@@ -11,7 +11,7 @@ export type ExplorerState = {
   isLoading: boolean;
 };
 
-const useData = () => {
+const useData = (): { state: ExplorerState; actions: Actions } => {
   const initialState: ExplorerState = {
     isLoading: false,
     data: null,
@@ -44,7 +44,8 @@ const useData = () => {
     const listener = store.subscribeToChanges(handleDataChange);
     return () => store.unsubscribeToChanges(listener);
   });
-  return { state, dispatch };
+  const actions = useActions(state, dispatch);
+  return { state, actions };
 };
 
 type ExplorerDataContextType = {
@@ -64,8 +65,8 @@ export const ExplorerActionsContext = React.createContext(
 );
 
 export const ExplorerContextProvider = ({ children }) => {
-  const { state, dispatch } = useData();
-  const actions = useActions(state, dispatch);
+  const { state, actions } = useData();
+
   return (
     <ExplorerActionsContext.Provider value={{ actions }}>
       <ExplorerDataContext.Provider value={{ data: state.data }}>
