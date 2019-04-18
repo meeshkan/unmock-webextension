@@ -1,50 +1,51 @@
 import "bootstrap/dist/css/bootstrap.css";
 import * as React from "react";
+import { State } from "../state";
+import { store } from "../browser";
 import { hot } from "react-hot-loader";
-import { State as StorageState } from "../browser/state";
 import ActiveStateComponent from "./activeStateComponent";
 import LabeledComponent from "./list-item/labeledComponent";
 
-interface Props {
-  localStorage: StorageState;
-}
+const useState = () => {
+  const [state, setState] = React.useState(null);
 
-interface State {
-  date: Date;
-}
+  // Set initial state, only called in the first time
+  React.useEffect(() => {
+    const fetchState: () => Promise<void> = async () => {
+      const newState = await store.getLocalStorage();
+      setState(newState);
+    };
+    fetchState();
+  }, []); // Does not depend on any state changes so only called once
 
-class Explorer extends React.Component<Props, State> {
-  private timerID: any;
-  constructor(props: Props) {
-    super(props);
-    this.state = { date: new Date() };
-  }
+  const handleStateChange = (newState: State) => {
+    setState(newState);
+  };
 
-  public componentDidMount() {
-    this.timerID = setInterval(() => this.tick(), 1000);
-  }
+  // Subscribe to store changes
+  React.useEffect(() => {
+    const listener = store.subscribeToChanges(handleStateChange);
+    return () => store.unsubscribeToChanges(listener);
+  });
+  return { state, setState };
+};
 
-  public componentWillUnmount() {
-    clearInterval(this.timerID);
-  }
+const ExplorerComponent = () => {
+  const { state } = useState();
 
-  public tick() {
-    this.setState({
-      date: new Date(),
-    });
-  }
+  return (
+    <div>
+      <h1>Welcome to Unmock API labeling explorer!</h1>
+      {state === null ? (
+        <div>"Loading..."</div>
+      ) : (
+        <div>
+          <ActiveStateComponent active={state.active} />
+          <LabeledComponent labeled={state.labeled} />
+        </div>
+      )}
+    </div>
+  );
+};
 
-  public render() {
-    const { active, labeled } = this.props.localStorage;
-    return (
-      <div>
-        <h1>Welcome to Unmock API labeling explorer!</h1>
-        <h3>It is {this.state.date.toLocaleTimeString()}.</h3>
-        <ActiveStateComponent active={active} />
-        <LabeledComponent labeled={labeled} />
-      </div>
-    );
-  }
-}
-
-export default hot(module)(Explorer);
+export default hot(module)(ExplorerComponent);

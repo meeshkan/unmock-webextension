@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.css";
 import * as React from "react";
 import { hot } from "react-hot-loader";
-import { Labeled } from "../../browser/state";
+import { Labeled } from "../../state";
 import { Button, Form, Col, Row, Tab, ListGroup } from "react-bootstrap";
 
 interface Props {
