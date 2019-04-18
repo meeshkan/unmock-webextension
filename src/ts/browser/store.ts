@@ -41,7 +41,7 @@ type StateChangeHandler = (state: State) => void;
 export const buildStateChangeHandler = (
   stateChangeHandler: (state: State) => void
 ) => {
-  return async (_, __) => {
+  return async (changes, namespace) => {
     const state = await getLocalStorage();
     stateChangeHandler(state);
   };
