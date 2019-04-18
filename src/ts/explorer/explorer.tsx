@@ -70,6 +70,8 @@ const useData: () => ExplorerState & { dispatch: any } = () => {
   return { ...state, dispatch };
 };
 
+export const ExplorerContext = React.createContext(null);
+
 const ExplorerComponent = () => {
   const { data, dispatch, isLoading } = useData();
 
@@ -80,18 +82,20 @@ const ExplorerComponent = () => {
         <div>Loading...</div>
       ) : (
         <div>
-          <ActiveStateComponent active={data.active} />
-          <LabeledComponent labeled={data.labeled} />
-          <Button
-            onClick={() =>
-              dispatch({
-                type: "SET_ACTIVE_URL",
-                payload: "https://www.unmock.io",
-              })
-            }
-          >
-            Set active URL
-          </Button>
+          <ExplorerContext.Provider value={{ dispatch }}>
+            <ActiveStateComponent active={data.active} />
+            <LabeledComponent labeled={data.labeled} />
+            <Button
+              onClick={() =>
+                dispatch({
+                  type: "SET_ACTIVE_URL",
+                  payload: "https://www.unmock.io",
+                })
+              }
+            >
+              Set active URL
+            </Button>
+          </ExplorerContext.Provider>
         </div>
       )}
     </div>
