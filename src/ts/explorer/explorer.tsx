@@ -6,42 +6,42 @@ import { hot } from "react-hot-loader";
 import ActiveStateComponent from "./activeStateComponent";
 import LabeledComponent from "./list-item/labeledComponent";
 
-const useState = () => {
-  const [state, setState] = React.useState(null);
+const useData = () => {
+  const [data, setData] = React.useState(null);
 
   // Set initial state, only called in the first time
   React.useEffect(() => {
-    const fetchState: () => Promise<void> = async () => {
-      const newState = await store.getLocalStorage();
-      setState(newState);
+    const fetchData: () => Promise<void> = async () => {
+      const newData = await store.getLocalStorage();
+      setData(newData);
     };
-    fetchState();
+    fetchData();
   }, []); // Does not depend on any state changes so only called once
 
-  const handleStateChange = (newState: State) => {
-    setState(newState);
+  const handleDataChange = (newData: State) => {
+    setData(newData);
   };
 
   // Subscribe to store changes
   React.useEffect(() => {
-    const listener = store.subscribeToChanges(handleStateChange);
+    const listener = store.subscribeToChanges(handleDataChange);
     return () => store.unsubscribeToChanges(listener);
   });
-  return { state, setState };
+  return { data, setData };
 };
 
 const ExplorerComponent = () => {
-  const { state } = useState();
+  const { data } = useData();
 
   return (
     <div>
       <h1>Welcome to Unmock API labeling explorer!</h1>
-      {state === null ? (
+      {data === null ? (
         <div>"Loading..."</div>
       ) : (
         <div>
-          <ActiveStateComponent active={state.active} />
-          <LabeledComponent labeled={state.labeled} />
+          <ActiveStateComponent active={data.active} />
+          <LabeledComponent labeled={data.labeled} />
         </div>
       )}
     </div>
