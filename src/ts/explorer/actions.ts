@@ -1,5 +1,6 @@
 import { ReducerActionType } from "./reducer";
 import { State } from "../state";
+import { store } from "../browser";
 
 /**
  * Actions to dispatch state changes.
@@ -22,3 +23,23 @@ export const useActions = (
   triggerSetActiveUrl: (url: string) =>
     dispatch({ type: "SET_ACTIVE_URL", payload: url }),
 });
+
+export const applyLoggingMiddleware = (
+  dispatch: React.Dispatch<ReducerActionType>
+) => (action: ReducerActionType) => {
+  console.log(`Got action: ${JSON.stringify(action)}`);
+  dispatch(action);
+};
+
+export const applyStoreActionsMiddleware = (
+  dispatch: React.Dispatch<ReducerActionType>
+) => (action: ReducerActionType) => {
+  switch (action.type) {
+    case "SET_ACTIVE_URL":
+      console.log(`Setting active URL: ${action.payload}`);
+      store.setActiveUrl(action.payload);
+      break;
+    default:
+      dispatch(action);
+  }
+};

@@ -4,7 +4,12 @@ import { State } from "../state";
 import { store } from "../browser";
 import { hot } from "react-hot-loader";
 import { explorerStateReducer } from "./reducer";
-import { Actions, useActions } from "./actions";
+import {
+  Actions,
+  useActions,
+  applyLoggingMiddleware,
+  applyStoreActionsMiddleware,
+} from "./actions";
 
 export type ExplorerState = {
   data: State;
@@ -21,15 +26,19 @@ const useData = (): { state: ExplorerState; actions: Actions } => {
     initialState
   );
 
-  const actions = useActions(dispatch);
+  const enhancedDispatch = applyLoggingMiddleware(
+    applyStoreActionsMiddleware(dispatch)
+  );
+
+  const actions = useActions(enhancedDispatch);
 
   const fetchData: () => Promise<void> = async () => {
-    dispatch({ type: "FETCH_INIT" });
+    enhancedDispatch({ type: "FETCH_INIT" });
     try {
       const newData = await store.getLocalStorage();
       actions.triggerFetchSuccess(newData);
     } catch (err) {
-      dispatch({ type: "FETCH_ERROR" });
+      enhancedDispatch({ type: "FETCH_ERROR" });
     }
   };
 
@@ -38,7 +47,7 @@ const useData = (): { state: ExplorerState; actions: Actions } => {
   }, []); // Does not depend on any state changes so only called once
 
   const handleDataChange = (newData: State) => {
-    dispatch({ type: "DATA_UPDATED", payload: newData });
+    enhancedDispatch({ type: "DATA_UPDATED", payload: newData });
   };
 
   // Subscribe to store changes
