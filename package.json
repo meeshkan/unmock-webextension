@@ -22,7 +22,6 @@
   "devDependencies": {
     "@babel/core": "^7.1.5",
     "@babel/preset-react": "^7.0.0",
-    "@babel/preset-typescript": "^7.3.3",
     "@types/chrome": "^0.0.82",
     "@types/lodash": "^4.14.123",
     "@types/node": "^11.13.4",
