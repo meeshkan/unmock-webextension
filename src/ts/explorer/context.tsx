@@ -3,16 +3,15 @@ import * as React from "react";
 import { State } from "../state";
 import { store } from "../browser";
 import { hot } from "react-hot-loader";
-import { explorerStateReducer, ReducerActionType } from "./reducer";
+import { explorerStateReducer } from "./reducer";
+import { Actions, useActions } from "./actions";
 
 export type ExplorerState = {
   data: State;
   isLoading: boolean;
 };
 
-const useData: () => ExplorerState & {
-  dispatch: React.Dispatch<ReducerActionType>;
-} = () => {
+const useData = () => {
   const initialState: ExplorerState = {
     isLoading: false,
     data: null,
@@ -45,34 +44,34 @@ const useData: () => ExplorerState & {
     const listener = store.subscribeToChanges(handleDataChange);
     return () => store.unsubscribeToChanges(listener);
   });
-  return { ...state, dispatch };
+  return { state, dispatch };
 };
 
 type ExplorerDataContextType = {
   data: State;
 };
 
-type ExplorerDispatchType = {
-  dispatch: React.Dispatch<any>;
+type ExplorerActionsContextType = {
+  actions: Actions;
 };
 
 export const ExplorerDataContext = React.createContext(
   null as ExplorerDataContextType
 );
 
-export const ExplorerDispatchContext = React.createContext(
-  null as ExplorerDispatchType
+export const ExplorerActionsContext = React.createContext(
+  null as ExplorerActionsContextType
 );
 
 export const ExplorerContextProvider = ({ children }) => {
-  const { data, dispatch } = useData();
-
+  const { state, dispatch } = useData();
+  const actions = useActions(state, dispatch);
   return (
-    <ExplorerDispatchContext.Provider value={{ dispatch }}>
-      <ExplorerDataContext.Provider value={{ data }}>
+    <ExplorerActionsContext.Provider value={{ actions }}>
+      <ExplorerDataContext.Provider value={{ data: state.data }}>
         {children}
       </ExplorerDataContext.Provider>
-    </ExplorerDispatchContext.Provider>
+    </ExplorerActionsContext.Provider>
   );
 };
 

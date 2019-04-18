@@ -4,12 +4,12 @@ import { hot } from "react-hot-loader";
 import ActiveStateComponent from "./activeStateComponent";
 import LabeledComponent from "./list-item/labeledComponent";
 import { Button } from "react-bootstrap";
-import { ExplorerDataContext, ExplorerDispatchContext } from "./context";
+import { ExplorerDataContext, ExplorerActionsContext } from "./context";
 
 const ExplorerComponent = () => {
   const isLoading = false;
   const { data } = React.useContext(ExplorerDataContext);
-  const { dispatch } = React.useContext(ExplorerDispatchContext);
+  const { actions } = React.useContext(ExplorerActionsContext);
 
   return (
     <div>
@@ -20,14 +20,7 @@ const ExplorerComponent = () => {
         <div>
           <ActiveStateComponent active={data.active} />
           <LabeledComponent labeled={data.labeled} />
-          <Button
-            onClick={() =>
-              dispatch({
-                type: "SET_ACTIVE_URL",
-                payload: "https://www.unmock.io",
-              })
-            }
-          >
+          <Button onClick={() => actions.setActiveUrl("https://www.unmock.io")}>
             Set active URL
           </Button>
         </div>

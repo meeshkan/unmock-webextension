@@ -3,7 +3,7 @@ import * as React from "react";
 import { hot } from "react-hot-loader";
 import { Labeled } from "../../state";
 import { Button, Form, Col, Row, Tab, ListGroup } from "react-bootstrap";
-import { ExplorerDispatchContext } from "../context";
+import { ExplorerActionsContext } from "../context";
 
 interface Props {
   labeled: Labeled;
@@ -11,13 +11,10 @@ interface Props {
 
 function ActiveStateComponent(props: Props) {
   const { labeled } = props;
-  const { dispatch } = React.useContext(ExplorerDispatchContext);
+  const { actions } = React.useContext(ExplorerActionsContext);
 
   function handleClick() {
-    dispatch({
-      type: "SET_ACTIVE_URL",
-      payload: "https://www.unmock.io",
-    });
+    actions.setActiveUrl("https://www.unmock.io");
   }
 
   return (
@@ -30,7 +27,7 @@ function ActiveStateComponent(props: Props) {
           ))}
         </ul>
       </div>
-      <Button onClick={() => handleClick()}>Set active URL</Button>
+      <Button onClick={handleClick}>Set active URL</Button>
       <Tab.Container id="list-group-tabs-example" defaultActiveKey="#link1">
         <Row>
           <Col sm={4}>
