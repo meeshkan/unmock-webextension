@@ -23,7 +23,7 @@ export const explorerStateReducer = (
     case "DATA_UPDATED":
       return { ...state, data: action.payload };
     case "SET_ACTIVE_URL":
-      // Nasty side-effect, any way to avoid this without something like /// redux-saga?
+      // Nasty side-effect, any way to avoid this without something like redux-saga?
       setActiveUrl({ url: action.payload });
       return { ...state };
     default:
