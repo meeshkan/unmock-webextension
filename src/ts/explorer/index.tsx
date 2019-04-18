@@ -1,5 +1,6 @@
 import { browser } from "webextension-polyfill-ts";
 import Explorer from "./explorer";
+import ExplorerContextProvider from "./context";
 import * as React from "react";
 import { render } from "react-dom";
 
@@ -17,4 +18,9 @@ browser.storage.onChanged.addListener(async (changes, namespace) => {
   });
 });
 
-render(<Explorer />, window.document.getElementById("app"));
+render(
+  <ExplorerContextProvider>
+    <Explorer />
+  </ExplorerContextProvider>,
+  window.document.getElementById("app")
+);

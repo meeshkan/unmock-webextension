@@ -3,7 +3,7 @@ import * as React from "react";
 import { hot } from "react-hot-loader";
 import { Labeled } from "../../state";
 import { Button, Form, Col, Row, Tab, ListGroup } from "react-bootstrap";
-import { ExplorerContext } from "../explorer";
+import { ExplorerDispatchContext } from "../context";
 
 interface Props {
   labeled: Labeled;
@@ -11,7 +11,7 @@ interface Props {
 
 function ActiveStateComponent(props: Props) {
   const { labeled } = props;
-  const { dispatch } = React.useContext(ExplorerContext);
+  const { dispatch } = React.useContext(ExplorerDispatchContext);
 
   function handleClick() {
     dispatch({
