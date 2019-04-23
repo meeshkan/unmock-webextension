@@ -3,6 +3,7 @@ import * as React from "react";
 import { storiesOf } from "@storybook/react";
 
 import LabeledUrlsComponent from "../src/ts/explorer/list-item/labeledComponent";
+import ActiveStateComponent from "../src/ts/explorer/activeStateComponent";
 import { Active, Labeled, State, Phase } from "../src/ts/state";
 import { Actions } from "../src/ts/explorer/actions";
 import { ExplorerActionsContext } from "../src/ts/explorer/context";
@@ -28,20 +29,20 @@ const mockLabeledUrls: Labeled = {
 
 const mockActive: Active = {
   phase: Phase.ADD_PATH,
+  activePath: [],
+  url: "https://docs.readthedocs.io/en/stable/api/v2.html",
+};
+
+const mockActions: Actions = {
+  triggerFetchSuccess(data: State) {},
+  triggerSetActiveUrl(url: string) {
+    console.log(`Set active URL to ${url}`);
+    mockActive.url = url;
+  },
 };
 
 const decorator = story => {
   // const [active, setActive] = React.useState(mockActive);
-
-  const mockActions: Actions = {
-    triggerFetchSuccess(data: State) {},
-    triggerSetActiveUrl(url: string) {
-      console.log(`Set active URL to ${url}`);
-      mockActive.url = url;
-      //const newActive = { ...active, url };
-      //setActive(newActive);
-    },
-  };
   return (
     <ExplorerActionsContext.Provider value={{ actions: mockActions }}>
       {story()}
@@ -49,8 +50,12 @@ const decorator = story => {
   );
 };
 
-storiesOf("Labeled", module)
+storiesOf("Labeled URLs", module)
   .addDecorator(decorator)
-  .add("Labeled URLs", () => (
+  .add("vanilla", () => (
     <LabeledUrlsComponent active={mockActive} labeled={mockLabeledUrls} />
   ));
+
+storiesOf("Active state", module).add("vanilla", () => (
+  <ActiveStateComponent active={mockActive} />
+));
