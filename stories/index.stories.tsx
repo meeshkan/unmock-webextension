@@ -6,8 +6,12 @@ import LabeledUrlsComponent from "../src/ts/explorer/labeled/labeledComponent";
 import ActiveStateComponent from "../src/ts/explorer/activeStateComponent";
 import { Active, Labeled, State, Phase } from "../src/ts/state";
 import { Actions } from "../src/ts/explorer/actions";
-import { ExplorerActionsContext } from "../src/ts/explorer/context";
+import {
+  ExplorerActionsContext,
+  ExplorerDataContext,
+} from "../src/ts/explorer/context";
 import ExplorerButtonsComponent from "../src/ts/explorer/explorer-buttons-component";
+import ExplorerComponent from "../src/ts/explorer/explorer";
 
 const mockLabeledUrls: Labeled = {
   "https://docs.readthedocs.io/en/stable/api/v2.html": {
@@ -53,6 +57,21 @@ const provideExplorerActionsContext: StoryDecorator = (
     </ExplorerActionsContext.Provider>
   );
 };
+
+const provideExplorerDataContext: StoryDecorator = (story: RenderFunction) => {
+  return (
+    <ExplorerDataContext.Provider
+      value={{ data: { active: mockActive, labeled: mockLabeledUrls } }}
+    >
+      {story()}
+    </ExplorerDataContext.Provider>
+  );
+};
+
+storiesOf("Explorer", module)
+  .addDecorator(provideExplorerActionsContext)
+  .addDecorator(provideExplorerDataContext)
+  .add("vanilla", () => <ExplorerComponent />);
 
 storiesOf("Labeled URLs", module)
   .addDecorator(provideExplorerActionsContext)
