@@ -34,16 +34,16 @@ export interface Labeled {
 
 // Analogous to
 // https://swagger.io/specification/#pathsObject
-interface Paths {
+export interface Paths {
   // For example: "/pets/:id" -> Path
   [path: string]: Path;
 }
 
 // Analogous to
 // https://swagger.io/specification/#pathItemObject
-interface Path {
+export interface Path {
   // For example: "get" -> Operation
   [operation: string]: Operation;
 }
 
-interface Operation {}
+export interface Operation {}

@@ -19,7 +19,7 @@ const ExplorerComponent = () => {
       ) : (
         <div>
           <ActiveStateComponent active={data.active} />
-          <LabeledComponent labeled={data.labeled} />
+          <LabeledComponent active={data.active} labeled={data.labeled} />
           <Button
             onClick={() => actions.triggerSetActiveUrl("https://www.unmock.io")}
           >

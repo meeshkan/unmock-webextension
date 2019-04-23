@@ -1,4 +1,4 @@
-import { State, Active, Labeled, Phase } from "./types";
+import { State, Active, Labeled, Phase, Paths, Path } from "./types";
 
 const defaultActive = {
   activePath: [],
@@ -20,4 +20,6 @@ export {
   Active,
   Labeled,
   Phase,
+  Paths,
+  Path,
 };

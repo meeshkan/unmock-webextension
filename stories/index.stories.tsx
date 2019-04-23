@@ -1,49 +1,56 @@
 import * as React from "react";
 
 import { storiesOf } from "@storybook/react";
-import { action } from "@storybook/addon-actions";
-import { linkTo } from "@storybook/addon-links";
-
-import { Button, Welcome } from "@storybook/react/demo";
 
 import LabeledUrlsComponent from "../src/ts/explorer/list-item/labeledComponent";
-import { Labeled, State } from "../src/ts/state";
+import { Active, Labeled, State, Phase } from "../src/ts/state";
 import { Actions } from "../src/ts/explorer/actions";
 import { ExplorerActionsContext } from "../src/ts/explorer/context";
 
-const labeled: Labeled = {
+const mockLabeledUrls: Labeled = {
   "https://docs.readthedocs.io/en/stable/api/v2.html": {
     "/api/v2/project/": {
       GET: {},
+      PUT: {},
     },
+    "/api/v2/user/": {
+      POST: {},
+    },
+  },
+  "https://docs.readthedocs.io/en/stable/api/v1.html": {
+    "/api/v1/project/": {
+      GET: {},
+      PUT: {},
+    },
+    "/api/v1/user/": {},
   },
 };
 
-const mockActions: Actions = {
-  triggerFetchSuccess(data: State) {},
-  triggerSetActiveUrl(url: string) {},
+const mockActive: Active = {
+  phase: Phase.ADD_PATH,
 };
 
-storiesOf("Labeled", module)
-  .addDecorator(story => (
+const decorator = story => {
+  // const [active, setActive] = React.useState(mockActive);
+
+  const mockActions: Actions = {
+    triggerFetchSuccess(data: State) {},
+    triggerSetActiveUrl(url: string) {
+      console.log(`Set active URL to ${url}`);
+      mockActive.url = url;
+      //const newActive = { ...active, url };
+      //setActive(newActive);
+    },
+  };
+  return (
     <ExplorerActionsContext.Provider value={{ actions: mockActions }}>
       {story()}
     </ExplorerActionsContext.Provider>
-  ))
-  .add("Labeled URLs", () => <LabeledUrlsComponent labeled={labeled} />);
+  );
+};
 
-storiesOf("Welcome", module).add("to Storybook", () => (
-  <Welcome showApp={linkTo("Button")} />
-));
-
-storiesOf("Button", module)
-  .add("with text", () => (
-    <Button onClick={action("clicked")}>Hello Button</Button>
-  ))
-  .add("with some emoji", () => (
-    <Button onClick={action("clicked")}>
-      <span role="img" aria-label="so cool">
-        😀 😎 👍 💯
-      </span>
-    </Button>
+storiesOf("Labeled", module)
+  .addDecorator(decorator)
+  .add("Labeled URLs", () => (
+    <LabeledUrlsComponent active={mockActive} labeled={mockLabeledUrls} />
   ));
