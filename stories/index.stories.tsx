@@ -11,7 +11,13 @@ import { Labeled, State } from "../src/ts/state";
 import { Actions } from "../src/ts/explorer/actions";
 import { ExplorerActionsContext } from "../src/ts/explorer/context";
 
-const labeled: Labeled = {};
+const labeled: Labeled = {
+  "https://docs.readthedocs.io/en/stable/api/v2.html": {
+    "/api/v2/project/": {
+      GET: {},
+    },
+  },
+};
 
 const actions: Actions = {
   triggerFetchSuccess(data: State) {},
