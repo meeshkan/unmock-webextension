@@ -23,6 +23,10 @@ export const setActiveUrl = async (url: string) => {
     `Setting new active for url: ${url}: ${JSON.stringify(newActive)}`
   );
   await setActive(newActive);
+  const labeled: Labeled = await getLabeled();
+  const newLabeled = { [url]: {}, ...labeled };
+  console.log("Setting new labeled", newLabeled);
+  await setLabeled(newLabeled);
 };
 
 export const checkIsActiveUrl = async (url: string): Promise<boolean> => {
@@ -154,12 +158,11 @@ const getActiveState = async (): Promise<Active> => {
   return newActive;
 };
 
-export const initialize = async (url: string) => {
-  console.log(`Initializing for URL: ${url}`);
-  const active: Active = await getActiveState();
+export const initialize = async () => {
+  console.log("Initializing store");
+  await browser.storage.local.clear();
   const newActive = {
-    ...active,
-    url,
+    url: undefined,
     phase: Phase.ADD_PATH,
     activePath: [],
   };

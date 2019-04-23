@@ -3,6 +3,7 @@ export enum MessageType {
   SELECTION_REQUEST = "Selection request",
   SELECTION_HANDLED = "Selection handled",
   SELECT_ENDPOINT = "Select endpoint",
+  SET_ACTIVE_URL = "Set active URL",
 }
 
 interface MessageProps {}

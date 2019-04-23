@@ -11,7 +11,7 @@ export const getActiveTab = async (): Promise<Tabs.Tab> => {
 export const downloadTo = ({ url }) => {
   browser.downloads.download({
     url,
-    filename: "export.json",
+    filename: "api-spec.json",
   });
 };
 
