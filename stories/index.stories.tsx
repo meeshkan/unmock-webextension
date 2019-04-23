@@ -56,8 +56,11 @@ const provideExplorerActionsContext: StoryDecorator = (
 
 storiesOf("Labeled URLs", module)
   .addDecorator(provideExplorerActionsContext)
-  .add("vanilla", () => (
+  .add("with labeled data", () => (
     <LabeledUrlsComponent active={mockActive} labeled={mockLabeledUrls} />
+  ))
+  .add("without labeled data", () => (
+    <LabeledUrlsComponent active={mockActive} labeled={{}} />
   ));
 
 storiesOf("Active state", module).add("vanilla", () => (
