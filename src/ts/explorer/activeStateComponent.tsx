@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import * as React from "react";
 import { hot } from "react-hot-loader";
 import { Active } from "../state";
+import { Alert } from "react-bootstrap";
 
 interface Props {
   active: Active;
@@ -18,9 +19,10 @@ class ActiveStateComponent extends React.Component<Props> {
     return (
       <div>
         <div id="active">
-          <p>Active URL: {url}</p>
-          <p>Active phase: {phase}</p>
-          <p>Active path: [{activePath.join(", ")}]</p>
+          <h3>Active state</h3>
+          <Alert variant="info">Active URL: {url}</Alert>
+          <Alert variant="info">Active phase: {phase}</Alert>
+          <Alert variant="info">Active path: [{activePath.join(", ")}]</Alert>
         </div>
       </div>
     );
