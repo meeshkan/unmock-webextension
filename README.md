@@ -22,6 +22,12 @@ Run webpack development server with hot reloading:
 $ yarn start
 ```
 
+Run [Storybook](https://github.com/storybooks/storybook):
+
+```bash
+$ yarn storybook
+```
+
 ## Usage
 
 1. Run `yarn start` or `yarn build` to create bundle
