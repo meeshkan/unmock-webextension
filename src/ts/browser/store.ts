@@ -156,8 +156,12 @@ const getActiveState = async (): Promise<Active> => {
 
 export const initialize = async (url: string) => {
   console.log(`Initializing for URL: ${url}`);
-  await browser.storage.local.clear();
   const active: Active = await getActiveState();
-  active.url = url;
-  await setActive(active);
+  const newActive = {
+    ...active,
+    url,
+    phase: Phase.ADD_PATH,
+    activePath: [],
+  };
+  await setActive(newActive);
 };
