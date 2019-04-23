@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { storiesOf, StoryDecorator, RenderFunction } from "@storybook/react";
 
-import LabeledUrlsComponent from "../src/ts/explorer/list-item/labeledComponent";
+import LabeledUrlsComponent from "../src/ts/explorer/labeled/labeledComponent";
 import ActiveStateComponent from "../src/ts/explorer/activeStateComponent";
 import { Active, Labeled, State, Phase } from "../src/ts/state";
 import { Actions } from "../src/ts/explorer/actions";
@@ -27,7 +27,7 @@ const mockLabeledUrls: Labeled = {
   },
 };
 
-const mockActive: Active = {
+let mockActive: Active = {
   phase: Phase.ADD_PATH,
   activePath: [],
   url: "https://docs.readthedocs.io/en/stable/api/v2.html",
@@ -37,8 +37,9 @@ const mockActions: Actions = {
   triggerFetchSuccess(data: State) {},
   triggerSetActiveUrl(url: string) {
     console.log(`Set active URL to ${url}`);
-    mockActive.url = url;
+    mockActive = { ...mockActive, url };
   },
+  triggerInitializeStore() {},
 };
 
 const provideExplorerActionsContext: StoryDecorator = (

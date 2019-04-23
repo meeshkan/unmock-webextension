@@ -6,7 +6,7 @@ const setActive = document.getElementById("set-active");
 
 setActive.onclick = async () => {
   const tab = await utils.getActiveTab();
-  const initializeMsg = messages.InitializeStore.build({ url: tab.url });
+  const initializeMsg = messages.SetActiveUrl.build({ url: tab.url });
   await sender.sendRuntimeMessage(initializeMsg);
 };
 

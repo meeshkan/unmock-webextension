@@ -2,8 +2,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import * as React from "react";
 import { hot } from "react-hot-loader";
 import ActiveStateComponent from "./activeStateComponent";
-import LabeledComponent from "./list-item/labeledComponent";
-import { Button } from "react-bootstrap";
+import LabeledComponent from "./labeled/labeledComponent";
 import { ExplorerDataContext, ExplorerActionsContext } from "./context";
 import ExplorerButtons from "./explorer-buttons-component";
 

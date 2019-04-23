@@ -33,13 +33,14 @@ browser.runtime.onMessage.addListener(badgeUpdater);
 
 const messageHandler = async (request: any, sender: Runtime.MessageSender) => {
   if (messages.InitializeStore.matches(request)) {
-    const url = request.props.url;
-    await store.initialize(url);
+    await store.initialize();
   } else if (messages.SelectEndpoint.matches(request)) {
     await handleSelection({
       url: sender.tab.url,
       selection: request.props.selection,
     });
+  } else if (messages.SetActiveUrl.matches(request)) {
+    await store.setActiveUrl(request.props.url);
   }
 };
 

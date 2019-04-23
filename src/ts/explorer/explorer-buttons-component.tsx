@@ -4,6 +4,7 @@ import * as React from "react";
 import { Button } from "react-bootstrap";
 import { utils } from "../browser";
 import { Labeled } from "../state";
+import { store } from "../browser";
 
 interface Props {
   labeled: Labeled;
@@ -19,10 +20,17 @@ const ExplorerButtonsComponent = (props: Props) => {
     console.log(`Exported: ${text}`);
   }
 
+  async function initialize() {
+    await store.initialize();
+  }
+
   return (
     <div>
       <Button id="export" onClick={exportLabeled}>
         Export
+      </Button>
+      <Button id="initialize" onClick={initialize}>
+        Initialize
       </Button>
     </div>
   );
