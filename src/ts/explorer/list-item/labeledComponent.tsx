@@ -9,7 +9,7 @@ interface Props {
   labeled: Labeled;
 }
 
-function ActiveStateComponent(props: Props) {
+function LabeledUrlsComponent(props: Props) {
   const { labeled } = props;
   const { actions } = React.useContext(ExplorerActionsContext);
 
@@ -79,4 +79,4 @@ function ActiveStateComponent(props: Props) {
   );
 }
 
-export default hot(module)(ActiveStateComponent);
+export default hot(module)(LabeledUrlsComponent);
