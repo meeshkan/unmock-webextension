@@ -2,9 +2,9 @@ import "../../scss/popup.scss";
 import * as messages from "../messages";
 import { store, sender, utils } from "../browser";
 
-const initialize = document.getElementById("initialize");
+const setActive = document.getElementById("set-active");
 
-initialize.onclick = async () => {
+setActive.onclick = async () => {
   const tab = await utils.getActiveTab();
   const initializeMsg = messages.InitializeStore.build({ url: tab.url });
   await sender.sendRuntimeMessage(initializeMsg);
