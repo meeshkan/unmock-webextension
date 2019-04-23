@@ -5,6 +5,7 @@ import ActiveStateComponent from "./activeStateComponent";
 import LabeledComponent from "./list-item/labeledComponent";
 import { Button } from "react-bootstrap";
 import { ExplorerDataContext, ExplorerActionsContext } from "./context";
+import ExplorerButtons from "./explorer-buttons-component";
 
 const ExplorerComponent = () => {
   const isLoading = false;
@@ -20,11 +21,7 @@ const ExplorerComponent = () => {
         <div>
           <ActiveStateComponent active={data.active} />
           <LabeledComponent active={data.active} labeled={data.labeled} />
-          <Button
-            onClick={() => actions.triggerSetActiveUrl("https://www.unmock.io")}
-          >
-            Set active URL
-          </Button>
+          <ExplorerButtons labeled={data.labeled} />
         </div>
       )}
     </div>

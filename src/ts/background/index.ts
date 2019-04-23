@@ -2,6 +2,7 @@ import * as messages from "../messages";
 import { browser, Runtime } from "webextension-polyfill-ts";
 import { setupContextMenus } from "./contextMenus";
 import { store, sender as messageSender } from "../browser";
+import { openExplorer } from "../browser/utils";
 import { handleSelection } from "./selection";
 
 // Add context menus
