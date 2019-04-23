@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { storiesOf } from "@storybook/react";
+import { storiesOf, StoryDecorator, RenderFunction } from "@storybook/react";
 
 import LabeledUrlsComponent from "../src/ts/explorer/list-item/labeledComponent";
 import ActiveStateComponent from "../src/ts/explorer/activeStateComponent";
@@ -41,8 +41,9 @@ const mockActions: Actions = {
   },
 };
 
-const decorator = story => {
-  // const [active, setActive] = React.useState(mockActive);
+const provideExplorerActionsContext: StoryDecorator = (
+  story: RenderFunction
+) => {
   return (
     <ExplorerActionsContext.Provider value={{ actions: mockActions }}>
       {story()}
@@ -51,7 +52,7 @@ const decorator = story => {
 };
 
 storiesOf("Labeled URLs", module)
-  .addDecorator(decorator)
+  .addDecorator(provideExplorerActionsContext)
   .add("vanilla", () => (
     <LabeledUrlsComponent active={mockActive} labeled={mockLabeledUrls} />
   ));
