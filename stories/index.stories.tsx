@@ -19,14 +19,14 @@ const labeled: Labeled = {
   },
 };
 
-const actions: Actions = {
+const mockActions: Actions = {
   triggerFetchSuccess(data: State) {},
   triggerSetActiveUrl(url: string) {},
 };
 
 storiesOf("Labeled", module)
   .addDecorator(story => (
-    <ExplorerActionsContext.Provider value={{ actions }}>
+    <ExplorerActionsContext.Provider value={{ actions: mockActions }}>
       {story()}
     </ExplorerActionsContext.Provider>
   ))
