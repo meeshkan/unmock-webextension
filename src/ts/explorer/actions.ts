@@ -1,6 +1,6 @@
 import { ReducerActionType } from "./reducer";
-import { State } from "../state";
-import { store } from "../browser";
+import { State, Labeled } from "../state";
+import { store, utils } from "../browser";
 
 /**
  * Actions to dispatch state changes.
@@ -9,6 +9,7 @@ export type Actions = {
   triggerFetchSuccess(data: State): void;
   triggerSetActiveUrl(url: string): void;
   triggerInitializeStore(): void;
+  triggerDownload(labeled: Labeled): void;
 };
 
 /**
@@ -24,6 +25,8 @@ export const useActions = (
   triggerSetActiveUrl: (url: string) =>
     dispatch({ type: "SET_ACTIVE_URL", payload: url }),
   triggerInitializeStore: () => dispatch({ type: "INITIALIZE_STORE" }),
+  triggerDownload: (labeled: Labeled) =>
+    dispatch({ type: "DOWNLOAD", payload: labeled }),
 });
 
 export const applyLoggingMiddleware = (
@@ -43,6 +46,13 @@ export const applyStoreActionsMiddleware = (
       break;
     case "INITIALIZE_STORE":
       await store.initialize();
+      break;
+    case "DOWNLOAD":
+      console.log("Exporting data...");
+      const text = JSON.stringify(action.payload, null, 2);
+      const url = "data:application/json;base64," + btoa(text);
+      utils.downloadTo({ url });
+      console.log(`Exported: ${text}`);
       break;
     default:
       dispatch(action);

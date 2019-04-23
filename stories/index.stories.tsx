@@ -7,6 +7,7 @@ import ActiveStateComponent from "../src/ts/explorer/activeStateComponent";
 import { Active, Labeled, State, Phase } from "../src/ts/state";
 import { Actions } from "../src/ts/explorer/actions";
 import { ExplorerActionsContext } from "../src/ts/explorer/context";
+import ExplorerButtonsComponent from "../src/ts/explorer/explorer-buttons-component";
 
 const mockLabeledUrls: Labeled = {
   "https://docs.readthedocs.io/en/stable/api/v2.html": {
@@ -40,6 +41,7 @@ const mockActions: Actions = {
     mockActive = { ...mockActive, url };
   },
   triggerInitializeStore() {},
+  triggerDownload(labeled: Labeled) {},
 };
 
 const provideExplorerActionsContext: StoryDecorator = (
@@ -61,3 +63,7 @@ storiesOf("Labeled URLs", module)
 storiesOf("Active state", module).add("vanilla", () => (
   <ActiveStateComponent active={mockActive} />
 ));
+
+storiesOf("Explorer buttons", module)
+  .addDecorator(provideExplorerActionsContext)
+  .add("vanilla", () => <ExplorerButtonsComponent labeled={mockLabeledUrls} />);

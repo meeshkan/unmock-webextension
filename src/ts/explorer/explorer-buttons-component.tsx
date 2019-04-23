@@ -4,7 +4,7 @@ import * as React from "react";
 import { Button } from "react-bootstrap";
 import { utils } from "../browser";
 import { Labeled } from "../state";
-import { store } from "../browser";
+import { ExplorerActionsContext } from "./context";
 
 interface Props {
   labeled: Labeled;
@@ -12,16 +12,13 @@ interface Props {
 
 const ExplorerButtonsComponent = (props: Props) => {
   const { labeled } = props;
+  const { actions } = React.useContext(ExplorerActionsContext);
   async function exportLabeled() {
-    console.log("Exporting data...");
-    const text = JSON.stringify(labeled, null, 2);
-    const url = "data:application/json;base64," + btoa(text);
-    utils.downloadTo({ url });
-    console.log(`Exported: ${text}`);
+    actions.triggerDownload(labeled);
   }
 
   async function initialize() {
-    await store.initialize();
+    await actions.triggerInitializeStore();
   }
 
   return (
@@ -30,7 +27,7 @@ const ExplorerButtonsComponent = (props: Props) => {
         Export
       </Button>
       <Button id="initialize" onClick={initialize}>
-        Initialize
+        Clear all
       </Button>
     </div>
   );
