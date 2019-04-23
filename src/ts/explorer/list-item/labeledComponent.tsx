@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.css";
 import * as React from "react";
 import { hot } from "react-hot-loader";
+import { Alert } from "react-bootstrap";
 import { Active, Labeled, Paths, Path } from "../../state";
 import { ExplorerActionsContext } from "../context";
 
@@ -10,7 +11,7 @@ interface Props {
 }
 
 function LabeledUrlsComponent(props: Props) {
-  const { labeled } = props;
+  const { active, labeled } = props;
   const { actions } = React.useContext(ExplorerActionsContext);
 
   function handleClick(url = "https://www.unmock.io") {
@@ -41,15 +42,17 @@ function LabeledUrlsComponent(props: Props) {
   }
 
   function renderLabeled() {
+    const buttonVariant = (labeledUrl: string) =>
+      labeledUrl === active.url ? "success" : "info";
     return (
       <div id="labeled">
         <h3>Labeled URLs</h3>
         <ul>
           {Object.keys(labeled).map((labeledUrl: string) => (
-            <li key={labeledUrl}>
+            <Alert key={labeledUrl} variant={buttonVariant(labeledUrl)}>
               <div onClick={() => handleClick(labeledUrl)}>{labeledUrl}</div>
               {renderPaths(labeled[labeledUrl])}
-            </li>
+            </Alert>
           ))}
         </ul>
       </div>
