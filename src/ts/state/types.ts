@@ -15,6 +15,7 @@ export interface Active {
   //
   activePath?: string[];
   phase: Phase;
+  userState?: any;
 }
 
 export interface State {
@@ -26,6 +27,8 @@ export interface State {
    * What has been labeled.
    */
   labeled: Labeled;
+
+  userState?: any;
 }
 
 export interface Labeled {

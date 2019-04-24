@@ -15,7 +15,7 @@ class ActiveStateComponent extends React.Component<Props> {
 
   public render() {
     const { active } = this.props;
-    const { activePath, url, phase } = active;
+    const { activePath, url, phase, userState } = active;
     return (
       <div>
         <div id="active">
@@ -23,6 +23,9 @@ class ActiveStateComponent extends React.Component<Props> {
           <Alert variant="info">Active URL: {url}</Alert>
           <Alert variant="info">Active phase: {phase}</Alert>
           <Alert variant="info">Active path: [{activePath.join(", ")}]</Alert>
+          <Alert variant="info">
+            Active user state: {JSON.stringify(userState, null, 2)}
+          </Alert>
         </div>
       </div>
     );

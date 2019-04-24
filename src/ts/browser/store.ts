@@ -8,12 +8,14 @@ import {
   defaultActive,
   defaultLabeled,
 } from "../state";
+import UserStateMachine, { createState, State as UserState } from "./machine";
 
 /**
  * These must match with the keys of `State` interface
  */
 const STORAGE_ACTIVE_KEY = "active";
 const STORAGE_LABELED_KEY = "labeled";
+const STORAGE_USERSTATE_KEY = "userState";
 
 export const setActiveUrl = async (url: string) => {
   const active: Active = await getActiveState();
@@ -47,6 +49,29 @@ export const getLabeled = async (): Promise<Labeled> => {
   return labeledResult[STORAGE_LABELED_KEY] || {};
 };
 
+export const setUserState = async (userState: UserState<any, any>) => {
+  await browser.storage.local.set({ [STORAGE_USERSTATE_KEY]: userState });
+};
+
+export const transitionUserState = async (
+  transition: string
+): Promise<UserState<any, any>> => {
+  const userState = await getUserState();
+  const newState = UserStateMachine.transition(userState, transition);
+  console.log(`New state: ${newState.value}`);
+  await setUserState(newState);
+  return newState;
+};
+
+export const getUserState = async (): Promise<UserState<any, any>> => {
+  const result = await browser.storage.local.get([STORAGE_USERSTATE_KEY]);
+  const persistedUserState = result[STORAGE_USERSTATE_KEY];
+
+  return persistedUserState
+    ? UserStateMachine.resolveState(createState(persistedUserState))
+    : UserStateMachine.initialState;
+};
+
 export const getLocalStorage = async (): Promise<State> => {
   const items = await browser.storage.local.get(null);
   return _.defaults(items, {
@@ -67,7 +92,6 @@ export const buildStateChangeHandler = (
 };
 
 export const subscribeToChanges = (stateChangeHandler: StateChangeHandler) => {
-  // TODO Provide a way to unsubscribe
   const listener = buildStateChangeHandler(stateChangeHandler);
   browser.storage.onChanged.addListener(listener);
   return listener;
@@ -108,14 +132,16 @@ const updateActivePath = async (path: string[]) => {
  * @param selection Selection string
  * @returns Phase that was handled, can be used for selective coloring
  */
-export const handleSelection = async (selection: string): Promise<Phase> => {
-  const active: Active = await getActiveState();
-  if (active.phase === Phase.ADD_PATH) {
+export const handleSelection = async (
+  selection: string
+): Promise<UserState<any, any>> => {
+  const userState = await getUserState();
+  if (userState.value === "addPath") {
     await addNewPath(selection);
-    return Phase.ADD_PATH;
-  } else if (active.phase === Phase.ADD_OPERATION) {
+    return await transitionUserState("NEXT");
+  } else if (userState.value === "addOperation") {
     await addNewOperation(selection);
-    return Phase.ADD_OPERATION;
+    return await transitionUserState("NEXT");
   }
 };
 
