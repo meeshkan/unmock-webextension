@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Explorer button renders correctly 1`] = `
+<div>
+  <Button
+    active={false}
+    disabled={false}
+    id="export"
+    onClick={[Function]}
+    type="button"
+    variant="primary"
+  >
+    Export
+  </Button>
+  <Button
+    active={false}
+    disabled={false}
+    id="initialize"
+    onClick={[Function]}
+    type="button"
+    variant="primary"
+  >
+    Clear all
+  </Button>
+</div>
+`;
