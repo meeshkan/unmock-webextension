@@ -27,4 +27,4 @@ jobs:
           command: yarn lint
       - run:
           name: "Run tests"
-          command: yarn test --ci
+          command: yarn test --ci --runInBand
