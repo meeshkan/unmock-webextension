@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.css";
 import * as React from "react";
 import { State } from "../state";
 import { store } from "../browser";
@@ -10,11 +9,7 @@ import {
   applyLoggingMiddleware,
   applyStoreActionsMiddleware,
 } from "./actions";
-
-export type ExplorerState = {
-  data: State;
-  isLoading: boolean;
-};
+import Explorer, { ExplorerState } from "./explorer";
 
 const useData = (): { state: ExplorerState; actions: Actions } => {
   const initialState: ExplorerState = {
@@ -59,32 +54,9 @@ const useData = (): { state: ExplorerState; actions: Actions } => {
   return { state, actions };
 };
 
-type ExplorerDataContextType = {
-  data: State;
-};
-
-type ExplorerActionsContextType = {
-  actions: Actions;
-};
-
-export const ExplorerDataContext = React.createContext(
-  null as ExplorerDataContextType
-);
-
-export const ExplorerActionsContext = React.createContext(
-  null as ExplorerActionsContextType
-);
-
-export const ExplorerContextProvider = ({ children }) => {
+export const ExplorerContextProvider = () => {
   const { state, actions } = useData();
-
-  return (
-    <ExplorerActionsContext.Provider value={{ actions }}>
-      <ExplorerDataContext.Provider value={{ data: state.data }}>
-        {children}
-      </ExplorerDataContext.Provider>
-    </ExplorerActionsContext.Provider>
-  );
+  return <Explorer state={state} actions={actions} />;
 };
 
 export default hot(module)(ExplorerContextProvider);

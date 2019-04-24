@@ -1,4 +1,4 @@
-import { ExplorerState } from "./context";
+import { ExplorerState } from "./explorer";
 
 export type ReducerActionType = {
   type: string;

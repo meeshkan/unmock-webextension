@@ -2,8 +2,14 @@ import * as React from "react";
 import ExplorerButtonsComponent from "./explorer-buttons-component";
 import { shallow } from "enzyme";
 import { Labeled } from "../state";
+import { Actions } from "./actions";
 
-jest.mock("./context");
+const mockActions: Actions = {
+  triggerFetchSuccess: jest.fn(),
+  triggerSetActiveUrl: jest.fn(),
+  triggerInitializeStore: jest.fn(),
+  triggerDownload: jest.fn(),
+};
 
 const mockLabeled: Labeled = {
   "https://docs.readthedocs.io/en/stable/api/v2.html": {
@@ -26,7 +32,9 @@ const mockLabeled: Labeled = {
 
 describe("Explorer button", () => {
   test("renders correctly", () => {
-    const wrapper = shallow(<ExplorerButtonsComponent labeled={mockLabeled} />);
+    const wrapper = shallow(
+      <ExplorerButtonsComponent labeled={mockLabeled} actions={mockActions} />
+    );
     expect(wrapper.find("Button")).toHaveLength(2);
     expect(wrapper).toMatchSnapshot();
   });
