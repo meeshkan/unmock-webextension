@@ -18,7 +18,12 @@ const STORAGE_LABELED_KEY = "labeled";
 export const setActiveUrl = async (url: string) => {
   const active: Active = await getActiveState();
   console.log(`Active: ${JSON.stringify(active)}`);
-  const newActive = { ...active, url };
+  const newActive: Active = {
+    ...active,
+    url,
+    activePath: [],
+    phase: Phase.ADD_PATH,
+  };
   console.log(
     `Setting new active for url: ${url}: ${JSON.stringify(newActive)}`
   );

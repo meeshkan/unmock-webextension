@@ -3,15 +3,15 @@ import "bootstrap/dist/css/bootstrap.css";
 import * as React from "react";
 import { Button } from "react-bootstrap";
 import { Labeled } from "../state";
-import { ExplorerActionsContext } from "./context";
+import { Actions } from "./actions";
 
 interface Props {
   labeled: Labeled;
+  actions: Actions;
 }
 
 const ExplorerButtonsComponent = (props: Props) => {
-  const { labeled } = props;
-  const { actions } = React.useContext(ExplorerActionsContext);
+  const { actions, labeled } = props;
 
   async function exportLabeled() {
     actions.triggerDownload(labeled);

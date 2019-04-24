@@ -3,16 +3,16 @@ import * as React from "react";
 import { hot } from "react-hot-loader";
 import { Alert } from "react-bootstrap";
 import { Active, Labeled, Paths, Path } from "../../state";
-import { ExplorerActionsContext } from "../context";
+import { Actions } from "../actions";
 
 interface Props {
   active: Active;
   labeled: Labeled;
+  actions: Actions;
 }
 
 function LabeledUrlsComponent(props: Props) {
-  const { active, labeled } = props;
-  const { actions } = React.useContext(ExplorerActionsContext);
+  const { actions, active, labeled } = props;
 
   function handleClick(url = "https://www.unmock.io") {
     actions.triggerSetActiveUrl(url);

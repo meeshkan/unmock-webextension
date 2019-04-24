@@ -1,6 +1,5 @@
 import { browser } from "webextension-polyfill-ts";
-import Explorer from "./explorer";
-import ExplorerContextProvider from "./context";
+import WrappedExplorer from "./wrapped-explorer";
 import * as React from "react";
 import { render } from "react-dom";
 
@@ -18,9 +17,4 @@ browser.storage.onChanged.addListener(async (changes, namespace) => {
   });
 });
 
-render(
-  <ExplorerContextProvider>
-    <Explorer />
-  </ExplorerContextProvider>,
-  window.document.getElementById("app")
-);
+render(<WrappedExplorer />, window.document.getElementById("app"));
