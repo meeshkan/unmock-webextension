@@ -23,8 +23,8 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run:
-          name: lint
+          name: "Run linter"
           command: yarn lint
       - run:
-          name: test
+          name: "Run tests"
           command: yarn test
