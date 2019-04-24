@@ -12,12 +12,7 @@ interface Props {
 const ExplorerButtonsComponent = (props: Props) => {
   const { labeled } = props;
   const { actions } = React.useContext(ExplorerActionsContext);
-  /*
-  const actions = {
-    triggerDownload(labeled) {},
-    triggerInitializeStore() {},
-  };
-  */
+
   async function exportLabeled() {
     actions.triggerDownload(labeled);
   }
