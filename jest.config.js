@@ -5,6 +5,7 @@ module.exports = {
   },
   // Setup Enzyme
   snapshotSerializers: ["enzyme-to-json/serializer"],
+  setupFiles: ["jest-webextension-mock"],
   setupFilesAfterEnv: ["<rootDir>/src/setupEnzyme.ts"],
   moduleNameMapper: {
     "\\.(css|less)$": "identity-obj-proxy",

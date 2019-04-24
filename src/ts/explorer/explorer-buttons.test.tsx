@@ -26,10 +26,7 @@ const mockLabeled: Labeled = {
 
 describe("Explorer button", () => {
   test("renders correctly", () => {
-    const actions = jest.fn();
-    const tree = shallow(<ExplorerButtonsComponent labeled={mockLabeled} />, {
-      context: { actions },
-    });
+    const tree = shallow(<ExplorerButtonsComponent labeled={mockLabeled} />);
     expect(tree).toMatchSnapshot();
   });
 });
