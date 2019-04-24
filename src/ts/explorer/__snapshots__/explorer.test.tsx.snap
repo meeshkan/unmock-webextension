@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Explorer renders correctly 1`] = `
+<div>
+  <h1>
+    Welcome to Unmock API labeling explorer!
+  </h1>
+  <div>
+    <ActiveStateComponent
+      active={
+        Object {
+          "activePath": Array [],
+          "phase": "Add path",
+        }
+      }
+    />
+    <LabeledUrlsComponent
+      actions={
+        Object {
+          "triggerDownload": [MockFunction],
+          "triggerFetchSuccess": [MockFunction],
+          "triggerInitializeStore": [MockFunction],
+          "triggerSetActiveUrl": [MockFunction],
+        }
+      }
+      active={
+        Object {
+          "activePath": Array [],
+          "phase": "Add path",
+        }
+      }
+      labeled={
+        Object {
+          "https://docs.readthedocs.io/en/stable/api/v1.html": Object {
+            "/api/v1/project/": Object {
+              "GET": Object {},
+              "PUT": Object {},
+            },
+            "/api/v1/user/": Object {},
+          },
+          "https://docs.readthedocs.io/en/stable/api/v2.html": Object {
+            "/api/v2/project/": Object {
+              "GET": Object {},
+              "PUT": Object {},
+            },
+            "/api/v2/user/": Object {
+              "POST": Object {},
+            },
+          },
+        }
+      }
+    />
+    <ExplorerButtonsComponent
+      actions={
+        Object {
+          "triggerDownload": [MockFunction],
+          "triggerFetchSuccess": [MockFunction],
+          "triggerInitializeStore": [MockFunction],
+          "triggerSetActiveUrl": [MockFunction],
+        }
+      }
+      labeled={
+        Object {
+          "https://docs.readthedocs.io/en/stable/api/v1.html": Object {
+            "/api/v1/project/": Object {
+              "GET": Object {},
+              "PUT": Object {},
+            },
+            "/api/v1/user/": Object {},
+          },
+          "https://docs.readthedocs.io/en/stable/api/v2.html": Object {
+            "/api/v2/project/": Object {
+              "GET": Object {},
+              "PUT": Object {},
+            },
+            "/api/v2/user/": Object {
+              "POST": Object {},
+            },
+          },
+        }
+      }
+    />
+  </div>
+</div>
+`;

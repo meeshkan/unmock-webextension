@@ -1,32 +1,13 @@
 import * as React from "react";
 import ExplorerButtonsComponent from "./explorer-buttons-component";
 import { shallow } from "enzyme";
-import { Labeled } from "../state";
+import { mockLabeled } from "./__mocks__";
 
 const mockActions = {
   triggerFetchSuccess: jest.fn(),
   triggerSetActiveUrl: jest.fn(),
   triggerInitializeStore: jest.fn(),
   triggerDownload: jest.fn(),
-};
-
-const mockLabeled: Labeled = {
-  "https://docs.readthedocs.io/en/stable/api/v2.html": {
-    "/api/v2/project/": {
-      GET: {},
-      PUT: {},
-    },
-    "/api/v2/user/": {
-      POST: {},
-    },
-  },
-  "https://docs.readthedocs.io/en/stable/api/v1.html": {
-    "/api/v1/project/": {
-      GET: {},
-      PUT: {},
-    },
-    "/api/v1/user/": {},
-  },
 };
 
 const props = {
