@@ -29,6 +29,10 @@ jobs:
           name: "Run tests"
           command: yarn test --ci --runInBand
 
+      - run:
+          name: "Build"
+          command: yarn build
+
       - store_test_results:
           path: reports
 
