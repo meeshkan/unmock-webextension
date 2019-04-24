@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: circleci/node:10.15.1
 
-    working_directory: ~/repo
+    working_directory: ~/unmock-chrome-extension
 
     steps:
       - checkout
@@ -14,11 +14,17 @@ jobs:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
 
-      - run: yarn install
+      - run:
+          name: install-deps
+          command: yarn install
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: yarn lint
-      - run: yarn test
+      - run:
+          name: lint
+          command: yarn lint
+      - run:
+          name: test
+          command: yarn test
