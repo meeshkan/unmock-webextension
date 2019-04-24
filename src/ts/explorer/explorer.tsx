@@ -1,8 +1,8 @@
 import "bootstrap/dist/css/bootstrap.css";
 import * as React from "react";
 import { hot } from "react-hot-loader";
-import ActiveStateComponent from "./activeStateComponent";
-import LabeledComponent from "./labeled/labeledComponent";
+import ActiveStateComponent from "./active-state-component";
+import LabeledComponent from "./labeled/labeled-component";
 import ExplorerButtons from "./explorer-buttons-component";
 import { Actions } from "./actions";
 import { State } from "../state";

@@ -1,4 +1,4 @@
-import { Labeled, Phase } from "../../state";
+import { Active, Labeled, Phase } from "../../state";
 import { ExplorerState } from "../explorer";
 
 export const mockActions = {
@@ -27,12 +27,14 @@ export const mockLabeled: Labeled = {
   },
 };
 
+export const mockActive: Active = {
+  activePath: [],
+  phase: Phase.ADD_PATH,
+};
+
 export const mockExplorerState: ExplorerState = {
   data: {
-    active: {
-      activePath: [],
-      phase: Phase.ADD_PATH,
-    },
+    active: mockActive,
     labeled: mockLabeled,
   },
   isLoading: false,

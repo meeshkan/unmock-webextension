@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Labeled renders correctly 1`] = `
+<div>
+  <div
+    id="labeled"
+  >
+    <h3>
+      Labeled URLs
+    </h3>
+    <ul>
+      <Alert
+        closeLabel="Close alert"
+        key="https://docs.readthedocs.io/en/stable/api/v2.html"
+        show={true}
+        transition={[Function]}
+        variant="info"
+      >
+        <div
+          onClick={[Function]}
+        >
+          https://docs.readthedocs.io/en/stable/api/v2.html
+        </div>
+        <ul>
+          <li
+            key="/api/v2/project/"
+          >
+            /api/v2/project/
+            <ul>
+              <li
+                key="GET"
+              >
+                GET
+              </li>
+              <li
+                key="PUT"
+              >
+                PUT
+              </li>
+            </ul>
+          </li>
+          <li
+            key="/api/v2/user/"
+          >
+            /api/v2/user/
+            <ul>
+              <li
+                key="POST"
+              >
+                POST
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </Alert>
+      <Alert
+        closeLabel="Close alert"
+        key="https://docs.readthedocs.io/en/stable/api/v1.html"
+        show={true}
+        transition={[Function]}
+        variant="info"
+      >
+        <div
+          onClick={[Function]}
+        >
+          https://docs.readthedocs.io/en/stable/api/v1.html
+        </div>
+        <ul>
+          <li
+            key="/api/v1/project/"
+          >
+            /api/v1/project/
+            <ul>
+              <li
+                key="GET"
+              >
+                GET
+              </li>
+              <li
+                key="PUT"
+              >
+                PUT
+              </li>
+            </ul>
+          </li>
+          <li
+            key="/api/v1/user/"
+          >
+            /api/v1/user/
+            <ul />
+          </li>
+        </ul>
+      </Alert>
+    </ul>
+  </div>
+</div>
+`;
