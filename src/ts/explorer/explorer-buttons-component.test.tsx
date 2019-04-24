@@ -26,7 +26,8 @@ const mockLabeled: Labeled = {
 
 describe("Explorer button", () => {
   test("renders correctly", () => {
-    const tree = shallow(<ExplorerButtonsComponent labeled={mockLabeled} />);
-    expect(tree).toMatchSnapshot();
+    const wrapper = shallow(<ExplorerButtonsComponent labeled={mockLabeled} />);
+    expect(wrapper.find("Button")).toHaveLength(2);
+    expect(wrapper).toMatchSnapshot();
   });
 });
