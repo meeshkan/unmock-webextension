@@ -15,7 +15,7 @@ jobs:
             - v1-dependencies-
 
       - run:
-          name: install-deps
+          name: "Install dependencies"
           command: yarn install
 
       - save_cache:
