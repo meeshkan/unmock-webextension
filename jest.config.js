@@ -10,4 +10,5 @@ module.exports = {
   moduleNameMapper: {
     "\\.(css|less)$": "identity-obj-proxy",
   },
+  reporters: ["default", "jest-junit"],
 };
