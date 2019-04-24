@@ -1,5 +1,7 @@
 # Chrome extension for labeling APIs
 
+[![CircleCI](https://circleci.com/gh/unmock/unmock-chrome-extension.svg?style=svg)](https://circleci.com/gh/unmock/unmock-chrome-extension)
+
 For labeling APIs.
 
 ## Development
