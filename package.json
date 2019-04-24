@@ -2,6 +2,7 @@
   "name": "unmock-chrome-extension-webpack",
   "version": "0.0.1",
   "description": "Unmock chrome extension with webpack",
+  "license": "MIT",
   "scripts": {
     "build": "node utils/build.js",
     "start": "NODE_ENV=development node utils/webserver.js",
