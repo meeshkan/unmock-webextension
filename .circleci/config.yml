@@ -28,3 +28,13 @@ jobs:
       - run:
           name: "Run tests"
           command: yarn test --ci --runInBand
+
+      - store_test_results:
+          path: reports
+
+      - store_artifacts:
+          path: ./reports/junit.xml
+
+      - store_artifacts: # upload test coverage as artifact
+          path: ./coverage/lcov.info
+          prefix: tests
