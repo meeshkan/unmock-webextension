@@ -1,4 +1,4 @@
-import { ExplorerState } from "./wrapped-explorer";
+import { ExplorerState } from "./explorer";
 
 export type ReducerActionType = {
   type: string;

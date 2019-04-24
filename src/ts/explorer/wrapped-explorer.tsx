@@ -9,12 +9,7 @@ import {
   applyLoggingMiddleware,
   applyStoreActionsMiddleware,
 } from "./actions";
-import Explorer from "./explorer";
-
-export type ExplorerState = {
-  data: State;
-  isLoading: boolean;
-};
+import Explorer, { ExplorerState } from "./explorer";
 
 const useData = (): { state: ExplorerState; actions: Actions } => {
   const initialState: ExplorerState = {

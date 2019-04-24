@@ -5,7 +5,12 @@ import ActiveStateComponent from "./activeStateComponent";
 import LabeledComponent from "./labeled/labeledComponent";
 import ExplorerButtons from "./explorer-buttons-component";
 import { Actions } from "./actions";
-import { ExplorerState } from "./wrapped-explorer";
+import { State } from "../state";
+
+export type ExplorerState = {
+  data: State;
+  isLoading: boolean;
+};
 
 interface Props {
   state: ExplorerState;
