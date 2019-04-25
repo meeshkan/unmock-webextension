@@ -38,3 +38,8 @@ export const getLocalStorage = async (): Promise<State> => {
 export const setLabeled = async (labeled: Labeled) => {
   await browser.storage.local.set({ [STORAGE_LABELED_KEY]: labeled });
 };
+
+export const initialize = async () => {
+  console.log("Initializing store");
+  await browser.storage.local.clear();
+};

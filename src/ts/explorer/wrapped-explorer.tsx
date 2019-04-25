@@ -1,6 +1,6 @@
 import * as React from "react";
 import { State } from "../state";
-import { store, storage } from "../browser";
+import { utils, storage } from "../browser";
 import { hot } from "react-hot-loader";
 import { explorerStateReducer } from "./reducer";
 import {
@@ -48,8 +48,8 @@ const useData = (): { state: ExplorerState; actions: Actions } => {
 
   // Subscribe to store changes
   React.useEffect(() => {
-    const listener = store.subscribeToChanges(handleDataChange);
-    return () => store.unsubscribeToChanges(listener);
+    const listener = utils.subscribeToChanges(handleDataChange);
+    return () => utils.unsubscribeToChanges(listener);
   });
 
   return { state, actions };

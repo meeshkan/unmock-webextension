@@ -1,4 +1,3 @@
-import { browser } from "webextension-polyfill-ts";
 import * as _ from "lodash";
 import { Labeled, State } from "../state";
 import UserStateMachine, { UserState } from "../common/machine";
@@ -38,27 +37,6 @@ export const transitionUserState = async (
   console.log(`New state: ${newState.value}`);
   await setUserState(newState);
   return newState;
-};
-
-type StateChangeHandler = (state: State) => void;
-
-export const buildStateChangeHandler = (
-  stateChangeHandler: (state: State) => void
-) => {
-  return async (changes, namespace) => {
-    const state = await getLocalStorage();
-    stateChangeHandler(state);
-  };
-};
-
-export const subscribeToChanges = (stateChangeHandler: StateChangeHandler) => {
-  const listener = buildStateChangeHandler(stateChangeHandler);
-  browser.storage.onChanged.addListener(listener);
-  return listener;
-};
-
-export const unsubscribeToChanges = (listener: any) => {
-  browser.storage.onChanged.removeListener(listener);
 };
 
 /**
@@ -121,9 +99,4 @@ export const addNewPath = async (
   // Update active path
   await transitionUserState({ type: "NEXT", path: newActivePath });
   return newActivePath;
-};
-
-export const initialize = async () => {
-  console.log("Initializing store");
-  await browser.storage.local.clear();
 };

@@ -1,4 +1,6 @@
 import { browser, Tabs } from "webextension-polyfill-ts";
+import { getLocalStorage } from "./storage";
+import { State } from "../state";
 
 export const getActiveTab = async (): Promise<Tabs.Tab> => {
   const tabs = await browser.tabs.query({
@@ -20,4 +22,25 @@ export const openExplorer = async () => {
     url: browser.runtime.getURL("explorer.html"),
     type: "popup",
   });
+};
+
+type StateChangeHandler = (state: State) => void;
+
+export const buildStateChangeHandler = (
+  stateChangeHandler: (state: State) => void
+) => {
+  return async (changes, namespace) => {
+    const state = await getLocalStorage();
+    stateChangeHandler(state);
+  };
+};
+
+export const subscribeToChanges = (stateChangeHandler: StateChangeHandler) => {
+  const listener = buildStateChangeHandler(stateChangeHandler);
+  browser.storage.onChanged.addListener(listener);
+  return listener;
+};
+
+export const unsubscribeToChanges = (listener: any) => {
+  browser.storage.onChanged.removeListener(listener);
 };
