@@ -4,7 +4,7 @@ import { hot } from "react-hot-loader";
 import { Alert } from "react-bootstrap";
 import { Labeled, Paths, Path } from "../../state";
 import { Actions } from "../actions";
-import { AnyUserState } from "../../browser/machine";
+import { UserState } from "../../browser/machine";
 
 interface Props {
   userState: any;

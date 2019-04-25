@@ -1,7 +1,7 @@
 import { browser } from "webextension-polyfill-ts";
 import * as _ from "lodash";
 import { Labeled, State } from "../state";
-import UserStateMachine, { AnyUserState } from "./machine";
+import UserStateMachine, { UserState } from "./machine";
 import {
   getLabeled,
   setUserState,
@@ -32,7 +32,7 @@ export const checkIsActiveUrl = async (url: string): Promise<boolean> => {
 
 export const transitionUserState = async (
   transition: any
-): Promise<AnyUserState> => {
+): Promise<UserState> => {
   const userState = await getUserState();
   const newState = UserStateMachine.transition(userState, transition);
   console.log(`New state: ${newState.value}`);
@@ -78,7 +78,7 @@ export const handleSelection = async (selection: string): Promise<any> => {
 };
 
 export const addNewOperation = async (
-  userState: AnyUserState,
+  userState: UserState,
   selection: string
 ) => {
   console.log(`Adding operation: ${selection}`);
@@ -100,7 +100,7 @@ export const addNewOperation = async (
 };
 
 export const addNewPath = async (
-  userState: AnyUserState,
+  userState: UserState,
   selection: string
 ): Promise<string[]> => {
   const labeled = await getLabeled();

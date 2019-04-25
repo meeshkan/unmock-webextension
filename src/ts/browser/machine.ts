@@ -114,8 +114,6 @@ export const stringifyState = (state: any) => JSON.stringify(state);
 
 export type UserState = State<UserStateContext, UserStateEvent>;
 
-export type AnyUserState = State<any, any>;
-
 export { State };
 
 export default userStateMachine;

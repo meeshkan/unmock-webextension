@@ -1,10 +1,6 @@
 import { Labeled, State, defaultLabeled } from "../state";
 import { browser } from "webextension-polyfill-ts";
-import UserStateMachine, {
-  createState,
-  State as UserState,
-  AnyUserState,
-} from "./machine";
+import UserStateMachine, { createState, UserState } from "./machine";
 import * as _ from "lodash";
 
 /**
@@ -18,11 +14,11 @@ export const getLabeled = async (): Promise<Labeled> => {
   return labeledResult[STORAGE_LABELED_KEY] || {};
 };
 
-export const setUserState = async (userState: UserState<any, any>) => {
+export const setUserState = async (userState: UserState) => {
   await browser.storage.local.set({ [STORAGE_USERSTATE_KEY]: userState });
 };
 
-export const getUserState = async (): Promise<AnyUserState> => {
+export const getUserState = async (): Promise<UserState> => {
   const result = await browser.storage.local.get([STORAGE_USERSTATE_KEY]);
   const persistedUserState = result[STORAGE_USERSTATE_KEY];
 
