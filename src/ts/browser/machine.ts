@@ -1,12 +1,43 @@
-import { Machine, State, assign } from "xstate";
+import {
+  Machine,
+  State,
+  assign,
+  MachineConfig,
+  MachineOptions,
+  AssignAction,
+} from "xstate";
 
-const userState = {
+export interface UserStateContext {
+  url?: string;
+  path: string[];
+}
+
+// The events that the machine handles
+export type UserStateEvent =
+  | { type: "NEXT"; url?: string; path: string[] }
+  | { type: "ACTIVATE_URL"; url?: string; path: string[] };
+
+export interface UserStateSchema {
+  states: {
+    needsToActivateUrl: {};
+    addingPath: {};
+    addingOperation: {};
+  };
+}
+
+const initialContext: UserStateContext = {
+  url: undefined,
+  path: [],
+};
+
+const userState: MachineConfig<
+  UserStateContext,
+  UserStateSchema,
+  UserStateEvent
+> = {
   id: "labeling",
-  initial: "needsToActivateUrl",
-  context: {
-    url: undefined,
-    path: [],
-  },
+  initial: "needsToActivateUrl" as "needsToActivateUrl",
+  context: initialContext,
   states: {
     needsToActivateUrl: {
       on: {
@@ -35,26 +66,32 @@ const userState = {
   },
 };
 
-const updatePath = assign({
-  path: (context, event) => event.path || context.path,
+const updatePath: AssignAction<UserStateContext, UserStateEvent> = assign({
+  path: (context: UserStateContext, event: UserStateEvent) =>
+    event.path || context.path,
 });
 
-const updateUrl = assign({
-  url: (context, event) => event.url || context.url,
+const updateUrl: AssignAction<UserStateContext, UserStateEvent> = assign({
+  url: (context: UserStateContext, event: UserStateEvent) =>
+    event.url || context.url,
+  path: (context: UserStateContext, event: UserStateEvent) => context.path,
 });
 
-const initializeUrl = assign({
-  url: (context, event) => userState.context.url,
+const initializeUrl: AssignAction<UserStateContext, UserStateEvent> = assign({
+  url: (context: UserStateContext, event: UserStateEvent) => initialContext.url,
+  path: (context: UserStateContext, event: UserStateEvent) => context.path,
 });
 
-const initializePath = assign({
-  url: (context, event) => userState.context.path,
+const initializePath: AssignAction<UserStateContext, UserStateEvent> = assign({
+  url: (context: UserStateContext, event: UserStateEvent) => context.url,
+  path: (context: UserStateContext, event: UserStateEvent) =>
+    initialContext.path,
 });
 
-const config = {
+const config: Partial<MachineOptions<UserStateContext, UserStateEvent>> = {
   actions: {
     // action implementation
-    log: (context, event) => {
+    log: (context: UserStateContext, event: UserStateEvent) => {
       console.log(`Entered: `, context, event);
     },
     initializeUrl,
@@ -64,13 +101,21 @@ const config = {
   },
 };
 
-const userStateMachine = Machine(userState, config);
+const userStateMachine = Machine<
+  UserStateContext,
+  UserStateSchema,
+  UserStateEvent
+>(userState, config);
 
-export const createState = (state: any) => State.create(state);
+export const createState = (
+  state: any
+): State<UserStateContext, UserStateEvent> => State.create(state);
 export const stringifyState = (state: any) => JSON.stringify(state);
 
-export default userStateMachine;
+export type UserState = State<UserStateContext, UserStateEvent>;
 
 export type AnyUserState = State<any, any>;
 
 export { State };
+
+export default userStateMachine;
