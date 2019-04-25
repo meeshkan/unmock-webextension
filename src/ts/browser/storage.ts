@@ -1,6 +1,6 @@
 import { Labeled, State, defaultLabeled } from "../state";
 import { browser } from "webextension-polyfill-ts";
-import UserStateMachine, { createState, UserState } from "./machine";
+import UserStateMachine, { createState, UserState } from "../common/machine";
 import * as _ from "lodash";
 
 /**

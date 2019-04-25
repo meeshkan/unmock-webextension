@@ -4,7 +4,7 @@ import { hot } from "react-hot-loader";
 import { Alert } from "react-bootstrap";
 import { Labeled, Paths, Path } from "../../state";
 import { Actions } from "../actions";
-import { UserStateConfig } from "../../browser/machine";
+import { UserStateConfig } from "../../common/machine";
 
 interface Props {
   userState: UserStateConfig;

@@ -1,6 +1,6 @@
 import { Labeled } from "../../state";
 import { ExplorerState } from "../explorer";
-import { UserStateConfig } from "../../browser/machine";
+import { UserStateConfig } from "../../common/machine";
 
 export const mockUserState: UserStateConfig = {
   actions: [{ type: "log" }],

@@ -1,4 +1,4 @@
-import { UserStateConfig } from "../browser/machine";
+import { UserStateConfig } from "../common/machine";
 
 export interface State {
   /**
