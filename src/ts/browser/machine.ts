@@ -18,7 +18,10 @@ const userState = {
     addingPath: {
       on: {
         NEXT: "addingOperation",
-        ACTIVATE_URL: "addingPath",
+        ACTIVATE_URL: {
+          target: "addingPath",
+          internal: false,
+        },
       },
       onEntry: ["log", "updateUrl", "updatePath"],
     },

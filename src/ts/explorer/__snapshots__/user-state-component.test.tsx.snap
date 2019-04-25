@@ -14,6 +14,33 @@ exports[`User state component renders correctly 1`] = `
       transition={[Function]}
       variant="info"
     >
+      Value: 
+      addingOperation
+    </Alert>
+    <Alert
+      closeLabel="Close alert"
+      show={true}
+      transition={[Function]}
+      variant="info"
+    >
+      Context url: 
+      https://docs.readthedocs.io/en/stable/api/v2.html
+    </Alert>
+    <Alert
+      closeLabel="Close alert"
+      show={true}
+      transition={[Function]}
+      variant="info"
+    >
+      Context path: 
+      ["https://docs.readthedocs.io/en/stable/api/v2.html","Retrieve a list"]
+    </Alert>
+    <Alert
+      closeLabel="Close alert"
+      show={true}
+      transition={[Function]}
+      variant="info"
+    >
       Active user state: 
       {
   "actions": [

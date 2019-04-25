@@ -18,6 +18,11 @@ class UserStateComponent extends React.Component<Props> {
       <div>
         <div id="active">
           <h3>User state</h3>
+          <Alert variant="info">Value: {userState.value}</Alert>
+          <Alert variant="info">Context url: {userState.context.url}</Alert>
+          <Alert variant="info">
+            Context path: {JSON.stringify(userState.context.path)}
+          </Alert>
           <Alert variant="info">
             Active user state: {JSON.stringify(userState, null, 2)}
           </Alert>

@@ -12,7 +12,7 @@ import {
 
 export const setActiveUrl = async (url: string) => {
   // Transition state
-  await transitionUserState({ type: "ACTIVATE_URL", url });
+  await transitionUserState({ type: "ACTIVATE_URL", url, path: [url] });
 
   // Add place holder
   const labeled: Labeled = await getLabeled();
