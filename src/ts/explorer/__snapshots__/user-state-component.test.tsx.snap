@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`User state component renders correctly 1`] = `
+<div>
+  <div
+    id="active"
+  >
+    <h3>
+      User state
+    </h3>
+    <Alert
+      closeLabel="Close alert"
+      show={true}
+      transition={[Function]}
+      variant="info"
+    >
+      Active user state: 
+      {
+  "actions": [
+    {
+      "type": "log"
+    }
+  ],
+  "activities": {},
+  "changed": true,
+  "context": {
+    "path": []
+  },
+  "event": {
+    "type": "NEXT"
+  },
+  "events": [],
+  "history": {
+    "actions": [
+      {
+        "type": "log"
+      }
+    ],
+    "activities": {},
+    "context": {
+      "path": []
+    },
+    "event": {
+      "type": "NEXT"
+    },
+    "events": [],
+    "historyValue": {
+      "current": "addOperation",
+      "states": {}
+    },
+    "meta": {},
+    "value": "addOperation"
+  },
+  "historyValue": {
+    "current": "addPath",
+    "states": {}
+  },
+  "meta": {},
+  "value": "addPath"
+}
+    </Alert>
+  </div>
+</div>
+`;
