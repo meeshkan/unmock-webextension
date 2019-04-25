@@ -3,6 +3,10 @@ import { Machine, State } from "xstate";
 const userState = {
   id: "labeling",
   initial: "addPath",
+  context: {
+    url: undefined,
+    path: [],
+  },
   states: {
     addPath: {
       on: {
@@ -23,7 +27,7 @@ const config = {
   actions: {
     // action implementation
     log: (context, event) => {
-      console.log(context, event);
+      console.log(`Entered: `, context, event);
     },
   },
 };
@@ -34,5 +38,7 @@ export const createState = (state: any) => State.create(state);
 export const stringifyState = (state: any) => JSON.stringify(state);
 
 export default userStateMachine;
+
+export type AnyUserState = State<any, any>;
 
 export { State };

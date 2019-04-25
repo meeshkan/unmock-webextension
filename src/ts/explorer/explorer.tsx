@@ -4,6 +4,7 @@ import { hot } from "react-hot-loader";
 import ActiveStateComponent from "./active-state-component";
 import LabeledComponent from "./labeled/labeled-component";
 import ExplorerButtons from "./explorer-buttons-component";
+import UserStateComponent from "./user-state-component";
 import { Actions } from "./actions";
 import { State } from "../state";
 
@@ -27,6 +28,7 @@ export const ExplorerComponent = (props: Props) => {
       ) : (
         <div>
           <ActiveStateComponent active={state.data.active} />
+          <UserStateComponent userState={state.data.userState} />
           <LabeledComponent
             actions={actions}
             active={state.data.active}

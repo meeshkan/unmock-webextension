@@ -1,21 +1,20 @@
 import { browser } from "webextension-polyfill-ts";
 import * as _ from "lodash";
+import { Active, Labeled, Phase, State } from "../state";
+import UserStateMachine, {
+  createState,
+  State as UserState,
+  AnyUserState,
+} from "./machine";
 import {
-  Active,
-  Labeled,
-  Phase,
-  State,
-  defaultActive,
-  defaultLabeled,
-} from "../state";
-import UserStateMachine, { createState, State as UserState } from "./machine";
-
-/**
- * These must match with the keys of `State` interface
- */
-const STORAGE_ACTIVE_KEY = "active";
-const STORAGE_LABELED_KEY = "labeled";
-const STORAGE_USERSTATE_KEY = "userState";
+  getLabeled,
+  setUserState,
+  getUserState,
+  getActiveState,
+  setLabeled,
+  setActive,
+  getLocalStorage,
+} from "./storage";
 
 export const setActiveUrl = async (url: string) => {
   const active: Active = await getActiveState();
@@ -44,40 +43,14 @@ export const checkIsActiveUrl = async (url: string): Promise<boolean> => {
   return url === activeUrl;
 };
 
-export const getLabeled = async (): Promise<Labeled> => {
-  const labeledResult = await browser.storage.local.get([STORAGE_LABELED_KEY]);
-  return labeledResult[STORAGE_LABELED_KEY] || {};
-};
-
-export const setUserState = async (userState: UserState<any, any>) => {
-  await browser.storage.local.set({ [STORAGE_USERSTATE_KEY]: userState });
-};
-
 export const transitionUserState = async (
   transition: string
-): Promise<UserState<any, any>> => {
+): Promise<AnyUserState> => {
   const userState = await getUserState();
   const newState = UserStateMachine.transition(userState, transition);
   console.log(`New state: ${newState.value}`);
   await setUserState(newState);
   return newState;
-};
-
-export const getUserState = async (): Promise<UserState<any, any>> => {
-  const result = await browser.storage.local.get([STORAGE_USERSTATE_KEY]);
-  const persistedUserState = result[STORAGE_USERSTATE_KEY];
-
-  return persistedUserState
-    ? UserStateMachine.resolveState(createState(persistedUserState))
-    : UserStateMachine.initialState;
-};
-
-export const getLocalStorage = async (): Promise<State> => {
-  const items = await browser.storage.local.get(null);
-  return _.defaults(items, {
-    active: defaultActive,
-    labeled: defaultLabeled,
-  });
 };
 
 type StateChangeHandler = (state: State) => void;
@@ -99,14 +72,6 @@ export const subscribeToChanges = (stateChangeHandler: StateChangeHandler) => {
 
 export const unsubscribeToChanges = (listener: any) => {
   browser.storage.onChanged.removeListener(listener);
-};
-
-const setLabeled = async (labeled: Labeled) => {
-  await browser.storage.local.set({ [STORAGE_LABELED_KEY]: labeled });
-};
-
-const setActive = async (active: Active) => {
-  await browser.storage.local.set({ [STORAGE_ACTIVE_KEY]: active });
 };
 
 const updateActivePath = async (path: string[]) => {
@@ -179,14 +144,6 @@ export const addNewPath = async (selection: string) => {
   const newActivePath = insertionPath.concat(selection);
   // Update active path
   await updateActivePath(newActivePath);
-};
-
-const getActiveState = async (): Promise<Active> => {
-  const state = (await browser.storage.local.get(STORAGE_ACTIVE_KEY)) || {};
-  console.log(`Got active state from storage: ${JSON.stringify(state)}`);
-  const newActive = _.defaults(state.active || {}, defaultActive);
-  console.log(`Parsed active: ${JSON.stringify(newActive)}`);
-  return newActive;
 };
 
 export const initialize = async () => {
