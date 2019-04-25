@@ -6,7 +6,6 @@ import {
   MachineOptions,
   AssignAction,
   StateConfig,
-  StateMachine,
 } from "xstate";
 import * as storage from "../browser/storage";
 
@@ -122,10 +121,6 @@ export { State };
 
 export default userStateMachine;
 
-interface WrappedMachine {
-  resolve(userStateConfig: UserStateConfig): UserState;
-}
-
 export interface StatePersister<S> {
   load(): Promise<S>;
   save(t: S): Promise<void>;
@@ -143,14 +138,14 @@ const browserStoragePersister: StatePersister<UserStateConfig> = {
 export const buildPersistedMachine = (
   persister: StatePersister<UserStateConfig> = browserStoragePersister
 ) => {
-  const resolve = async () => {
+  const getState = async () => {
     const userStateConfig = await persister.load();
     return userStateMachine.resolveState(State.create(userStateConfig));
   };
 
   const transition = async (ev: UserStateEvent, state?: UserState) => {
     if (!state) {
-      state = await resolve();
+      state = await getState();
     }
     const newState = userStateMachine.transition(state, ev);
     await persister.save(newState);
@@ -158,7 +153,7 @@ export const buildPersistedMachine = (
   };
 
   return {
-    resolve,
+    getState,
     transition,
   };
 };

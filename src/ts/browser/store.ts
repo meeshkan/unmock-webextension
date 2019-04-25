@@ -22,7 +22,7 @@ export const setActiveUrl = async (url: string) => {
 };
 
 export const checkIsActiveUrl = async (url: string): Promise<boolean> => {
-  const activeUrl = (await persistedUserStateMachine.resolve()).context.url;
+  const activeUrl = (await persistedUserStateMachine.getState()).context.url;
   console.log(`Active url: ${JSON.stringify(activeUrl)}, comparing to: ${url}`);
   return url === activeUrl;
 };
@@ -33,7 +33,7 @@ export const checkIsActiveUrl = async (url: string): Promise<boolean> => {
  * @returns Phase that was handled, can be used for selective coloring
  */
 export const handleSelection = async (selection: string): Promise<any> => {
-  const userState = await persistedUserStateMachine.resolve();
+  const userState = await persistedUserStateMachine.getState();
   if (userState.value === "addingPath") {
     await addNewPath(userState, selection);
   } else if (userState.value === "addingOperation") {
