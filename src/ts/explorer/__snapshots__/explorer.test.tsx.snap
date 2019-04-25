@@ -6,15 +6,67 @@ exports[`Explorer renders correctly 1`] = `
     Welcome to Unmock API labeling explorer!
   </h1>
   <div>
-    <ActiveStateComponent
-      active={
+    <UserStateComponent
+      userState={
         Object {
-          "activePath": Array [],
-          "phase": "Add path",
+          "actions": Array [
+            Object {
+              "type": "log",
+            },
+          ],
+          "activities": Object {},
+          "changed": true,
+          "context": Object {
+            "path": Array [
+              "https://docs.readthedocs.io/en/stable/api/v2.html",
+              "Retrieve a list",
+            ],
+            "url": "https://docs.readthedocs.io/en/stable/api/v2.html",
+          },
+          "event": Object {
+            "path": Array [
+              "https://docs.readthedocs.io/en/stable/api/v2.html",
+              "Retrieve a list",
+            ],
+            "type": "NEXT",
+          },
+          "events": Array [],
+          "history": Object {
+            "actions": Array [
+              Object {
+                "type": "log",
+              },
+            ],
+            "activities": Object {},
+            "context": Object {
+              "path": Array [
+                "https://docs.readthedocs.io/en/stable/api/v2.html",
+              ],
+              "url": "https://docs.readthedocs.io/en/stable/api/v2.html",
+            },
+            "event": Object {
+              "path": Array [
+                "https://docs.readthedocs.io/en/stable/api/v2.html",
+              ],
+              "type": "NEXT",
+            },
+            "events": Array [],
+            "historyValue": Object {
+              "current": "addingPath",
+              "states": Object {},
+            },
+            "meta": Object {},
+            "value": "addingPath",
+          },
+          "historyValue": Object {
+            "current": "addingOperation",
+            "states": Object {},
+          },
+          "meta": Object {},
+          "value": "addingOperation",
         }
       }
     />
-    <UserStateComponent />
     <LabeledUrlsComponent
       actions={
         Object {
@@ -22,12 +74,6 @@ exports[`Explorer renders correctly 1`] = `
           "triggerFetchSuccess": [MockFunction],
           "triggerInitializeStore": [MockFunction],
           "triggerSetActiveUrl": [MockFunction],
-        }
-      }
-      active={
-        Object {
-          "activePath": Array [],
-          "phase": "Add path",
         }
       }
       labeled={
@@ -48,6 +94,65 @@ exports[`Explorer renders correctly 1`] = `
               "POST": Object {},
             },
           },
+        }
+      }
+      userState={
+        Object {
+          "actions": Array [
+            Object {
+              "type": "log",
+            },
+          ],
+          "activities": Object {},
+          "changed": true,
+          "context": Object {
+            "path": Array [
+              "https://docs.readthedocs.io/en/stable/api/v2.html",
+              "Retrieve a list",
+            ],
+            "url": "https://docs.readthedocs.io/en/stable/api/v2.html",
+          },
+          "event": Object {
+            "path": Array [
+              "https://docs.readthedocs.io/en/stable/api/v2.html",
+              "Retrieve a list",
+            ],
+            "type": "NEXT",
+          },
+          "events": Array [],
+          "history": Object {
+            "actions": Array [
+              Object {
+                "type": "log",
+              },
+            ],
+            "activities": Object {},
+            "context": Object {
+              "path": Array [
+                "https://docs.readthedocs.io/en/stable/api/v2.html",
+              ],
+              "url": "https://docs.readthedocs.io/en/stable/api/v2.html",
+            },
+            "event": Object {
+              "path": Array [
+                "https://docs.readthedocs.io/en/stable/api/v2.html",
+              ],
+              "type": "NEXT",
+            },
+            "events": Array [],
+            "historyValue": Object {
+              "current": "addingPath",
+              "states": Object {},
+            },
+            "meta": Object {},
+            "value": "addingPath",
+          },
+          "historyValue": Object {
+            "current": "addingOperation",
+            "states": Object {},
+          },
+          "meta": Object {},
+          "value": "addingOperation",
         }
       }
     />

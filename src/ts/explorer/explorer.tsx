@@ -1,7 +1,6 @@
 import "bootstrap/dist/css/bootstrap.css";
 import * as React from "react";
 import { hot } from "react-hot-loader";
-import ActiveStateComponent from "./active-state-component";
 import LabeledComponent from "./labeled/labeled-component";
 import ExplorerButtons from "./explorer-buttons-component";
 import UserStateComponent from "./user-state-component";
@@ -27,11 +26,10 @@ export const ExplorerComponent = (props: Props) => {
         <div>Loading...</div>
       ) : (
         <div>
-          <ActiveStateComponent active={state.data.active} />
           <UserStateComponent userState={state.data.userState} />
           <LabeledComponent
             actions={actions}
-            active={state.data.active}
+            userState={state.data.userState}
             labeled={state.data.labeled}
           />
           <ExplorerButtons actions={actions} labeled={state.data.labeled} />

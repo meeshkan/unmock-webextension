@@ -2,17 +2,18 @@ import "bootstrap/dist/css/bootstrap.css";
 import * as React from "react";
 import { hot } from "react-hot-loader";
 import { Alert } from "react-bootstrap";
-import { Active, Labeled, Paths, Path } from "../../state";
+import { Labeled, Paths, Path } from "../../state";
 import { Actions } from "../actions";
+import { AnyUserState } from "../../browser/machine";
 
 interface Props {
-  active: Active;
+  userState: any;
   labeled: Labeled;
   actions: Actions;
 }
 
 function LabeledUrlsComponent(props: Props) {
-  const { actions, active, labeled } = props;
+  const { actions, userState, labeled } = props;
 
   function handleClick(url = "https://www.unmock.io") {
     actions.triggerSetActiveUrl(url);
@@ -43,7 +44,7 @@ function LabeledUrlsComponent(props: Props) {
 
   function renderLabeled() {
     const buttonVariant = (labeledUrl: string) =>
-      labeledUrl === active.url ? "success" : "info";
+      labeledUrl === userState.context.url ? "success" : "info";
     return (
       <div id="labeled">
         <h3>Labeled URLs</h3>

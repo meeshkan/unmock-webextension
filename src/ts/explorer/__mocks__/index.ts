@@ -1,5 +1,45 @@
-import { Active, Labeled, Phase } from "../../state";
+import { Labeled } from "../../state";
 import { ExplorerState } from "../explorer";
+
+export const mockUserState = {
+  actions: [{ type: "log" }],
+  activities: {},
+  changed: true,
+  context: {
+    path: [
+      "https://docs.readthedocs.io/en/stable/api/v2.html",
+      "Retrieve a list",
+    ],
+    url: "https://docs.readthedocs.io/en/stable/api/v2.html",
+  },
+  event: {
+    path: [
+      "https://docs.readthedocs.io/en/stable/api/v2.html",
+      "Retrieve a list",
+    ],
+    type: "NEXT",
+  },
+  events: [],
+  history: {
+    actions: [{ type: "log" }],
+    activities: {},
+    context: {
+      path: ["https://docs.readthedocs.io/en/stable/api/v2.html"],
+      url: "https://docs.readthedocs.io/en/stable/api/v2.html",
+    },
+    event: {
+      path: ["https://docs.readthedocs.io/en/stable/api/v2.html"],
+      type: "NEXT",
+    },
+    events: [],
+    historyValue: { current: "addingPath", states: {} },
+    meta: {},
+    value: "addingPath",
+  },
+  historyValue: { current: "addingOperation", states: {} },
+  meta: {},
+  value: "addingOperation",
+};
 
 export const mockActions = {
   triggerFetchSuccess: jest.fn(),
@@ -27,14 +67,9 @@ export const mockLabeled: Labeled = {
   },
 };
 
-export const mockActive: Active = {
-  activePath: [],
-  phase: Phase.ADD_PATH,
-};
-
 export const mockExplorerState: ExplorerState = {
   data: {
-    active: mockActive,
+    userState: mockUserState,
     labeled: mockLabeled,
   },
   isLoading: false,

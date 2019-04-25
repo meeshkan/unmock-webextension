@@ -14,7 +14,7 @@ exports[`Labeled renders correctly 1`] = `
         key="https://docs.readthedocs.io/en/stable/api/v2.html"
         show={true}
         transition={[Function]}
-        variant="info"
+        variant="success"
       >
         <div
           onClick={[Function]}

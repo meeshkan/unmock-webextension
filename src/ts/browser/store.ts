@@ -1,18 +1,12 @@
 import { browser } from "webextension-polyfill-ts";
 import * as _ from "lodash";
-import { Active, Labeled, Phase, State } from "../state";
-import UserStateMachine, {
-  createState,
-  State as UserState,
-  AnyUserState,
-} from "./machine";
+import { Labeled, State } from "../state";
+import UserStateMachine, { AnyUserState } from "./machine";
 import {
   getLabeled,
   setUserState,
   getUserState,
-  getActiveState,
   setLabeled,
-  setActive,
   getLocalStorage,
 } from "./storage";
 
@@ -65,24 +59,6 @@ export const subscribeToChanges = (stateChangeHandler: StateChangeHandler) => {
 
 export const unsubscribeToChanges = (listener: any) => {
   browser.storage.onChanged.removeListener(listener);
-};
-
-const updateActivePath = async (path: string[]) => {
-  console.log(`Setting active path: ${JSON.stringify(path)}`);
-  const active: Active = await getActiveState();
-  active.activePath = path;
-
-  // Dumb heuristics, breaks easily
-  if (path.length === 1) {
-    console.log(`Setting phase to ${Phase.ADD_PATH}`);
-    active.phase = Phase.ADD_PATH;
-  } else if (path.length === 2) {
-    console.log(`Setting phase to ${Phase.ADD_OPERATION}`);
-    active.phase = Phase.ADD_OPERATION;
-  } else {
-    throw Error(`No idea what to do with active path of length ${path.length}`);
-  }
-  await setActive(active);
 };
 
 /**
