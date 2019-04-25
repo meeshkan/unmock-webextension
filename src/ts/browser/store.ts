@@ -1,11 +1,15 @@
 import * as _ from "lodash";
 import { Labeled } from "../state";
-import UserStateMachine, { UserState } from "../common/machine";
-import { getLabeled, setUserState, getUserState, setLabeled } from "./storage";
+import { UserState, persistedUserStateMachine } from "../common/machine";
+import { getLabeled, setLabeled } from "./storage";
 
 export const setActiveUrl = async (url: string) => {
   // Transition state
-  await transitionUserState({ type: "ACTIVATE_URL", url, path: [url] });
+  await persistedUserStateMachine.transition({
+    type: "ACTIVATE_URL",
+    url,
+    path: [url],
+  });
 
   // Add place holder
   const labeled: Labeled = await getLabeled();
@@ -18,19 +22,9 @@ export const setActiveUrl = async (url: string) => {
 };
 
 export const checkIsActiveUrl = async (url: string): Promise<boolean> => {
-  const activeUrl = (await getUserState()).context.url;
+  const activeUrl = (await persistedUserStateMachine.resolve()).context.url;
   console.log(`Active url: ${JSON.stringify(activeUrl)}, comparing to: ${url}`);
   return url === activeUrl;
-};
-
-export const transitionUserState = async (
-  transition: any
-): Promise<UserState> => {
-  const userState = await getUserState();
-  const newState = UserStateMachine.transition(userState, transition);
-  console.log(`New state: ${newState.value}`);
-  await setUserState(newState);
-  return newState;
 };
 
 /**
@@ -39,7 +33,7 @@ export const transitionUserState = async (
  * @returns Phase that was handled, can be used for selective coloring
  */
 export const handleSelection = async (selection: string): Promise<any> => {
-  const userState = await getUserState();
+  const userState = await persistedUserStateMachine.resolve();
   if (userState.value === "addingPath") {
     await addNewPath(userState, selection);
   } else if (userState.value === "addingOperation") {
@@ -64,10 +58,13 @@ export const addNewOperation = async (
   _.set(labeled, activePath, toAdd);
   console.log(`New labeled: ${JSON.stringify(labeled)}`);
   await setLabeled(labeled);
-  await transitionUserState({
-    type: "NEXT",
-    path: [userState.context.path[0]],
-  });
+  await persistedUserStateMachine.transition(
+    {
+      type: "NEXT",
+      path: [userState.context.path[0]],
+    },
+    userState
+  );
   // TODO Where to go from here
 };
 
@@ -91,6 +88,9 @@ export const addNewPath = async (
   await setLabeled(labeled);
   const newActivePath = insertionPath.concat(selection);
   // Update active path
-  await transitionUserState({ type: "NEXT", path: newActivePath });
+  await persistedUserStateMachine.transition(
+    { type: "NEXT", path: newActivePath },
+    userState
+  );
   return newActivePath;
 };
