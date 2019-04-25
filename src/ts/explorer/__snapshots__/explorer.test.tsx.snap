@@ -14,6 +14,7 @@ exports[`Explorer renders correctly 1`] = `
         }
       }
     />
+    <UserStateComponent />
     <LabeledUrlsComponent
       actions={
         Object {

@@ -43,6 +43,7 @@ export const getLocalStorage = async (): Promise<State> => {
   return _.defaults(items, {
     active: defaultActive,
     labeled: defaultLabeled,
+    userState: UserStateMachine.initialState,
   });
 };
 

@@ -33,6 +33,7 @@ export const setActiveUrl = async (url: string) => {
   const newLabeled = { [url]: {}, ...labeled };
   console.log("Setting new labeled", newLabeled);
   await setLabeled(newLabeled);
+  await transitionUserState({ type: "ACTIVATE_URL", url });
 };
 
 export const checkIsActiveUrl = async (url: string): Promise<boolean> => {
@@ -44,7 +45,7 @@ export const checkIsActiveUrl = async (url: string): Promise<boolean> => {
 };
 
 export const transitionUserState = async (
-  transition: string
+  transition: any
 ): Promise<AnyUserState> => {
   const userState = await getUserState();
   const newState = UserStateMachine.transition(userState, transition);
@@ -97,20 +98,21 @@ const updateActivePath = async (path: string[]) => {
  * @param selection Selection string
  * @returns Phase that was handled, can be used for selective coloring
  */
-export const handleSelection = async (
-  selection: string
-): Promise<UserState<any, any>> => {
+export const handleSelection = async (selection: string): Promise<any> => {
   const userState = await getUserState();
-  if (userState.value === "addPath") {
-    await addNewPath(selection);
-    return await transitionUserState("NEXT");
-  } else if (userState.value === "addOperation") {
-    await addNewOperation(selection);
-    return await transitionUserState("NEXT");
+  if (userState.value === "addingPath") {
+    await addNewPath(userState, selection);
+  } else if (userState.value === "addingOperation") {
+    await addNewOperation(userState, selection);
+  } else {
+    console.warn(`Unknown state, no idea what to do: ${userState.value}`);
   }
 };
 
-export const addNewOperation = async (selection: string) => {
+export const addNewOperation = async (
+  userState: AnyUserState,
+  selection: string
+) => {
   console.log(`Adding operation: ${selection}`);
   const labeled: Labeled = await getLabeled();
   const active: Active = await getActiveState();
@@ -123,10 +125,17 @@ export const addNewOperation = async (selection: string) => {
   _.set(labeled, activePath, toAdd);
   console.log(`New labeled: ${JSON.stringify(labeled)}`);
   await setLabeled(labeled);
+  await transitionUserState({
+    type: "NEXT",
+    path: [userState.context.path[0]],
+  });
   // TODO Where to go from here
 };
 
-export const addNewPath = async (selection: string) => {
+export const addNewPath = async (
+  userState: AnyUserState,
+  selection: string
+): Promise<string[]> => {
   const labeled = await getLabeled();
   const active = await getActiveState();
   const activeUrl = active.url;
@@ -144,6 +153,8 @@ export const addNewPath = async (selection: string) => {
   const newActivePath = insertionPath.concat(selection);
   // Update active path
   await updateActivePath(newActivePath);
+  await transitionUserState({ type: "NEXT", path: newActivePath });
+  return newActivePath;
 };
 
 export const initialize = async () => {

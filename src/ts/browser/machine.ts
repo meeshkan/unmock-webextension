@@ -1,27 +1,52 @@
-import { Machine, State } from "xstate";
+import { Machine, State, assign } from "xstate";
 
 const userState = {
   id: "labeling",
-  initial: "addPath",
+  initial: "needsToActivateUrl",
   context: {
     url: undefined,
     path: [],
   },
   states: {
-    addPath: {
+    needsToActivateUrl: {
       on: {
-        NEXT: "addOperation",
+        NEXT: "addingPath",
+        ACTIVATE_URL: "addingPath",
       },
-      onEntry: "log",
+      onEntry: ["log", "initializeUrl", "initializePath"],
     },
-    addOperation: {
+    addingPath: {
       on: {
-        NEXT: "addPath",
+        NEXT: "addingOperation",
+        ACTIVATE_URL: "addingPath",
       },
-      onEntry: "log",
+      onEntry: ["log", "updateUrl", "updatePath"],
+    },
+    addingOperation: {
+      on: {
+        NEXT: "addingPath",
+        ACTIVATE_URL: "addingPath",
+      },
+      onEntry: ["log", "updatePath"],
     },
   },
 };
+
+const updatePath = assign({
+  path: (context, event) => event.path || context.path,
+});
+
+const updateUrl = assign({
+  url: (context, event) => event.url || context.url,
+});
+
+const initializeUrl = assign({
+  url: (context, event) => userState.context.url,
+});
+
+const initializePath = assign({
+  url: (context, event) => userState.context.path,
+});
 
 const config = {
   actions: {
@@ -29,6 +54,10 @@ const config = {
     log: (context, event) => {
       console.log(`Entered: `, context, event);
     },
+    initializeUrl,
+    initializePath,
+    updatePath,
+    updateUrl,
   },
 };
 
