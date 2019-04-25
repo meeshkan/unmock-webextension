@@ -1,6 +1,10 @@
 import { Labeled, State, defaultLabeled } from "../state";
 import { browser } from "webextension-polyfill-ts";
-import UserStateMachine, { createState, UserState } from "../common/machine";
+import UserStateMachine, {
+  createState,
+  UserState,
+  UserStateConfig,
+} from "../common/machine";
 import * as _ from "lodash";
 
 /**
@@ -14,17 +18,21 @@ export const getLabeled = async (): Promise<Labeled> => {
   return labeledResult[STORAGE_LABELED_KEY] || {};
 };
 
-export const setUserState = async (userState: UserState) => {
+export const setUserState = async (userState: UserStateConfig) => {
   await browser.storage.local.set({ [STORAGE_USERSTATE_KEY]: userState });
 };
 
-export const getUserState = async (): Promise<UserState> => {
+export const getUserStateConfig = async (): Promise<UserStateConfig> => {
   const result = await browser.storage.local.get([STORAGE_USERSTATE_KEY]);
   const persistedUserState = result[STORAGE_USERSTATE_KEY];
 
-  return persistedUserState
-    ? UserStateMachine.resolveState(createState(persistedUserState))
-    : UserStateMachine.initialState;
+  return persistedUserState || UserStateMachine.initialState;
+};
+
+export const getUserState = async (): Promise<UserState> => {
+  const persistedUserState = await getUserStateConfig();
+
+  return UserStateMachine.resolveState(createState(persistedUserState));
 };
 
 export const getLocalStorage = async (): Promise<State> => {

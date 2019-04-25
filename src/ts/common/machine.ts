@@ -6,7 +6,9 @@ import {
   MachineOptions,
   AssignAction,
   StateConfig,
+  StateMachine,
 } from "xstate";
+import * as storage from "../browser/storage";
 
 export interface UserStateContext {
   url?: string;
@@ -119,3 +121,46 @@ export type UserStateConfig = StateConfig<UserStateContext, UserStateEvent>;
 export { State };
 
 export default userStateMachine;
+
+interface WrappedMachine {
+  resolve(userStateConfig: UserStateConfig): UserState;
+}
+
+export interface StatePersister<S> {
+  load(): Promise<S>;
+  save(t: S): Promise<void>;
+}
+
+const browserStoragePersister: StatePersister<UserStateConfig> = {
+  load() {
+    return storage.getUserStateConfig();
+  },
+  async save(stateConfig: UserStateConfig) {
+    await storage.setUserState(stateConfig);
+  },
+};
+
+export const buildPersistedMachine = (
+  persister: StatePersister<UserStateConfig> = browserStoragePersister
+) => {
+  const resolve = async () => {
+    const userStateConfig = await persister.load();
+    return userStateMachine.resolveState(State.create(userStateConfig));
+  };
+
+  const transition = async (ev: UserStateEvent, state?: UserState) => {
+    if (!state) {
+      state = await resolve();
+    }
+    const newState = userStateMachine.transition(state, ev);
+    await persister.save(newState);
+    return newState;
+  };
+
+  return {
+    resolve,
+    transition,
+  };
+};
+
+export const persistedUserStateMachine = buildPersistedMachine();

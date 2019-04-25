@@ -1,13 +1,7 @@
 import * as _ from "lodash";
-import { Labeled, State } from "../state";
+import { Labeled } from "../state";
 import UserStateMachine, { UserState } from "../common/machine";
-import {
-  getLabeled,
-  setUserState,
-  getUserState,
-  setLabeled,
-  getLocalStorage,
-} from "./storage";
+import { getLabeled, setUserState, getUserState, setLabeled } from "./storage";
 
 export const setActiveUrl = async (url: string) => {
   // Transition state
