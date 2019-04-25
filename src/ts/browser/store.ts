@@ -17,29 +17,21 @@ import {
 } from "./storage";
 
 export const setActiveUrl = async (url: string) => {
-  const active: Active = await getActiveState();
-  console.log(`Active: ${JSON.stringify(active)}`);
-  const newActive: Active = {
-    ...active,
-    url,
-    activePath: [],
-    phase: Phase.ADD_PATH,
-  };
-  console.log(
-    `Setting new active for url: ${url}: ${JSON.stringify(newActive)}`
-  );
-  await setActive(newActive);
+  // Transition state
+  await transitionUserState({ type: "ACTIVATE_URL", url });
+
+  // Add place holder
   const labeled: Labeled = await getLabeled();
-  const newLabeled = { [url]: {}, ...labeled };
+  const labeledForUrl = labeled[url];
+  const newLabeledForUrl = labeledForUrl || {};
+  const withoutUrl = _.omit(labeled, url);
+  const newLabeled = { ...withoutUrl, [url]: newLabeledForUrl };
   console.log("Setting new labeled", newLabeled);
   await setLabeled(newLabeled);
-  await transitionUserState({ type: "ACTIVATE_URL", url });
 };
 
 export const checkIsActiveUrl = async (url: string): Promise<boolean> => {
-  const activeResult: Active = await getActiveState();
-  console.log(`Active: ${JSON.stringify(activeResult)}`);
-  const activeUrl = activeResult.url;
+  const activeUrl = (await getUserState()).context.url;
   console.log(`Active url: ${JSON.stringify(activeUrl)}, comparing to: ${url}`);
   return url === activeUrl;
 };
@@ -115,8 +107,7 @@ export const addNewOperation = async (
 ) => {
   console.log(`Adding operation: ${selection}`);
   const labeled: Labeled = await getLabeled();
-  const active: Active = await getActiveState();
-  const activePath = active.activePath;
+  const activePath = userState.context.path;
   if (!activePath) {
     throw Error("Cannot set operation without active path");
   }
@@ -137,22 +128,21 @@ export const addNewPath = async (
   selection: string
 ): Promise<string[]> => {
   const labeled = await getLabeled();
-  const active = await getActiveState();
-  const activeUrl = active.url;
+  const activeUrl = userState.context.url;
   if (!activeUrl) {
     console.warn("No active url, returning");
     return;
   }
   // Needs to be array to avoid the mess with periods in URL
   const insertionPath: string[] = [activeUrl];
-  const toAdd = { [selection]: {} };
-  console.log(`Adding: ${JSON.stringify(toAdd)}`);
-  _.set(labeled, insertionPath, toAdd);
+  const existingForUrl = labeled[activeUrl] || {};
+  const toAddForUrl = { ...existingForUrl, [selection]: {} };
+  console.log(`Adding: ${JSON.stringify(toAddForUrl)}`);
+  _.set(labeled, insertionPath, toAddForUrl);
   console.log(`New labeled: ${JSON.stringify(labeled)}`);
   await setLabeled(labeled);
   const newActivePath = insertionPath.concat(selection);
   // Update active path
-  await updateActivePath(newActivePath);
   await transitionUserState({ type: "NEXT", path: newActivePath });
   return newActivePath;
 };
@@ -160,10 +150,4 @@ export const addNewPath = async (
 export const initialize = async () => {
   console.log("Initializing store");
   await browser.storage.local.clear();
-  const newActive = {
-    url: undefined,
-    phase: Phase.ADD_PATH,
-    activePath: [],
-  };
-  await setActive(newActive);
 };
