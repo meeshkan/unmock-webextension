@@ -1,7 +1,8 @@
 import { Labeled } from "../../state";
 import { ExplorerState } from "../explorer";
+import { UserStateConfig } from "../../browser/machine";
 
-export const mockUserState = {
+export const mockUserState: UserStateConfig = {
   actions: [{ type: "log" }],
   activities: {},
   changed: true,
@@ -39,7 +40,7 @@ export const mockUserState = {
   historyValue: { current: "addingOperation", states: {} },
   meta: {},
   value: "addingOperation",
-};
+} as any;
 
 export const mockActions = {
   triggerFetchSuccess: jest.fn(),

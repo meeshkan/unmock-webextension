@@ -1,3 +1,5 @@
+import { UserStateConfig } from "../browser/machine";
+
 export interface State {
   /**
    * What has been labeled.
@@ -7,7 +9,7 @@ export interface State {
   /**
    * User state (xstate)
    */
-  userState?: any;
+  userState: UserStateConfig;
 }
 
 export interface Labeled {

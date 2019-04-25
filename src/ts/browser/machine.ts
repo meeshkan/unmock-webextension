@@ -5,6 +5,7 @@ import {
   MachineConfig,
   MachineOptions,
   AssignAction,
+  StateConfig,
 } from "xstate";
 
 export interface UserStateContext {
@@ -113,6 +114,7 @@ export const createState = (
 export const stringifyState = (state: any) => JSON.stringify(state);
 
 export type UserState = State<UserStateContext, UserStateEvent>;
+export type UserStateConfig = StateConfig<UserStateContext, UserStateEvent>;
 
 export { State };
 
