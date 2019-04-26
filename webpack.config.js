@@ -36,6 +36,7 @@ var options = {
     background: path.join(__dirname, "src", "ts", "background", "index.ts"),
     explorer: path.join(__dirname, "src", "ts", "explorer", "index.tsx"),
     contentScript: path.join(__dirname, "src", "ts", "content", "index.ts"),
+    swagger: path.join(__dirname, "src", "swagger.js"),
   },
   devtool: false,
   chromeExtensionBoilerplate: {
@@ -113,11 +114,6 @@ var options = {
       },
     ]),
     new CopyWebpackPlugin([{ from: "swagger-editor/dist", to: "dist" }]),
-    new CopyWebpackPlugin([
-      {
-        from: "./swagger-editor-startup.js",
-      },
-    ]),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src", "popup.html"),
       filename: "popup.html",
@@ -134,9 +130,9 @@ var options = {
       chunks: ["explorer"],
     }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "swagger-editor", "index.html"),
-      filename: "swagger-editor.html",
-      chunks: [],
+      template: path.join(__dirname, "src", "swagger.html"),
+      filename: "swagger.html",
+      chunks: ["swagger"],
     }),
     new WriteFilePlugin(),
     new SourceMapDevToolPlugin({}),
