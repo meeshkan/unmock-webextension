@@ -33,6 +33,10 @@ jobs:
           name: "Build"
           command: yarn build
 
+      - run:
+          name: "Start storybook"
+          command: yarn test-storybook
+
       - store_test_results:
           path: reports
 
