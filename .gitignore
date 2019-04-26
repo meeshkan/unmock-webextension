@@ -3,3 +3,5 @@ build
 secrets.*.js
 coverage/
 reports/
+.storybook-static/
+.DS_Store
