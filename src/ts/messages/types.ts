@@ -4,6 +4,7 @@ export enum MessageType {
   SELECTION_HANDLED = "Selection handled",
   SELECT_ENDPOINT = "Select endpoint",
   SET_ACTIVE_URL = "Set active URL",
+  CLEAR = "Clear",
 }
 
 interface MessageProps {}

@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- HTML for static distribution bundle build -->
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -21,14 +20,14 @@
       }
 
       .container {
-        height: 100%;
+        height: 75%;
         max-width: 880px;
         margin-left: auto;
         margin-right: auto;
       }
 
       #editor-wrapper {
-        height: 100%;
+        height: 75%;
         border: 1em solid #000;
         border: none;
       }
@@ -53,7 +52,12 @@
   </head>
 
   <body>
-    <div id="swagger-editor"></div>
+    <div>
+      <div style="height:400px;" id="swagger-editor"></div>
+    </div>
+    <div>
+      <button id="clear-button"></button>
+    </div>
     <script src="./dist/swagger-editor-bundle.js"></script>
     <script src="./dist/swagger-editor-standalone-preset.js"></script>
 
