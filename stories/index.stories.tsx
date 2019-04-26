@@ -1,17 +1,54 @@
 import * as React from "react";
 
-import { storiesOf, StoryDecorator, RenderFunction } from "@storybook/react";
+import { storiesOf } from "@storybook/react";
 
-import LabeledUrlsComponent from "../src/ts/explorer/labeled/labeledComponent";
-import ActiveStateComponent from "../src/ts/explorer/activeStateComponent";
-import { Active, Labeled, State, Phase } from "../src/ts/state";
+import LabeledUrlsComponent from "../src/ts/explorer/labeled/labeled-component";
+
+import { Labeled, State } from "../src/ts/state";
 import { Actions } from "../src/ts/explorer/actions";
-import {
-  ExplorerActionsContext,
-  ExplorerDataContext,
-} from "../src/ts/explorer/context";
 import ExplorerButtonsComponent from "../src/ts/explorer/explorer-buttons-component";
 import ExplorerComponent from "../src/ts/explorer/explorer";
+import { UserStateConfig } from "../src/ts/common/machine";
+
+export const mockUserState: UserStateConfig = {
+  actions: [{ type: "log" }],
+  activities: {},
+  changed: true,
+  context: {
+    path: [
+      "https://docs.readthedocs.io/en/stable/api/v2.html",
+      "Retrieve a list",
+    ],
+    url: "https://docs.readthedocs.io/en/stable/api/v2.html",
+  },
+  event: {
+    path: [
+      "https://docs.readthedocs.io/en/stable/api/v2.html",
+      "Retrieve a list",
+    ],
+    type: "NEXT",
+  },
+  events: [],
+  history: {
+    actions: [{ type: "log" }],
+    activities: {},
+    context: {
+      path: ["https://docs.readthedocs.io/en/stable/api/v2.html"],
+      url: "https://docs.readthedocs.io/en/stable/api/v2.html",
+    },
+    event: {
+      path: ["https://docs.readthedocs.io/en/stable/api/v2.html"],
+      type: "NEXT",
+    },
+    events: [],
+    historyValue: { current: "addingPath", states: {} },
+    meta: {},
+    value: "addingPath",
+  },
+  historyValue: { current: "addingOperation", states: {} },
+  meta: {},
+  value: "addingOperation",
+} as any;
 
 const mockLabeledUrls: Labeled = {
   "https://docs.readthedocs.io/en/stable/api/v2.html": {
@@ -32,60 +69,44 @@ const mockLabeledUrls: Labeled = {
   },
 };
 
-let mockActive: Active = {
-  phase: Phase.ADD_PATH,
-  activePath: [],
-  url: "https://docs.readthedocs.io/en/stable/api/v2.html",
-};
-
 const mockActions: Actions = {
   triggerFetchSuccess(data: State) {},
   triggerSetActiveUrl(url: string) {
     console.log(`Set active URL to ${url}`);
-    mockActive = { ...mockActive, url };
+    // mockActive = { ...mockActive, url };
   },
   triggerInitializeStore() {},
   triggerDownload(labeled: Labeled) {},
 };
 
-const provideExplorerActionsContext: StoryDecorator = (
-  story: RenderFunction
-) => {
-  return (
-    <ExplorerActionsContext.Provider value={{ actions: mockActions }}>
-      {story()}
-    </ExplorerActionsContext.Provider>
-  );
+const mockExplorerState = {
+  data: {
+    labeled: mockLabeledUrls,
+    userState: mockUserState,
+  },
+  isLoading: false,
 };
 
-const provideExplorerDataContext: StoryDecorator = (story: RenderFunction) => {
-  return (
-    <ExplorerDataContext.Provider
-      value={{ data: { active: mockActive, labeled: mockLabeledUrls } }}
-    >
-      {story()}
-    </ExplorerDataContext.Provider>
-  );
-};
-
-storiesOf("Explorer", module)
-  .addDecorator(provideExplorerActionsContext)
-  .addDecorator(provideExplorerDataContext)
-  .add("vanilla", () => <ExplorerComponent />);
-
-storiesOf("Labeled URLs", module)
-  .addDecorator(provideExplorerActionsContext)
-  .add("with labeled data", () => (
-    <LabeledUrlsComponent active={mockActive} labeled={mockLabeledUrls} />
-  ))
-  .add("without labeled data", () => (
-    <LabeledUrlsComponent active={mockActive} labeled={{}} />
-  ));
-
-storiesOf("Active state", module).add("vanilla", () => (
-  <ActiveStateComponent active={mockActive} />
+storiesOf("Explorer", module).add("vanilla", () => (
+  <ExplorerComponent state={mockExplorerState} actions={mockActions} />
 ));
 
-storiesOf("Explorer buttons", module)
-  .addDecorator(provideExplorerActionsContext)
-  .add("vanilla", () => <ExplorerButtonsComponent labeled={mockLabeledUrls} />);
+storiesOf("Labeled URLs", module)
+  .add("with labeled data", () => (
+    <LabeledUrlsComponent
+      userState={mockUserState}
+      actions={mockActions}
+      labeled={mockLabeledUrls}
+    />
+  ))
+  .add("without labeled data", () => (
+    <LabeledUrlsComponent
+      userState={mockUserState}
+      actions={mockActions}
+      labeled={{}}
+    />
+  ));
+
+storiesOf("Explorer buttons", module).add("vanilla", () => (
+  <ExplorerButtonsComponent labeled={mockLabeledUrls} actions={mockActions} />
+));

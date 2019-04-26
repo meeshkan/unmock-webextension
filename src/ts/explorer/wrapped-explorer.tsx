@@ -1,6 +1,6 @@
 import * as React from "react";
 import { State } from "../state";
-import { store } from "../browser";
+import { utils, storage } from "../browser";
 import { hot } from "react-hot-loader";
 import { explorerStateReducer } from "./reducer";
 import {
@@ -30,9 +30,10 @@ const useData = (): { state: ExplorerState; actions: Actions } => {
   const fetchData: () => Promise<void> = async () => {
     enhancedDispatch({ type: "FETCH_INIT" });
     try {
-      const newData = await store.getLocalStorage();
+      const newData = await storage.getLocalStorage();
       actions.triggerFetchSuccess(newData);
     } catch (err) {
+      console.error("Failed fetching data", err);
       enhancedDispatch({ type: "FETCH_ERROR" });
     }
   };
@@ -47,8 +48,8 @@ const useData = (): { state: ExplorerState; actions: Actions } => {
 
   // Subscribe to store changes
   React.useEffect(() => {
-    const listener = store.subscribeToChanges(handleDataChange);
-    return () => store.unsubscribeToChanges(listener);
+    const listener = utils.subscribeToChanges(handleDataChange);
+    return () => utils.unsubscribeToChanges(listener);
   });
 
   return { state, actions };

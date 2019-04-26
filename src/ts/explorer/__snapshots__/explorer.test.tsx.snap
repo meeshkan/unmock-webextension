@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Explorer renders correctly 1`] = `
+<div>
+  <h1>
+    Welcome to Unmock API labeling explorer!
+  </h1>
+  <div>
+    <UserStateComponent
+      userState={
+        Object {
+          "actions": Array [
+            Object {
+              "type": "log",
+            },
+          ],
+          "activities": Object {},
+          "changed": true,
+          "context": Object {
+            "path": Array [
+              "https://docs.readthedocs.io/en/stable/api/v2.html",
+              "Retrieve a list",
+            ],
+            "url": "https://docs.readthedocs.io/en/stable/api/v2.html",
+          },
+          "event": Object {
+            "path": Array [
+              "https://docs.readthedocs.io/en/stable/api/v2.html",
+              "Retrieve a list",
+            ],
+            "type": "NEXT",
+          },
+          "events": Array [],
+          "history": Object {
+            "actions": Array [
+              Object {
+                "type": "log",
+              },
+            ],
+            "activities": Object {},
+            "context": Object {
+              "path": Array [
+                "https://docs.readthedocs.io/en/stable/api/v2.html",
+              ],
+              "url": "https://docs.readthedocs.io/en/stable/api/v2.html",
+            },
+            "event": Object {
+              "path": Array [
+                "https://docs.readthedocs.io/en/stable/api/v2.html",
+              ],
+              "type": "NEXT",
+            },
+            "events": Array [],
+            "historyValue": Object {
+              "current": "addingPath",
+              "states": Object {},
+            },
+            "meta": Object {},
+            "value": "addingPath",
+          },
+          "historyValue": Object {
+            "current": "addingOperation",
+            "states": Object {},
+          },
+          "meta": Object {},
+          "value": "addingOperation",
+        }
+      }
+    />
+    <LabeledUrlsComponent
+      actions={
+        Object {
+          "triggerDownload": [MockFunction],
+          "triggerFetchSuccess": [MockFunction],
+          "triggerInitializeStore": [MockFunction],
+          "triggerSetActiveUrl": [MockFunction],
+        }
+      }
+      labeled={
+        Object {
+          "https://docs.readthedocs.io/en/stable/api/v1.html": Object {
+            "/api/v1/project/": Object {
+              "GET": Object {},
+              "PUT": Object {},
+            },
+            "/api/v1/user/": Object {},
+          },
+          "https://docs.readthedocs.io/en/stable/api/v2.html": Object {
+            "/api/v2/project/": Object {
+              "GET": Object {},
+              "PUT": Object {},
+            },
+            "/api/v2/user/": Object {
+              "POST": Object {},
+            },
+          },
+        }
+      }
+      userState={
+        Object {
+          "actions": Array [
+            Object {
+              "type": "log",
+            },
+          ],
+          "activities": Object {},
+          "changed": true,
+          "context": Object {
+            "path": Array [
+              "https://docs.readthedocs.io/en/stable/api/v2.html",
+              "Retrieve a list",
+            ],
+            "url": "https://docs.readthedocs.io/en/stable/api/v2.html",
+          },
+          "event": Object {
+            "path": Array [
+              "https://docs.readthedocs.io/en/stable/api/v2.html",
+              "Retrieve a list",
+            ],
+            "type": "NEXT",
+          },
+          "events": Array [],
+          "history": Object {
+            "actions": Array [
+              Object {
+                "type": "log",
+              },
+            ],
+            "activities": Object {},
+            "context": Object {
+              "path": Array [
+                "https://docs.readthedocs.io/en/stable/api/v2.html",
+              ],
+              "url": "https://docs.readthedocs.io/en/stable/api/v2.html",
+            },
+            "event": Object {
+              "path": Array [
+                "https://docs.readthedocs.io/en/stable/api/v2.html",
+              ],
+              "type": "NEXT",
+            },
+            "events": Array [],
+            "historyValue": Object {
+              "current": "addingPath",
+              "states": Object {},
+            },
+            "meta": Object {},
+            "value": "addingPath",
+          },
+          "historyValue": Object {
+            "current": "addingOperation",
+            "states": Object {},
+          },
+          "meta": Object {},
+          "value": "addingOperation",
+        }
+      }
+    />
+    <ExplorerButtonsComponent
+      actions={
+        Object {
+          "triggerDownload": [MockFunction],
+          "triggerFetchSuccess": [MockFunction],
+          "triggerInitializeStore": [MockFunction],
+          "triggerSetActiveUrl": [MockFunction],
+        }
+      }
+      labeled={
+        Object {
+          "https://docs.readthedocs.io/en/stable/api/v1.html": Object {
+            "/api/v1/project/": Object {
+              "GET": Object {},
+              "PUT": Object {},
+            },
+            "/api/v1/user/": Object {},
+          },
+          "https://docs.readthedocs.io/en/stable/api/v2.html": Object {
+            "/api/v2/project/": Object {
+              "GET": Object {},
+              "PUT": Object {},
+            },
+            "/api/v2/user/": Object {
+              "POST": Object {},
+            },
+          },
+        }
+      }
+    />
+  </div>
+</div>
+`;

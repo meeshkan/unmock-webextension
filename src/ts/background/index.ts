@@ -1,8 +1,7 @@
 import * as messages from "../messages";
 import { browser, Runtime } from "webextension-polyfill-ts";
 import { setupContextMenus } from "./contextMenus";
-import { store, sender as messageSender } from "../browser";
-import { openExplorer } from "../browser/utils";
+import { store, sender as messageSender, storage } from "../browser";
 import { handleSelection } from "./selection";
 
 // Add context menus
@@ -33,7 +32,7 @@ browser.runtime.onMessage.addListener(badgeUpdater);
 
 const messageHandler = async (request: any, sender: Runtime.MessageSender) => {
   if (messages.InitializeStore.matches(request)) {
-    await store.initialize();
+    await storage.initialize();
   } else if (messages.SelectEndpoint.matches(request)) {
     await handleSelection({
       url: sender.tab.url,

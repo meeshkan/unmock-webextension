@@ -1,6 +1,6 @@
 import { ReducerActionType } from "./reducer";
 import { State, Labeled } from "../state";
-import { store, utils } from "../browser";
+import { store, storage, utils } from "../browser";
 
 /**
  * Actions to dispatch state changes.
@@ -45,7 +45,7 @@ export const applyStoreActionsMiddleware = (
       await store.setActiveUrl(action.payload);
       break;
     case "INITIALIZE_STORE":
-      await store.initialize();
+      await storage.initialize();
       break;
     case "DOWNLOAD":
       console.log("Exporting data...");
