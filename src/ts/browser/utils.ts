@@ -36,6 +36,18 @@ export const openSwaggerEditor = async () => {
   });
 };
 
+export const openSwaggerEditorNpm = async () => {
+  const width = window.screen.availWidth;
+  console.log(`Width: ${width}`);
+  return await browser.windows.create({
+    url: browser.runtime.getURL("swagger-npm.html"),
+    type: "popup",
+    left: 0,
+    top: 0,
+    width: Math.floor(width / 3),
+  });
+};
+
 type StateChangeHandler = (state: State) => void;
 
 export const buildStateChangeHandler = (

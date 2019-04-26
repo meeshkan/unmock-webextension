@@ -37,6 +37,10 @@ var options = {
     explorer: path.join(__dirname, "src", "ts", "explorer", "index.tsx"),
     contentScript: path.join(__dirname, "src", "ts", "content", "index.ts"),
     swagger: path.join(__dirname, "src", "swagger.js"),
+    swaggerNpm: path.join(__dirname, "src", "ts", "swagger", "index.ts"),
+  },
+  node: {
+    fs: "empty",
   },
   devtool: false,
   chromeExtensionBoilerplate: {
@@ -71,7 +75,7 @@ var options = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(js)$/,
+        test: /\.(jsx?)$/,
         loader: "babel-loader",
         exclude: /node_modules/,
       },
@@ -133,6 +137,11 @@ var options = {
       template: path.join(__dirname, "src", "swagger.html"),
       filename: "swagger.html",
       chunks: ["swagger"],
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, "src", "swagger-npm.html"),
+      filename: "swagger-npm.html",
+      chunks: ["swaggerNpm"],
     }),
     new WriteFilePlugin(),
     new SourceMapDevToolPlugin({}),

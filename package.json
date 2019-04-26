@@ -21,6 +21,8 @@
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.8",
     "react-dom": "^16.8.6",
+    "react-transition-group": "^4.0.0",
+    "swagger-editor": "^3.6.27",
     "webextension-polyfill": "^0.4.0",
     "webextension-polyfill-ts": "^0.9.0",
     "xstate": "^4.5.0"

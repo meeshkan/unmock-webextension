@@ -21,3 +21,11 @@ const openSwaggerEditorButton = document.getElementById("open-swagger-editor");
 openSwaggerEditorButton.onclick = () => {
   utils.openSwaggerEditor();
 };
+
+const openSwaggerEditorNpmButton = document.getElementById(
+  "open-swagger-editor-npm"
+);
+
+openSwaggerEditorNpmButton.onclick = () => {
+  utils.openSwaggerEditorNpm();
+};
