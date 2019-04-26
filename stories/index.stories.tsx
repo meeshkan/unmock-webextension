@@ -94,7 +94,7 @@ storiesOf("Explorer", module).add("vanilla", () => (
 storiesOf("Labeled URLs", module)
   .add("with labeled data", () => (
     <LabeledUrlsComponent
-      userState={mockUserState}
+      userStat={mockUserState}
       actions={mockActions}
       labeled={mockLabeledUrls}
     />
