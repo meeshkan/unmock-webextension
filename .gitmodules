@@ -1,0 +1,3 @@
+[submodule "swagger-editor"]
+	path = swagger-editor
+	url = git@github.com:unmock/swagger-editor.git
