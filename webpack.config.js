@@ -113,6 +113,11 @@ var options = {
       },
     ]),
     new CopyWebpackPlugin([{ from: "swagger-editor/dist", to: "dist" }]),
+    new CopyWebpackPlugin([
+      {
+        from: "./swagger-editor-startup.js",
+      },
+    ]),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src", "popup.html"),
       filename: "popup.html",

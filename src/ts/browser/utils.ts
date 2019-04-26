@@ -24,6 +24,13 @@ export const openExplorer = async () => {
   });
 };
 
+export const openSwaggerEditor = async () => {
+  return await browser.windows.create({
+    url: browser.runtime.getURL("swagger-editor.html"),
+    type: "popup",
+  });
+};
+
 type StateChangeHandler = (state: State) => void;
 
 export const buildStateChangeHandler = (
