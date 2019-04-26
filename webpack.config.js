@@ -112,6 +112,7 @@ var options = {
         from: "src/img",
       },
     ]),
+    new CopyWebpackPlugin([{ from: "swagger-editor/dist", to: "dist" }]),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src", "popup.html"),
       filename: "popup.html",
@@ -126,6 +127,11 @@ var options = {
       template: path.join(__dirname, "src", "explorer.html"),
       filename: "explorer.html",
       chunks: ["explorer"],
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, "swagger-editor", "index.html"),
+      filename: "swagger-editor.html",
+      chunks: [],
     }),
     new WriteFilePlugin(),
     new SourceMapDevToolPlugin({}),
