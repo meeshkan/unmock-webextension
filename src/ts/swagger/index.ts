@@ -11,6 +11,5 @@ window.onload = () => {
     // @ts-ignore
     presets: [SwaggerEditorStandalonePreset],
   });
-  // @ts-ignore
-  window.editor = editor;
+  (window as any).editor = editor;
 };
