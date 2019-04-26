@@ -36,7 +36,7 @@ var options = {
     background: path.join(__dirname, "src", "ts", "background", "index.ts"),
     explorer: path.join(__dirname, "src", "ts", "explorer", "index.tsx"),
     contentScript: path.join(__dirname, "src", "ts", "content", "index.ts"),
-    swagger: path.join(__dirname, "src", "swagger.js"),
+    swagger: path.join(__dirname, "src", "ts", "swagger", "index.ts"),
   },
   devtool: false,
   chromeExtensionBoilerplate: {
