@@ -52,6 +52,7 @@ const handleCheckIfApi = async () => {
   });
 };
 
+// TODO: Remove the mish mash of very strict and lazy type-checking using both `...matches(request)` and `request.type === ...`
 const messageHandler = async (request, _) => {
   console.log(`Got message: ${JSON.stringify(request)}`);
   if (messages.SelectionHandled.matches(request)) {
