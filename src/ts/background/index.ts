@@ -52,9 +52,5 @@ browser.commands.onCommand.addListener(async (command: string) => {
     await messageSender.sendMessageToActiveCurrentWindowTab(
       messages.SelectionRequest.build({})
     );
-    await messageSender.sendRuntimeMessage({
-      type: messages.MessageType.CLEAR,
-      props: {},
-    });
   }
 });

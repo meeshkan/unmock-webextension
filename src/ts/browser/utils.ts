@@ -26,7 +26,6 @@ export const openExplorer = async () => {
 
 export const openSwaggerEditor = async () => {
   const width = window.screen.availWidth;
-  console.log(`Width: ${width}`);
   return await browser.windows.create({
     url: browser.runtime.getURL("swagger.html"),
     type: "popup",
