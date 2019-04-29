@@ -5,7 +5,7 @@ export const sendMessageToTab = async (
   tabId: number,
   message: MessageGeneric<any>
 ) => {
-  await browser.tabs.sendMessage(tabId, message);
+  return browser.tabs.sendMessage(tabId, message);
 };
 
 export const sendMessageToActiveCurrentWindowTab = async (

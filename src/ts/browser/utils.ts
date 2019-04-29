@@ -26,6 +26,13 @@ export const openExplorer = async () => {
 
 export const openSwaggerEditor = async () => {
   const width = window.screen.availWidth;
+  // Remember which tab opened the Swagger editor
+  const activeTab = await getActiveTab();
+  const activeTabId = activeTab.id;
+  console.log(`Setting active tab ID: ${activeTabId}`);
+  await browser.storage.local.set({
+    tabIdOpenWhenSwaggerOpened: activeTabId,
+  });
   return await browser.windows.create({
     url: browser.runtime.getURL("swagger.html"),
     type: "popup",

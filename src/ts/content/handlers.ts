@@ -52,6 +52,12 @@ const handleCheckIfApi = async () => {
   });
 };
 
+const handleGetContent = () => {
+  const body = document.body;
+  const textContent = body.innerText || body.textContent;
+  return { title: document.title, textContent };
+};
+
 // TODO: Remove the mish mash of very strict and lazy type-checking using both `...matches(request)` and `request.type === ...`
 const messageHandler = async (request, _) => {
   console.log(`Got message: ${JSON.stringify(request)}`);
@@ -61,6 +67,10 @@ const messageHandler = async (request, _) => {
     await handleSelectionRequest();
   } else if (request.type === messages.MessageType.CHECK_IF_API) {
     await handleCheckIfApi();
+  } else if (request.type === messages.MessageType.GET_CONTENT) {
+    const textContent = handleGetContent();
+    console.log(`Responding with`, textContent);
+    return { response: textContent };
   }
 };
 

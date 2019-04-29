@@ -7,6 +7,7 @@ export enum MessageType {
   CLEAR = "Clear",
   CHECK_IF_API = "Check if is API page",
   SET_BADGE = "Set badge for browser action button",
+  GET_CONTENT = "Get page content",
 }
 
 interface MessageProps {}

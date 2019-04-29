@@ -1,5 +1,7 @@
 import { WrapActionPlugin } from "./wrap-spec-action";
 import { browser } from "webextension-polyfill-ts";
+import { sender } from "../browser";
+import * as messages from "../messages";
 
 export type SwaggerEditor = any;
 
@@ -9,7 +11,7 @@ export type SwaggerEditorBundleType = (input: any) => SwaggerEditor;
 declare let SwaggerEditorBundle: SwaggerEditorBundleType;
 declare let SwaggerEditorStandalonePreset: any;
 
-const onWindowLoad = () => {
+const onWindowLoad = async () => {
   const unmockPlugin = WrapActionPlugin();
   const editor = SwaggerEditorBundle({
     dom_id: "#swagger-editor",
@@ -29,6 +31,21 @@ const onWindowLoad = () => {
   };
 
   browser.runtime.onMessage.addListener(messageHandler);
+
+  const result = await browser.storage.local.get("tabIdOpenWhenSwaggerOpened");
+  const tabId = result.tabIdOpenWhenSwaggerOpened;
+  console.log(`Tab ID: ${tabId}`);
+  // Request content to fill from the background
+  const pageContentResponse = await sender.sendMessageToTab(tabId, {
+    type: messages.MessageType.GET_CONTENT,
+    props: {},
+  });
+  const pageContent = pageContentResponse.response;
+  console.log(`Got page content: ${JSON.stringify(pageContent)}`);
+  // editor.unmockActions.set(pageContent.title);
+  editor.specActions.updateSpec(
+    `openapi: 3.0.0\ninfo:\n  title: ${pageContent.title}\n`
+  );
 };
 
 window.onload = onWindowLoad;
