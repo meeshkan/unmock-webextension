@@ -1,12 +1,15 @@
-import * as messages from "../messages";
 import { MyWrapActionPlugin } from "./wrap-spec-action";
 import { browser } from "webextension-polyfill-ts";
 
-// These are loaded in swagger.html scripts
-declare let SwaggerEditorBundle: any;
-declare let SwaggerEditorStandalonePreset: any;
+export type SwaggerEditor = any;
 
-const onLoad = () => {
+export type SwaggerEditorBundleType = (input: any) => SwaggerEditor;
+
+// These are loaded in swagger.html scripts
+export declare let SwaggerEditorBundle: SwaggerEditorBundleType;
+export declare let SwaggerEditorStandalonePreset: any;
+
+const onWindowLoad = () => {
   const editor = SwaggerEditorBundle({
     dom_id: "#swagger-editor",
     layout: "StandaloneLayout",
@@ -18,14 +21,6 @@ const onLoad = () => {
   clearButton.onclick = () => {
     editor.unmockActions.clear();
   };
-  setInterval(() => {
-    // editor.unmockActions.clear();
-    // editor.clear();
-  }, 10000);
-  setTimeout(() => {
-    // Why doesn't this work?
-    // console.log(editor.getEditorMetadata());
-  });
   const messageHandler = async (request, _) => {
     if (request.type === "Clear") {
       editor.unmockActions.clear();
@@ -35,4 +30,4 @@ const onLoad = () => {
   browser.runtime.onMessage.addListener(messageHandler);
 };
 
-window.onload = onLoad;
+window.onload = onWindowLoad;
