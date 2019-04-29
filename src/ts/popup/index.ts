@@ -18,6 +18,4 @@ openButton.onclick = () => {
 
 const openSwaggerEditorButton = document.getElementById("open-swagger-editor");
 
-openSwaggerEditorButton.onclick = () => {
-  utils.openSwaggerEditor();
-};
+openSwaggerEditorButton.onclick = utils.openSwaggerEditor;

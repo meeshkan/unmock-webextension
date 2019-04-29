@@ -5,3 +5,4 @@ coverage/
 reports/
 .storybook-static/
 .DS_Store
+dist/
