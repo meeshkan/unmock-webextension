@@ -1,4 +1,4 @@
-import { MyWrapActionPlugin } from "./wrap-spec-action";
+import { WrapActionPlugin } from "./wrap-spec-action";
 import { browser } from "webextension-polyfill-ts";
 
 export type SwaggerEditor = any;
@@ -10,10 +10,11 @@ export declare let SwaggerEditorBundle: SwaggerEditorBundleType;
 export declare let SwaggerEditorStandalonePreset: any;
 
 const onWindowLoad = () => {
+  const unmockPlugin = WrapActionPlugin();
   const editor = SwaggerEditorBundle({
     dom_id: "#swagger-editor",
     layout: "StandaloneLayout",
-    plugins: [MyWrapActionPlugin],
+    plugins: [unmockPlugin],
     presets: [SwaggerEditorStandalonePreset],
   });
   (window as any).editor = editor;
