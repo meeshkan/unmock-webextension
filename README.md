@@ -45,3 +45,15 @@ $ yarn storybook
   - opening explorer window showing selections in local storage
 - Context menu for adding selections
 - Content script for updating DOM and also notifying background script if page contains given content
+
+## License
+
+This project uses code from the open-source projects below with their licenses.
+
+### [Chrome webextension boilerplate](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate)
+
+Copyright (c) 2016 Samuel Simões.
+
+### [Swagger editor](https://github.com/swagger-api/swagger-editor)
+
+Copyright 2018 SmartBear Software.
