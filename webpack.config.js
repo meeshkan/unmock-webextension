@@ -36,6 +36,7 @@ var options = {
     background: path.join(__dirname, "src", "ts", "background", "index.ts"),
     explorer: path.join(__dirname, "src", "ts", "explorer", "index.tsx"),
     contentScript: path.join(__dirname, "src", "ts", "content", "index.ts"),
+    swagger: path.join(__dirname, "src", "ts", "swagger", "index.ts"),
   },
   devtool: false,
   chromeExtensionBoilerplate: {
@@ -112,6 +113,7 @@ var options = {
         from: "src/img",
       },
     ]),
+    new CopyWebpackPlugin([{ from: "swagger-editor/dist", to: "dist" }]),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "src", "popup.html"),
       filename: "popup.html",
@@ -126,6 +128,11 @@ var options = {
       template: path.join(__dirname, "src", "explorer.html"),
       filename: "explorer.html",
       chunks: ["explorer"],
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, "src", "swagger.html"),
+      filename: "swagger.html",
+      chunks: ["swagger"],
     }),
     new WriteFilePlugin(),
     new SourceMapDevToolPlugin({}),

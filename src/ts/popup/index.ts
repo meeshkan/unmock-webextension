@@ -15,3 +15,7 @@ const openButton = document.getElementById("open");
 openButton.onclick = () => {
   utils.openExplorer();
 };
+
+const openSwaggerEditorButton = document.getElementById("open-swagger-editor");
+
+openSwaggerEditorButton.onclick = utils.openSwaggerEditor;

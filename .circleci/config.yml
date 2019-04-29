@@ -22,6 +22,11 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run:
+          name: "Type check"
+          command: yarn tsc
+
       - run:
           name: "Run linter"
           command: yarn lint
