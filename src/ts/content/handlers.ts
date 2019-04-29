@@ -41,7 +41,7 @@ function colorSelection() {
 const handleCheckIfApi = async () => {
   const body = document.body;
   const textContent = body.innerText || body.textContent;
-  const regexToTest = /API/;
+  const regexToTest = /\bAPI\b/;
   const isApi = regexToTest.test(textContent);
   console.log(`API check result: ${isApi}`);
   sender.sendRuntimeMessage({
