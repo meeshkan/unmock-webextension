@@ -1,7 +1,9 @@
 {
   "name": "Unmock API tools",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Good times labeling APIs!",
+  "short_name": "Unmock",
+  "homepage_url": "https://unmock.io",
   "permissions": [
     "activeTab",
     "contextMenus",

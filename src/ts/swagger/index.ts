@@ -6,8 +6,8 @@ export type SwaggerEditor = any;
 export type SwaggerEditorBundleType = (input: any) => SwaggerEditor;
 
 // These are loaded in swagger.html scripts
-export declare let SwaggerEditorBundle: SwaggerEditorBundleType;
-export declare let SwaggerEditorStandalonePreset: any;
+declare let SwaggerEditorBundle: SwaggerEditorBundleType;
+declare let SwaggerEditorStandalonePreset: any;
 
 const onWindowLoad = () => {
   const unmockPlugin = WrapActionPlugin();

@@ -6,3 +6,4 @@ reports/
 .storybook-static/
 .DS_Store
 dist/
+build.zip
