@@ -20,12 +20,18 @@ const messageLogger = (request: any, sender: Runtime.MessageSender) => {
 browser.runtime.onMessage.addListener(messageLogger);
 
 const badgeUpdater = async (request: any) => {
-  if (!request.activate) {
+  if (!(request.type === messages.MessageType.SET_BADGE)) {
     return;
   }
   console.log(`Activating badge as got: ${JSON.stringify(request)}`);
-  await browser.browserAction.setBadgeText({ text: "API" });
-  await browser.browserAction.setBadgeBackgroundColor({ color: "#4688F1" });
+  if (request.props.isApi) {
+    await browser.browserAction.setBadgeText({ text: "API" });
+    await browser.browserAction.setBadgeBackgroundColor({
+      color: "#4688F1",
+    });
+  } else {
+    await browser.browserAction.setBadgeText({ text: "" });
+  }
 };
 
 browser.runtime.onMessage.addListener(badgeUpdater);
@@ -52,5 +58,18 @@ browser.commands.onCommand.addListener(async (command: string) => {
     await messageSender.sendMessageToActiveCurrentWindowTab(
       messages.SelectionRequest.build({})
     );
+  }
+});
+
+browser.tabs.onActivated.addListener(async activeInfo => {
+  try {
+    await messageSender.sendMessageToTab(activeInfo.tabId, {
+      type: messages.MessageType.CHECK_IF_API,
+      props: {},
+    });
+  } catch (err) {
+    // Sending the message fails e.g. in chrome:// pages
+    // so do not log error.
+    console.warn(`Failed sending message to tab ${activeInfo.tabId}`, err);
   }
 });
