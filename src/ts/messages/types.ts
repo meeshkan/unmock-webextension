@@ -5,6 +5,8 @@ export enum MessageType {
   SELECT_ENDPOINT = "Select endpoint",
   SET_ACTIVE_URL = "Set active URL",
   CLEAR = "Clear",
+  CHECK_IF_API = "Check if is API page",
+  SET_BADGE = "Set badge for browser action button",
 }
 
 interface MessageProps {}

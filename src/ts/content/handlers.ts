@@ -38,13 +38,29 @@ function colorSelection() {
   }
 }
 
+const handleCheckIfApi = async () => {
+  const body = document.body;
+  const textContent = body.innerText || body.textContent;
+  const regexToTest = /\bAPI\b/;
+  const isApi = regexToTest.test(textContent);
+  console.log(`API check result: ${isApi}`);
+  sender.sendRuntimeMessage({
+    type: messages.MessageType.SET_BADGE,
+    props: {
+      isApi,
+    },
+  });
+};
+
+// TODO: Remove the mish mash of very strict and lazy type-checking using both `...matches(request)` and `request.type === ...`
 const messageHandler = async (request, _) => {
   console.log(`Got message: ${JSON.stringify(request)}`);
   if (messages.SelectionHandled.matches(request)) {
     colorSelection();
-  }
-  if (messages.SelectionRequest.matches(request)) {
+  } else if (messages.SelectionRequest.matches(request)) {
     await handleSelectionRequest();
+  } else if (request.type === messages.MessageType.CHECK_IF_API) {
+    await handleCheckIfApi();
   }
 };
 

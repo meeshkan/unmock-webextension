@@ -1,6 +1,13 @@
 import { MessageGeneric } from "../messages/types";
 import { browser } from "webextension-polyfill-ts";
 
+export const sendMessageToTab = async (
+  tabId: number,
+  message: MessageGeneric<any>
+) => {
+  await browser.tabs.sendMessage(tabId, message);
+};
+
 export const sendMessageToActiveCurrentWindowTab = async (
   message: MessageGeneric<any>
 ) => {
@@ -9,7 +16,7 @@ export const sendMessageToActiveCurrentWindowTab = async (
     active: true,
     currentWindow: true,
   });
-  await browser.tabs.sendMessage(tabs[0].id, message);
+  await sendMessageToTab(tabs[0].id, message);
 };
 
 export const sendRuntimeMessage = async (msg: MessageGeneric<any>) => {
