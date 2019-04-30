@@ -14,7 +14,8 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "lib": ["dom", "es2015", "es2016"],
-    "outDir": "dist"
+    "outDir": "dist",
+    "strictNullChecks": false
   },
   "include": ["src/ts"]
 }

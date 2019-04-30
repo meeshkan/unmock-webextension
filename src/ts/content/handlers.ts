@@ -1,6 +1,7 @@
 import * as messages from "../messages";
 import { MessageGeneric } from "../messages/types";
 import { sender } from "../browser";
+import { PageContent } from "../common/types";
 
 const sendMessage = async (msg: MessageGeneric<any>) => {
   console.log(`Sending message: ${JSON.stringify(msg)}`);
@@ -52,6 +53,13 @@ const handleCheckIfApi = async () => {
   });
 };
 
+const handleGetPageContent = (): PageContent => {
+  const body = document.body;
+  const textContent = body.innerText || body.textContent;
+  const innerHtml = document.documentElement.innerHTML;
+  return { title: document.title, innerHtml, textContent };
+};
+
 // TODO: Remove the mish mash of very strict and lazy type-checking using both `...matches(request)` and `request.type === ...`
 const messageHandler = async (request, _) => {
   console.log(`Got message: ${JSON.stringify(request)}`);
@@ -61,6 +69,8 @@ const messageHandler = async (request, _) => {
     await handleSelectionRequest();
   } else if (request.type === messages.MessageType.CHECK_IF_API) {
     await handleCheckIfApi();
+  } else if (request.type === messages.MessageType.GET_CONTENT) {
+    return handleGetPageContent();
   }
 };
 

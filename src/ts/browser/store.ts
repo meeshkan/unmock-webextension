@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import { Labeled } from "../state";
 import { UserState, persistedUserStateMachine } from "../common/machine";
-import { getLabeled, setLabeled } from "./storage";
+import { getLabeled, setLabeled, setTabInfo, getTabInfo } from "./storage";
 
 export const setActiveUrl = async (url: string) => {
   // Transition state
@@ -19,6 +19,10 @@ export const setActiveUrl = async (url: string) => {
   const newLabeled = { ...withoutUrl, [url]: newLabeledForUrl };
   console.log("Setting new labeled", newLabeled);
   await setLabeled(newLabeled);
+};
+
+export const setTabIdOpeningSwagger = async (tabId: number) => {
+  await setTabInfo({ tabId });
 };
 
 export const checkIsActiveUrl = async (url: string): Promise<boolean> => {
@@ -76,7 +80,7 @@ export const addNewPath = async (
   const activeUrl = userState.context.url;
   if (!activeUrl) {
     console.warn("No active url, returning");
-    return;
+    return [];
   }
   // Needs to be array to avoid the mess with periods in URL
   const insertionPath: string[] = [activeUrl];

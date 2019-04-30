@@ -1,4 +1,4 @@
-import { Labeled, State, defaultLabeled } from "../state";
+import { Labeled, State, defaultLabeled, TabInfo } from "../state";
 import { browser } from "webextension-polyfill-ts";
 import UserStateMachine, {
   createState,
@@ -6,12 +6,12 @@ import UserStateMachine, {
   UserStateConfig,
 } from "../common/machine";
 import * as _ from "lodash";
-
 /**
  * These must match with the keys of `State` interface
  */
 const STORAGE_LABELED_KEY = "labeled";
 const STORAGE_USERSTATE_KEY = "userState";
+const STORAGE_TABINFO_KEY = "tabInfo";
 
 export const getLabeled = async (): Promise<Labeled> => {
   const labeledResult = await browser.storage.local.get([STORAGE_LABELED_KEY]);
@@ -33,6 +33,16 @@ export const getUserState = async (): Promise<UserState> => {
   const persistedUserState = await getUserStateConfig();
 
   return UserStateMachine.resolveState(createState(persistedUserState));
+};
+
+export const setTabInfo = async (tabInfo: TabInfo) => {
+  await browser.storage.local.set({ [STORAGE_TABINFO_KEY]: tabInfo });
+};
+
+export const getTabInfo = async (): Promise<TabInfo | undefined> => {
+  const tabInfoResult = await browser.storage.local.get(STORAGE_TABINFO_KEY);
+  console.log("TabInfo result", JSON.stringify(tabInfoResult));
+  return tabInfoResult[STORAGE_TABINFO_KEY];
 };
 
 export const getLocalStorage = async (): Promise<State> => {
