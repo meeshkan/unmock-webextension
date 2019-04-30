@@ -80,7 +80,7 @@ export const addNewPath = async (
   const activeUrl = userState.context.url;
   if (!activeUrl) {
     console.warn("No active url, returning");
-    return;
+    return [];
   }
   // Needs to be array to avoid the mess with periods in URL
   const insertionPath: string[] = [activeUrl];

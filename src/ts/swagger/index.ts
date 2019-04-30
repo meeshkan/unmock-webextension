@@ -40,13 +40,12 @@ const onWindowLoad = async () => {
 };
 
 const fillFromTab = async (updateSpec: (content: string) => void) => {
-  const result = (await storage.getTabInfo()) || {};
-  const tabIdOrUndefined = result.tabId;
-  if (!tabIdOrUndefined) {
+  const tabInfoOrNull = await storage.getTabInfo();
+  const tabId: number | undefined = tabInfoOrNull && tabInfoOrNull.tabId;
+  if (tabId === undefined) {
     console.warn("Cannot fill Swagger editor as no tab ID available");
     return;
   }
-  const tabId = tabIdOrUndefined;
   console.log(`Filling from tab ID: ${tabId}`);
   // Request content to fill from the background
   const pageContent: PageContent = await sender.sendMessageToTab(tabId, {

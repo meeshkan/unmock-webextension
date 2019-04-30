@@ -13,7 +13,8 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook -c .storybook -o .storybook-static",
     "test-storybook": "start-storybook -p 6006 --smoke-test",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "type-check": "tsc"
   },
   "dependencies": {
     "bootstrap": "^4.3.1",

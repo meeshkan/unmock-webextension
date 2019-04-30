@@ -39,10 +39,10 @@ export const setTabInfo = async (tabInfo: TabInfo) => {
   await browser.storage.local.set({ [STORAGE_TABINFO_KEY]: tabInfo });
 };
 
-export const getTabInfo = async (): Promise<TabInfo | null> => {
+export const getTabInfo = async (): Promise<TabInfo | undefined> => {
   const tabInfoResult = await browser.storage.local.get(STORAGE_TABINFO_KEY);
   console.log("TabInfo result", JSON.stringify(tabInfoResult));
-  return tabInfoResult[STORAGE_TABINFO_KEY] || null;
+  return tabInfoResult[STORAGE_TABINFO_KEY];
 };
 
 export const getLocalStorage = async (): Promise<State> => {

@@ -20,7 +20,14 @@ export const sendMessageToActiveCurrentWindowTab = async (
     active: true,
     currentWindow: true,
   });
-  await sendMessageToTab(tabs[0].id, message);
+  if (tabs.length === 0) {
+    console.warn("No active tabs, cannot send message");
+    return;
+  }
+  const tabId = tabs[0].id;
+  if (tabId) {
+    await sendMessageToTab(tabId, message);
+  }
 };
 
 export const sendRuntimeMessage = async (msg: MessageGeneric<any>) => {
