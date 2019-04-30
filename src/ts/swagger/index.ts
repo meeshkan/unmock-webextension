@@ -34,7 +34,9 @@ const onWindowLoad = async () => {
 
   browser.runtime.onMessage.addListener(messageHandler);
 
-  await fillFromTab(editor.specActions.updateSpec.bind(editor.specActions));
+  // Does not seem to need `bind`
+  const setSpec = editor.unmockActions.setSpec;
+  await fillFromTab(setSpec);
 };
 
 const fillFromTab = async (updateSpec: (content: string) => void) => {

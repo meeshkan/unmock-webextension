@@ -18,17 +18,10 @@ export const WrapActionPlugin = () => (system: SwaggerEditor) => {
             system.specActions.updateSpec("");
             return { type: "CLEAR" };
           },
-          set: (str: string) => {
-            console.log(str);
-            system.specActions.updateSpec(
-              `openapi: ${new Date().toString()}\n`
-            );
+          setSpec: (str: string) => {
+            system.specActions.updateSpec(str);
+            // Need to return Redux action from here, not used
             return { type: "SET_SPEC", payload: str };
-          },
-        },
-        reducers: {
-          SET_SPEC: (state, action) => {
-            return state;
           },
         },
       },
