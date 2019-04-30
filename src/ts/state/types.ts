@@ -7,9 +7,21 @@ export interface State {
   labeled: Labeled;
 
   /**
+   * Any information related to user tabs
+   */
+  tabInfo?: TabInfo;
+
+  /**
    * User state (xstate)
    */
   userState: UserStateConfig;
+}
+
+export interface TabInfo {
+  /**
+   * Tab ID user had active when opening Swagger editor
+   */
+  tabId?: number;
 }
 
 export interface Labeled {

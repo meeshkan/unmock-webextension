@@ -1,7 +1,9 @@
 import { WrapActionPlugin } from "./wrap-spec-action";
 import { browser } from "webextension-polyfill-ts";
-import { sender } from "../browser";
+import { sender, storage } from "../browser";
 import * as messages from "../messages";
+import { PageContent } from "../common/types";
+import * as yaml from "js-yaml";
 
 export type SwaggerEditor = any;
 
@@ -32,20 +34,39 @@ const onWindowLoad = async () => {
 
   browser.runtime.onMessage.addListener(messageHandler);
 
-  const result = await browser.storage.local.get("tabIdOpenWhenSwaggerOpened");
-  const tabId = result.tabIdOpenWhenSwaggerOpened;
-  console.log(`Tab ID: ${tabId}`);
+  await fillFromTab(editor.specActions.updateSpec.bind(editor.specActions));
+};
+
+const fillFromTab = async (updateSpec: (content: string) => void) => {
+  const result = (await storage.getTabInfo()) || {};
+  const tabIdOrUndefined = result.tabId;
+  if (!tabIdOrUndefined) {
+    console.warn("Cannot fill Swagger editor as no tab ID available");
+    return;
+  }
+  const tabId = tabIdOrUndefined;
+  console.log(`Filling from tab ID: ${tabId}`);
   // Request content to fill from the background
-  const pageContentResponse = await sender.sendMessageToTab(tabId, {
+  const pageContent: PageContent = await sender.sendMessageToTab(tabId, {
     type: messages.MessageType.GET_CONTENT,
     props: {},
   });
-  const pageContent = pageContentResponse.response;
-  console.log(`Got page content: ${JSON.stringify(pageContent)}`);
-  // editor.unmockActions.set(pageContent.title);
-  editor.specActions.updateSpec(
-    `openapi: 3.0.0\ninfo:\n  title: ${pageContent.title}\n`
-  );
+  const specJson = buildJsonSpecFrom(pageContent);
+  const specString = yaml.safeDump(specJson, { sortKeys: false });
+  updateSpec(specString);
+};
+
+const buildJsonSpecFrom = (pageContent: PageContent): object => {
+  const specJson = {
+    openapi: "3.0.0",
+    info: {
+      title: pageContent.title,
+      version: "1.0.0",
+    },
+    servers: [],
+    paths: {},
+  };
+  return specJson;
 };
 
 window.onload = onWindowLoad;
