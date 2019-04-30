@@ -21,20 +21,21 @@ const fileExtensions = [
   "woff2",
 ];
 
-const baseDir = path.join(__dirname, "..");
+const basePath = path.resolve(__dirname, "..");
 
 const options = {
+  context: basePath,
   mode: process.env.NODE_ENV || "development",
   entry: {
-    popup: path.join(baseDir, "src", "ts", "popup", "index.ts"),
-    background: path.join(baseDir, "src", "ts", "background", "index.ts"),
-    explorer: path.join(baseDir, "src", "ts", "explorer", "index.tsx"),
-    contentScript: path.join(baseDir, "src", "ts", "content", "index.ts"),
-    swagger: path.join(baseDir, "src", "ts", "swagger", "index.ts"),
+    popup: path.join(basePath, "src", "ts", "popup", "index.ts"),
+    background: path.join(basePath, "src", "ts", "background", "index.ts"),
+    explorer: path.join(basePath, "src", "ts", "explorer", "index.tsx"),
+    contentScript: path.join(basePath, "src", "ts", "content", "index.ts"),
+    swagger: path.join(basePath, "src", "ts", "swagger", "index.ts"),
   },
   devtool: false,
   output: {
-    path: path.join(baseDir, "build"),
+    path: path.resolve(basePath, "build"),
     filename: "[name].bundle.js",
   },
   module: {
@@ -86,7 +87,7 @@ const options = {
     new webpack.EnvironmentPlugin(["NODE_ENV", "DEBUG"]),
     new CopyWebpackPlugin([
       {
-        from: path.join(baseDir, "src", "manifest.json"),
+        from: path.join(basePath, "src", "manifest.json"),
         transform: function(content, path) {
           // generates the manifest file using the package.json informations
           return Buffer.from(
@@ -101,32 +102,32 @@ const options = {
     ]),
     new CopyWebpackPlugin([
       {
-        from: path.join(baseDir, "src", "img"),
+        from: path.join(basePath, "src", "img"),
       },
     ]),
     new CopyWebpackPlugin([
       {
-        from: path.join(baseDir, "swagger-editor", "dist"),
+        from: path.join(basePath, "swagger-editor", "dist"),
         to: "dist",
       },
     ]),
     new HtmlWebpackPlugin({
-      template: path.join(baseDir, "src", "popup.html"),
+      template: path.join(basePath, "src", "popup.html"),
       filename: "popup.html",
       chunks: ["popup"],
     }),
     new HtmlWebpackPlugin({
-      template: path.join(baseDir, "src", "background.html"),
+      template: path.join(basePath, "src", "background.html"),
       filename: "background.html",
       chunks: ["background"],
     }),
     new HtmlWebpackPlugin({
-      template: path.join(baseDir, "src", "explorer.html"),
+      template: path.join(basePath, "src", "explorer.html"),
       filename: "explorer.html",
       chunks: ["explorer"],
     }),
     new HtmlWebpackPlugin({
-      template: path.join(baseDir, "src", "swagger.html"),
+      template: path.join(basePath, "src", "swagger.html"),
       filename: "swagger.html",
       chunks: ["swagger"],
     }),
