@@ -6,7 +6,6 @@ import UserStateMachine, {
   UserStateConfig,
 } from "../common/machine";
 import * as _ from "lodash";
-
 /**
  * These must match with the keys of `State` interface
  */
