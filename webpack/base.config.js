@@ -102,32 +102,32 @@ const options = {
     ]),
     new CopyWebpackPlugin([
       {
-        from: path.join(basePath, "src", "img"),
+        from: path.join("src", "img"),
       },
     ]),
     new CopyWebpackPlugin([
       {
-        from: path.join(basePath, "swagger-editor", "dist"),
+        from: path.join("swagger-editor", "dist"),
         to: "dist",
       },
     ]),
     new HtmlWebpackPlugin({
-      template: path.join(basePath, "src", "popup.html"),
+      template: path.join("src", "popup.html"),
       filename: "popup.html",
       chunks: ["popup"],
     }),
     new HtmlWebpackPlugin({
-      template: path.join(basePath, "src", "background.html"),
+      template: path.join("src", "background.html"),
       filename: "background.html",
       chunks: ["background"],
     }),
     new HtmlWebpackPlugin({
-      template: path.join(basePath, "src", "explorer.html"),
+      template: path.join("src", "explorer.html"),
       filename: "explorer.html",
       chunks: ["explorer"],
     }),
     new HtmlWebpackPlugin({
-      template: path.join(basePath, "src", "swagger.html"),
+      template: path.join("src", "swagger.html"),
       filename: "swagger.html",
       chunks: ["swagger"],
     }),
