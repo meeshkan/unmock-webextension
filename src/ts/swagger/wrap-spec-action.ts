@@ -1,9 +1,9 @@
 import { SwaggerEditor } from ".";
-import { getOpenApiObjectFromString } from "../parsers";
+import { buildOpenApiWithValidation } from "../parsers";
 
 const handleUpdateSpec = async (str: string) => {
   // TODO
-  await getOpenApiObjectFromString(str);
+  await buildOpenApiWithValidation(str);
 };
 
 export const WrapActionPlugin = () => (system: SwaggerEditor) => {
