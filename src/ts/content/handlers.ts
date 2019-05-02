@@ -1,23 +1,22 @@
 import * as messages from "../messages";
-import { MessageGeneric } from "../messages/types";
 import { sender } from "../browser";
 import { PageContent } from "../common/types";
+import { buildSpecFrom } from "../parsers";
+import { OpenAPIObject } from "openapi3-ts";
+import debug from "../common/logging";
 
-const sendMessage = async (msg: MessageGeneric<any>) => {
-  console.log(`Sending message: ${JSON.stringify(msg)}`);
-  await sender.sendRuntimeMessage(msg);
-};
+const debugLog = debug("unmock:content:handlers");
 
 const handleSelectionRequest = async () => {
   const selection = window.getSelection();
   if (!selection) {
-    console.log("Nothing selected, skipping request.");
+    debugLog("Nothing selected, skipping request.");
     return;
   }
   const msg = messages.SelectEndpoint.build({
     selection: selection.toString(),
   });
-  await sendMessage(msg);
+  await sender.sendRuntimeMessage(msg);
 };
 
 const HIGHLIGHT_TAG = "mark";
@@ -26,7 +25,7 @@ function colorSelection() {
   const element = document.activeElement;
   const selection = window.getSelection();
   if (element && selection) {
-    console.log(`Colored element: ${element}`);
+    debugLog(`Colored element: ${element}`);
     const cleanedSelection = selection
       .toString()
       .replace(new RegExp("</?script>"), "");
@@ -35,20 +34,30 @@ function colorSelection() {
       `<${HIGHLIGHT_TAG}>${cleanedSelection}</${HIGHLIGHT_TAG}>`
     );
   } else {
-    console.log("Nothing to color.");
+    debugLog("Nothing to color.");
   }
 }
 
-export const checkIfApi = async () => {
-  const body = document.body;
-  const textContent = body.innerText || body.textContent;
-  const regexToTest = /\bAPI\b/;
-  const isApi = regexToTest.test(textContent);
-  console.log(`API check result: ${isApi}`);
+export const buildSpec = async (): Promise<OpenAPIObject> => {
+  const pageContent = getPageContent();
+  const spec = await buildSpecFrom(pageContent);
+  return spec;
+};
+
+let apiCheckResult: boolean;
+
+export const checkIfCanParsePathsFromPage = async (): Promise<boolean> => {
+  if (typeof apiCheckResult !== "undefined") {
+    debugLog("Cached API check result", apiCheckResult);
+    return apiCheckResult;
+  }
+  const spec: OpenAPIObject = await buildSpec();
+  const isApi = Object.keys(spec.paths).length > 0;
+  apiCheckResult = isApi;
   return isApi;
 };
 
-const handleGetPageContent = (): PageContent => {
+export const getPageContent = (): PageContent => {
   const body = document.body;
   const textContent = body.innerText || body.textContent;
   const innerHtml = document.documentElement.innerHTML;
@@ -57,15 +66,15 @@ const handleGetPageContent = (): PageContent => {
 
 // TODO: Remove the mish mash of very strict and lazy type-checking using both `...matches(request)` and `request.type === ...`
 const messageHandler = async (request, _) => {
-  console.log(`Got message: ${JSON.stringify(request)}`);
+  debugLog(`Got message: ${JSON.stringify(request)}`);
   if (messages.SelectionHandled.matches(request)) {
     colorSelection();
   } else if (messages.SelectionRequest.matches(request)) {
     await handleSelectionRequest();
   } else if (request.type === messages.MessageType.CHECK_IF_API) {
-    return checkIfApi();
+    return checkIfCanParsePathsFromPage();
   } else if (request.type === messages.MessageType.GET_CONTENT) {
-    return handleGetPageContent();
+    return getPageContent();
   }
 };
 
