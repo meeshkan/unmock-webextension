@@ -31,5 +31,6 @@ export const sendMessageToActiveCurrentWindowTab = async (
 };
 
 export const sendRuntimeMessage = async (msg: MessageGeneric<any>) => {
+  debugLog("Sending runtime message", msg);
   await browser.runtime.sendMessage(msg);
 };

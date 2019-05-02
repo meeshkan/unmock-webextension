@@ -39,18 +39,13 @@ function colorSelection() {
   }
 }
 
-const handleCheckIfApi = async () => {
+export const checkIfApi = async () => {
   const body = document.body;
   const textContent = body.innerText || body.textContent;
   const regexToTest = /\bAPI\b/;
   const isApi = regexToTest.test(textContent);
   console.log(`API check result: ${isApi}`);
-  sender.sendRuntimeMessage({
-    type: messages.MessageType.SET_BADGE,
-    props: {
-      isApi,
-    },
-  });
+  return isApi;
 };
 
 const handleGetPageContent = (): PageContent => {
@@ -68,7 +63,7 @@ const messageHandler = async (request, _) => {
   } else if (messages.SelectionRequest.matches(request)) {
     await handleSelectionRequest();
   } else if (request.type === messages.MessageType.CHECK_IF_API) {
-    await handleCheckIfApi();
+    return checkIfApi();
   } else if (request.type === messages.MessageType.GET_CONTENT) {
     return handleGetPageContent();
   }

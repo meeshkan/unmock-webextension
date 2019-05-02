@@ -20,9 +20,8 @@ const messageLogger = (request: any, sender: Runtime.MessageSender) => {
 
 browser.runtime.onMessage.addListener(messageLogger);
 
-const handleSetBadge = async (request: MessageGeneric<any>) => {
-  console.log(`Handling set badge as got: ${JSON.stringify(request)}`);
-  if (request.props.isApi) {
+const toggleBadge = async (on: boolean) => {
+  if (on) {
     await browser.browserAction.setBadgeText({ text: "API" });
     await browser.browserAction.setBadgeBackgroundColor({
       color: "#4688F1",
@@ -30,6 +29,11 @@ const handleSetBadge = async (request: MessageGeneric<any>) => {
   } else {
     await browser.browserAction.setBadgeText({ text: "" });
   }
+};
+
+const handleSetBadge = async (request: MessageGeneric<any>) => {
+  console.log(`Handling set badge as got: ${JSON.stringify(request)}`);
+  toggleBadge(request.props.isApi);
 };
 
 const messageHandler = async (
@@ -65,8 +69,9 @@ browser.commands.onCommand.addListener(async (command: string) => {
 
 // When tab activated, ask content script to check if the page has API documentation
 browser.tabs.onActivated.addListener(async activeInfo => {
+  let isApi = false;
   try {
-    await messageSender.sendMessageToTab(activeInfo.tabId, {
+    isApi = await messageSender.sendMessageToTab(activeInfo.tabId, {
       type: messages.MessageType.CHECK_IF_API,
       props: {},
     });
@@ -74,5 +79,7 @@ browser.tabs.onActivated.addListener(async activeInfo => {
     // Sending the message fails e.g. in chrome:// pages
     // so do not log error.
     console.warn(`Failed sending message to tab ${activeInfo.tabId}`, err);
+    return;
   }
+  toggleBadge(isApi);
 });
