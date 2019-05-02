@@ -38,6 +38,9 @@ function colorSelection() {
   }
 }
 
+/**
+ * Try build spec from page content. Do not cache this (at least for now) to allow e.g. Swagger editor to fetch the latest content when opened. Does this
+ */
 export const buildSpec = async (): Promise<OpenAPIObject> => {
   const pageContent = getPageContent();
   const spec = await buildSpecFrom(pageContent);
@@ -51,10 +54,14 @@ export const checkIfCanParsePathsFromPage = async (): Promise<boolean> => {
     debugLog("Cached API check result", apiCheckResult);
     return apiCheckResult;
   }
-  const spec: OpenAPIObject = await buildSpec();
-  const isApi = Object.keys(spec.paths).length > 0;
-  apiCheckResult = isApi;
-  return isApi;
+  try {
+    const spec: OpenAPIObject = await buildSpec();
+    const isApi = Object.keys(spec.paths).length > 0;
+    apiCheckResult = isApi;
+  } catch (err) {
+    console.error("Failed building OpenAPI spec from page", err);
+  }
+  return !!apiCheckResult;
 };
 
 export const getPageContent = (): PageContent => {
