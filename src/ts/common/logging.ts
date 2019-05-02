@@ -1,6 +1,6 @@
 import debug from "debug";
 
-// TODO Control this from webpack build?
-debug.enable("unmock:*");
+const debugConfig = process.env.DEBUG || "";
+debug.enable(debugConfig);
 
 export default debug;

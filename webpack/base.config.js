@@ -1,18 +1,14 @@
-var webpack = require("webpack"),
+const webpack = require("webpack"),
   path = require("path"),
-  fileSystem = require("fs"),
-  env = require("./utils/env"),
   CleanWebpackPlugin = require("clean-webpack-plugin"),
   CopyWebpackPlugin = require("copy-webpack-plugin"),
   HtmlWebpackPlugin = require("html-webpack-plugin"),
   WriteFilePlugin = require("write-file-webpack-plugin"),
   SourceMapDevToolPlugin = webpack.SourceMapDevToolPlugin;
-// load the secrets
-var alias = {};
 
-var secretsPath = path.join(__dirname, "secrets." + env.NODE_ENV + ".js");
+const alias = {};
 
-var fileExtensions = [
+const fileExtensions = [
   "jpg",
   "jpeg",
   "png",
@@ -25,25 +21,21 @@ var fileExtensions = [
   "woff2",
 ];
 
-if (fileSystem.existsSync(secretsPath)) {
-  alias["secrets"] = secretsPath;
-}
+const basePath = path.resolve(__dirname, "..");
 
-var options = {
+const options = {
+  context: basePath,
   mode: process.env.NODE_ENV || "development",
   entry: {
-    popup: path.join(__dirname, "src", "ts", "popup", "index.ts"),
-    background: path.join(__dirname, "src", "ts", "background", "index.ts"),
-    explorer: path.join(__dirname, "src", "ts", "explorer", "index.tsx"),
-    contentScript: path.join(__dirname, "src", "ts", "content", "index.ts"),
-    swagger: path.join(__dirname, "src", "ts", "swagger", "index.ts"),
+    popup: path.join(basePath, "src", "ts", "popup", "index.ts"),
+    background: path.join(basePath, "src", "ts", "background", "index.ts"),
+    explorer: path.join(basePath, "src", "ts", "explorer", "index.tsx"),
+    contentScript: path.join(basePath, "src", "ts", "content", "index.ts"),
+    swagger: path.join(basePath, "src", "ts", "swagger", "index.ts"),
   },
   devtool: false,
-  chromeExtensionBoilerplate: {
-    notHotReload: ["contentScript"],
-  },
   output: {
-    path: path.join(__dirname, "build"),
+    path: path.resolve(basePath, "build"),
     filename: "[name].bundle.js",
   },
   module: {
@@ -92,10 +84,10 @@ var options = {
     // clean the build folder
     new CleanWebpackPlugin(["build"]),
     // expose and write the allowed env vars on the compiled bundle
-    new webpack.EnvironmentPlugin(["NODE_ENV"]),
+    new webpack.EnvironmentPlugin(["NODE_ENV", "DEBUG"]),
     new CopyWebpackPlugin([
       {
-        from: "src/manifest.json",
+        from: path.join(basePath, "src", "manifest.json"),
         transform: function(content, path) {
           // generates the manifest file using the package.json informations
           return Buffer.from(
@@ -110,27 +102,32 @@ var options = {
     ]),
     new CopyWebpackPlugin([
       {
-        from: "src/img",
+        from: path.join("src", "img"),
       },
     ]),
-    new CopyWebpackPlugin([{ from: "swagger-editor/dist", to: "dist" }]),
+    new CopyWebpackPlugin([
+      {
+        from: path.join("swagger-editor", "dist"),
+        to: "dist",
+      },
+    ]),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "popup.html"),
+      template: path.join("src", "popup.html"),
       filename: "popup.html",
       chunks: ["popup"],
     }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "background.html"),
+      template: path.join("src", "background.html"),
       filename: "background.html",
       chunks: ["background"],
     }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "explorer.html"),
+      template: path.join("src", "explorer.html"),
       filename: "explorer.html",
       chunks: ["explorer"],
     }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "swagger.html"),
+      template: path.join("src", "swagger.html"),
       filename: "swagger.html",
       chunks: ["swagger"],
     }),
