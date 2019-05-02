@@ -1,7 +1,7 @@
 import * as messages from "../messages";
 import { sender } from "../browser";
 import debug from "../common/logging";
-import { checkIfCanParsePathsFromPage, getPageContent } from "./utils";
+import { checkCachedIsApiResult, getPageContent } from "./utils";
 const debugLog = debug("unmock:content:handlers");
 
 const handleSelectionRequest = async () => {
@@ -43,7 +43,7 @@ const messageHandler = async (request, _) => {
   } else if (messages.SelectionRequest.matches(request)) {
     await handleSelectionRequest();
   } else if (request.type === messages.MessageType.CHECK_IF_API) {
-    return checkIfCanParsePathsFromPage();
+    return checkCachedIsApiResult();
   } else if (request.type === messages.MessageType.GET_CONTENT) {
     return getPageContent();
   }
