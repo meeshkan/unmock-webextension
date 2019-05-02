@@ -11,21 +11,22 @@ let apiCheckResult: boolean;
  * Check if can build a non-trivial OpenAPI spec from the page content. Cache the result to `apiCheckResult` to avoid
  * building spec everytime this is called. This could mean missing some paths not loaded when this is first executed.
  */
-export const checkAndCacheApiCheckResult = async (): Promise<boolean> => {
+export const checkAndCacheApiCheckResult = async (
+  pageContent: PageContent
+): Promise<boolean> => {
   if (typeof apiCheckResult !== "undefined") {
     debugLog("Cached API check result", apiCheckResult);
     return apiCheckResult;
   }
-  apiCheckResult = await checkIfCanParsePathsFromPage();
+  apiCheckResult = await checkIfCanParsePathsFromPage(pageContent);
   return !!apiCheckResult;
 };
 
-export const checkIfCanParsePathsFromPage = async (): Promise<
-  boolean | undefined
-> => {
+export const checkIfCanParsePathsFromPage = async (
+  pageContent: PageContent
+): Promise<boolean | undefined> => {
   let isApi: boolean;
   try {
-    const pageContent = getPageContent();
     const spec: OpenAPIObject = await buildSpecFrom(pageContent);
     isApi = Object.keys(spec.paths).length > 0;
   } catch (err) {

@@ -43,7 +43,8 @@ const messageHandler = async (request, _) => {
   } else if (messages.SelectionRequest.matches(request)) {
     await handleSelectionRequest();
   } else if (request.type === messages.MessageType.CHECK_IF_API) {
-    return checkAndCacheApiCheckResult();
+    const pageContent = getPageContent();
+    return checkAndCacheApiCheckResult(pageContent);
   } else if (request.type === messages.MessageType.GET_CONTENT) {
     return getPageContent();
   }
