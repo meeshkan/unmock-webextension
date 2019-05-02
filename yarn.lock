@@ -1787,6 +1787,18 @@
     "@types/react" "*"
     "@types/webpack-env" "*"
 
+"@types/swagger-parser@^4.0.3":
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/@types/swagger-parser/-/swagger-parser-4.0.3.tgz#ff88b5999118143fce8ac38594bc9ad2ffacaf38"
+  integrity sha512-Jvq/0JXjZ/sbG7S2zb+8r//L17DpH2irKWiwxj67ucK518OC55NKWNfVvah4hYPhfjWr1bltXmBjBI3Y4XwHqw==
+  dependencies:
+    "@types/swagger-schema-official" "*"
+
+"@types/swagger-schema-official@*":
+  version "2.0.15"
+  resolved "https://registry.yarnpkg.com/@types/swagger-schema-official/-/swagger-schema-official-2.0.15.tgz#5591141e8e3e2e81a4b49c3a3d2321d1367d4ebc"
+  integrity sha512-ZQKcczZbsfVKf+QKViMvjGni1BADoWCjnimkUc3l4zV/d0sM4cj+Hbtg9gjwUaPhi4m3Q8ne62B+fYubUIPqZQ==
+
 "@types/unist@*", "@types/unist@^2.0.0", "@types/unist@^2.0.2":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@types/unist/-/unist-2.0.3.tgz#9c088679876f374eb5983f150d4787aa6fb32d7e"

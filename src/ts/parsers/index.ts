@@ -4,10 +4,15 @@ import { OpenApiBuilder, OpenAPIObject } from "openapi3-ts";
 import * as yaml from "js-yaml";
 import { merge as _merge } from "lodash";
 
-export const getOpenApiObject = async (obj: object) => {
-  const validatedApi = await SwaggerParser.validate(obj);
-  const openApiObj = OpenApiBuilder.create(validatedApi);
-  return openApiObj;
+export const getOpenApiBuilder = async (
+  obj: object
+): Promise<OpenApiBuilder> => {
+  const validatedApi = await SwaggerParser.validate(obj as any);
+  return OpenApiBuilder.create(validatedApi);
+};
+
+export const getOpenApiObject = async (obj: object): Promise<OpenAPIObject> => {
+  return (await getOpenApiBuilder(obj)).getSpec();
 };
 
 export const getOpenApiObjectFromString = async (str: string) => {
@@ -30,7 +35,7 @@ export const parseOpenApiObject = (pageContent: PageContent): OpenAPIObject => {
       title: pageContent.title,
     },
   };
-  const options = _merge(defaultOptions, pageOptions);
+  const options = _merge({}, defaultOptions, pageOptions);
   const openApiBuilder: OpenApiBuilder = OpenApiBuilder.create(options);
   return openApiBuilder.getSpec();
 };
