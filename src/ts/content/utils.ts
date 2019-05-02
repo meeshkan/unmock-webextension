@@ -25,7 +25,7 @@ export const checkAndCacheApiCheckResult = async (
 export const checkIfCanParsePathsFromPage = async (
   pageContent: PageContent
 ): Promise<boolean | undefined> => {
-  let isApi: boolean;
+  let isApi: boolean = false;
   try {
     const spec: OpenAPIObject = await buildSpecFrom(pageContent);
     isApi = Object.keys(spec.paths).length > 0;
