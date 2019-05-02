@@ -1,10 +1,7 @@
 import * as messages from "../messages";
 import { sender } from "../browser";
-import { PageContent } from "../common/types";
-import { buildSpecFrom } from "../parsers";
-import { OpenAPIObject } from "openapi3-ts";
 import debug from "../common/logging";
-
+import { checkIfCanParsePathsFromPage, getPageContent } from "./utils";
 const debugLog = debug("unmock:content:handlers");
 
 const handleSelectionRequest = async () => {
@@ -37,39 +34,6 @@ function colorSelection() {
     debugLog("Nothing to color.");
   }
 }
-
-/**
- * Try build spec from page content. Do not cache this (at least for now) to allow e.g. Swagger editor to fetch the latest content when opened. Does this
- */
-export const buildSpec = async (): Promise<OpenAPIObject> => {
-  const pageContent = getPageContent();
-  const spec = await buildSpecFrom(pageContent);
-  return spec;
-};
-
-let apiCheckResult: boolean;
-
-export const checkIfCanParsePathsFromPage = async (): Promise<boolean> => {
-  if (typeof apiCheckResult !== "undefined") {
-    debugLog("Cached API check result", apiCheckResult);
-    return apiCheckResult;
-  }
-  try {
-    const spec: OpenAPIObject = await buildSpec();
-    const isApi = Object.keys(spec.paths).length > 0;
-    apiCheckResult = isApi;
-  } catch (err) {
-    console.error("Failed building OpenAPI spec from page", err);
-  }
-  return !!apiCheckResult;
-};
-
-export const getPageContent = (): PageContent => {
-  const body = document.body;
-  const textContent = body.innerText || body.textContent;
-  const innerHtml = document.documentElement.innerHTML;
-  return { title: document.title, innerHtml, textContent };
-};
 
 // TODO: Remove the mish mash of very strict and lazy type-checking using both `...matches(request)` and `request.type === ...`
 const messageHandler = async (request, _) => {

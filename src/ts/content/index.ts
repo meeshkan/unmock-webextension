@@ -1,5 +1,6 @@
 import { browser } from "webextension-polyfill-ts";
-import messageHandler, { checkIfCanParsePathsFromPage } from "./handlers";
+import messageHandler from "./handlers";
+import { checkIfCanParsePathsFromPage } from "./utils";
 import * as messages from "../messages";
 import debug from "../common/logging";
 import { sender } from "../browser";
