@@ -4,6 +4,7 @@ import { sender, storage } from "../browser";
 import * as messages from "../messages";
 import { PageContent } from "../common/types";
 import * as yaml from "js-yaml";
+import { parseOpenApiObject } from "../parsers";
 
 export type SwaggerEditor = any;
 
@@ -52,7 +53,7 @@ const fillFromTab = async (updateSpec: (content: string) => void) => {
     type: messages.MessageType.GET_CONTENT,
     props: {},
   });
-  const specJson = buildJsonSpecFrom(pageContent);
+  const specJson = parseOpenApiObject(pageContent);
   const specString = yaml.safeDump(specJson, { sortKeys: false });
   updateSpec(specString);
 };
