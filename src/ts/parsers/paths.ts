@@ -6,6 +6,7 @@ import {
   PathItemObject,
   ParameterObject,
 } from "openapi3-ts";
+import * as _ from "lodash";
 
 export interface Path {
   name: string;
@@ -26,8 +27,8 @@ export class Monad<A> {
   public map(f: (value: A) => A): Monad<A> {
     return Monad.of(f(this.value_));
   }
-  public chain(f: (monad: Monad<A>) => Monad<A>): Monad<A> {
-    return f(this);
+  public flatMap(f: (value: A) => Monad<A>): Monad<A> {
+    return f(this.value);
   }
   public get value(): A {
     return this.value_;
@@ -55,6 +56,16 @@ export class PathProcessor extends Monad<Path> {
   }
 }
 
+function compose<X>(...fs: Array<(x: X) => X>): (x: X) => X {
+  return (x: X) => fs.reduceRight((y, f) => f(y), x);
+}
+
 export const extractPathParameters = (path: Path): Path => {
   return PathProcessor.updatePathName(path, "/v1/pets");
 };
+
+export const extractPathParametersFull = compose(extractPathParameters);
+
+export const extractPathParametersFull2: (path: Path) => Path = _.flow([
+  extractPathParameters,
+]);
