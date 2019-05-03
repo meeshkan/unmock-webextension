@@ -1,6 +1,6 @@
-# Unmock chrome extension
+# Unmock browser extension
 
-[![CircleCI](https://circleci.com/gh/unmock/unmock-chrome-extension.svg?style=svg)](https://circleci.com/gh/unmock/unmock-chrome-extension)
+[![CircleCI](https://circleci.com/gh/unmock/unmock-webextension.svg?style=svg)](https://circleci.com/gh/unmock/unmock-webextension)
 
 Easy-to-use in-browser tool for creating OpenAPI specification from written documentation.
 
