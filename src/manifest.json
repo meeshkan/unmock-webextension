@@ -1,7 +1,7 @@
 {
   "name": "Unmock API tools",
   "version": "0.0.1",
-  "description": "Good times labeling APIs!",
+  "description": "Easily create OpenAPI specification from written API documentation",
   "short_name": "Unmock",
   "homepage_url": "https://unmock.io",
   "permissions": [
