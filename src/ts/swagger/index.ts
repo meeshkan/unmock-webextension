@@ -1,4 +1,4 @@
-import { WrapActionPlugin } from "./wrap-spec-action";
+import { WrapActionPlugin } from "./unmock-spec-plugin";
 import { browser } from "webextension-polyfill-ts";
 import { sender, storage } from "../browser";
 import * as messages from "../messages";
