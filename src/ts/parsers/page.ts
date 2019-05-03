@@ -46,7 +46,10 @@ export const parsePathsObjectFromHttpCallMatch = (
   const path = { name: match[2], pathParameters: [] };
   const cleanedPath = extractPathParametersFull(path);
   const operationName = match[1].toLowerCase();
-  const pathItem: PathItemObject = { [operationName]: operationBase };
+  const operation = _merge({}, operationBase, {
+    parameters: cleanedPath.pathParameters,
+  });
+  const pathItem: PathItemObject = { [operationName]: operation };
   return { [cleanedPath.name]: pathItem };
 };
 
