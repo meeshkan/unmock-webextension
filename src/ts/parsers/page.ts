@@ -4,6 +4,8 @@ import {
   OpenAPIObject,
   PathsObject,
   OperationObject,
+  PathItemObject,
+  ParameterObject,
 } from "openapi3-ts";
 import { merge as _merge } from "lodash";
 import * as _ from "lodash";
@@ -21,25 +23,83 @@ const specBase = {
   paths: {},
 };
 
-const operationBase = (): OperationObject => ({
+const operationBase: OperationObject = {
   responses: {
     200: {
       description: "OK",
     },
   },
-});
+};
+
+const pathName = "/api/v2/project/(int: id)/";
+
+interface Path {
+  path: string;
+  pathParameters: ParameterObject[];
+}
+
+class PathProcessor {
+  public static of(path: Path) {
+    return new PathProcessor(path);
+  }
+  private path: Path;
+  constructor(path: Path) {
+    this.path = path;
+  }
+  public map(f: (path: Path) => Path): PathProcessor {
+    return PathProcessor.of(f(path));
+  }
+  public chain(
+    f: (pathProcessor: PathProcessor) => PathProcessor
+  ): PathProcessor {
+    return f(this);
+  }
+  public flatten() {
+    return this.path;
+  }
+}
+
+const extractPathParameters = (path: Path): Path => {
+  return path;
+};
+
+const path: Path = {
+  path: pathName,
+  pathParameters: [],
+};
+
+const processedPath = PathProcessor.of(path).map(extractPathParameters);
+
+/**
+ * Pattern for matching expressions like
+ * GET /v1/pets
+ * PUT /v2/:id
+ * DELETE /v1/(int: id)
+ */
+export const httpCallPattern = /(GET|POST|DELETE|PUT)\s((?:\/(?:[\w:]+|\([\w:\s]+\)|))+)/g;
+
+export const parsePathsObjectFromHttpCallMatch = (
+  match: RegExpExecArray
+): PathsObject => {
+  const pathName = match[2];
+  const operationName = match[1].toLowerCase();
+  const pathItem: PathItemObject = { [operationName]: operationBase };
+  return { [pathName]: pathItem };
+};
 
 export const parsePathsFromPage = (pageContent: PageContent): PathsObject => {
   // TODO Revisit the pattern if the greedy quantifiers are a performance hazard
-  const pattern = /(GET|POST|DELETE|PUT)\s((?:\/[\w.\/-:{}]*)+)/g;
-  const paths: PathsObject = {};
-  let patternExecResult = pattern.exec(pageContent.textContent);
+  /*
+  const pattern = /(GET|POST|DELETE|PUT)\s((?:\/[\w.\/-:{}\(\)]*)+)/g;*/
+
+  let paths: PathsObject = {};
+  let patternExecResult = httpCallPattern.exec(pageContent.textContent);
 
   while (patternExecResult !== null) {
-    const pathName = patternExecResult[2];
-    const operationName = patternExecResult[1].toLowerCase();
-    _merge(paths, { [pathName]: { [operationName]: operationBase() } });
-    patternExecResult = pattern.exec(pageContent.textContent);
+    const fullMatch: RegExpExecArray = patternExecResult;
+    const pathsObject = parsePathsObjectFromHttpCallMatch(fullMatch);
+    paths = _merge({}, paths, pathsObject);
+    patternExecResult = httpCallPattern.exec(pageContent.textContent);
   }
   debugLog(`Got paths`, paths);
   return paths;
