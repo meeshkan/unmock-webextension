@@ -30,6 +30,7 @@ const operationBase = (): OperationObject => ({
 });
 
 export const parsePathsFromPage = (pageContent: PageContent): PathsObject => {
+  // TODO Revisit the pattern if the greedy quantifiers are a performance hazard
   const pattern = /(GET|POST|DELETE|PUT)\s((?:\/[\w.\/-:{}]*)+)/g;
   const paths: PathsObject = {};
   let patternExecResult = pattern.exec(pageContent.textContent);
