@@ -1,9 +1,4 @@
-import {
-  Path,
-  PathProcessor,
-  extractPathParameters,
-  extractPathParametersFull2,
-} from "./paths";
+import { Path, extractPathParametersFull } from "./paths";
 
 describe("Parsing paths", () => {
   test("works for simple path", () => {
@@ -17,7 +12,7 @@ describe("Parsing paths", () => {
       extractPathParameters
     ).value;
     */
-    const processedPath: Path = extractPathParametersFull2(path);
-    expect(processedPath.name).toBe("/api/v2/project/(int: id)/");
+    const processedPath: Path = extractPathParametersFull(path);
+    expect(processedPath.name).toBe("/api/v2/project/:id/");
   });
 });

@@ -11,6 +11,7 @@ import { merge as _merge } from "lodash";
 import * as _ from "lodash";
 import * as SwaggerParser from "swagger-parser";
 import debug from "../common/logging";
+import { extractPathParametersFull } from "./paths";
 
 const debugLog = debug("unmock:parsers:page");
 
@@ -31,45 +32,6 @@ const operationBase: OperationObject = {
   },
 };
 
-const pathName = "/api/v2/project/(int: id)/";
-
-interface Path {
-  path: string;
-  pathParameters: ParameterObject[];
-}
-
-class PathProcessor {
-  public static of(path: Path) {
-    return new PathProcessor(path);
-  }
-  private path: Path;
-  constructor(path: Path) {
-    this.path = path;
-  }
-  public map(f: (path: Path) => Path): PathProcessor {
-    return PathProcessor.of(f(path));
-  }
-  public chain(
-    f: (pathProcessor: PathProcessor) => PathProcessor
-  ): PathProcessor {
-    return f(this);
-  }
-  public flatten() {
-    return this.path;
-  }
-}
-
-const extractPathParameters = (path: Path): Path => {
-  return path;
-};
-
-const path: Path = {
-  path: pathName,
-  pathParameters: [],
-};
-
-const processedPath = PathProcessor.of(path).map(extractPathParameters);
-
 /**
  * Pattern for matching expressions like
  * GET /v1/pets
@@ -81,10 +43,11 @@ export const httpCallPattern = /(GET|POST|DELETE|PUT)\s((?:\/(?:[\w:]+|\([\w:\s]
 export const parsePathsObjectFromHttpCallMatch = (
   match: RegExpExecArray
 ): PathsObject => {
-  const pathName = match[2];
+  const path = { name: match[2], pathParameters: [] };
+  const cleanedPath = extractPathParametersFull(path);
   const operationName = match[1].toLowerCase();
   const pathItem: PathItemObject = { [operationName]: operationBase };
-  return { [pathName]: pathItem };
+  return { [cleanedPath.name]: pathItem };
 };
 
 export const parsePathsFromPage = (pageContent: PageContent): PathsObject => {
@@ -94,6 +57,7 @@ export const parsePathsFromPage = (pageContent: PageContent): PathsObject => {
 
   let paths: PathsObject = {};
   let patternExecResult = httpCallPattern.exec(pageContent.textContent);
+  console.log(`Matching to`, pageContent.textContent);
 
   while (patternExecResult !== null) {
     const fullMatch: RegExpExecArray = patternExecResult;
