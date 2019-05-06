@@ -2,9 +2,7 @@ const webpack = require("webpack"),
   path = require("path"),
   CleanWebpackPlugin = require("clean-webpack-plugin"),
   CopyWebpackPlugin = require("copy-webpack-plugin"),
-  HtmlWebpackPlugin = require("html-webpack-plugin"),
-  WriteFilePlugin = require("write-file-webpack-plugin"),
-  SourceMapDevToolPlugin = webpack.SourceMapDevToolPlugin;
+  HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const alias = {};
 
@@ -131,8 +129,6 @@ const options = {
       filename: "swagger.html",
       chunks: ["swagger"],
     }),
-    new WriteFilePlugin(),
-    new SourceMapDevToolPlugin({}),
   ],
 };
 
