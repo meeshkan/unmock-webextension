@@ -6,12 +6,19 @@ export interface Path {
   pathParameters: ParameterObject[];
 }
 
+/**
+ * Transform a single route portion of path and maybe extract an OpenAPI spec compatible ParameterObject.
+ * For example, for `(int: id)`, return `[":id", `parameterObject]`, where `parameterObject`has schema `type: integer`.
+ * As another example, for `:id`, return `[":id", parmaeterObject]` without the type information.
+ * @param str Part of path, for example `:id` or `(int: id)`.
+ */
 const cleanPartOfPathAndExtractParameters = (
   str: string
 ): [string, ParameterObject | undefined] => {
   const rtdPathPattern = /^\(([\w_]+):\s?([\w_]+)\)$/;
   const rtdMatch = str.match(rtdPathPattern);
-  const colonMatch = str.match(/^:([\w_]+)/);
+  const colonPathPattern = /^:([\w_]+)/;
+  const colonMatch = str.match(colonPathPattern);
   if (rtdMatch) {
     const parameterName = rtdMatch[2];
     // TODO Better
@@ -37,7 +44,11 @@ const cleanPartOfPathAndExtractParameters = (
   return [str, null];
 };
 
-export const extractPathParametersRtd = (path: Path): Path => {
+/**
+ * @param path Path object built from, e.g., `/v1/pets/:id`.
+ * @returns Transformed path object with extracted path parameters.
+ */
+export const cleanPathAndExtractParameters = (path: Path): Path => {
   const pathSplit = path.name.split("/");
   const params: ParameterObject[] = [];
   const cleanedPathSplit = pathSplit.map(value => {
@@ -59,7 +70,3 @@ export const extractPathParametersRtd = (path: Path): Path => {
     pathParameters: path.pathParameters.concat(...params),
   };
 };
-
-export const extractPathParametersFull: (path: Path) => Path = _.flow([
-  extractPathParametersRtd,
-]);

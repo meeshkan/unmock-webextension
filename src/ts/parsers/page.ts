@@ -11,7 +11,7 @@ import { merge as _merge } from "lodash";
 import * as _ from "lodash";
 import * as SwaggerParser from "swagger-parser";
 import debug from "../common/logging";
-import { extractPathParametersFull } from "./paths";
+import { cleanPathAndExtractParameters } from "./paths";
 
 const debugLog = debug("unmock:parsers:page");
 
@@ -44,7 +44,7 @@ export const parsePathsObjectFromHttpCallMatch = (
   match: RegExpExecArray
 ): PathsObject => {
   const path = { name: match[2], pathParameters: [] };
-  const cleanedPath = extractPathParametersFull(path);
+  const cleanedPath = cleanPathAndExtractParameters(path);
   const operationName = match[1].toLowerCase();
   const operation = _merge({}, operationBase, {
     parameters: cleanedPath.pathParameters,
