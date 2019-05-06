@@ -60,7 +60,6 @@ export const parsePathsFromPage = (pageContent: PageContent): PathsObject => {
 
   let paths: PathsObject = {};
   let patternExecResult = httpCallPattern.exec(pageContent.textContent);
-  console.log(`Matching to`, pageContent.textContent);
 
   while (patternExecResult !== null) {
     const fullMatch: RegExpExecArray = patternExecResult;

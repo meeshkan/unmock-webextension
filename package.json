@@ -26,6 +26,7 @@
     "react-bootstrap": "^1.0.0-beta.8",
     "react-dom": "^16.8.6",
     "swagger-parser": "^6.0.5",
+    "typescript-optional": "^2.0.1",
     "webextension-polyfill": "^0.4.0",
     "webextension-polyfill-ts": "^0.9.0",
     "xstate": "^4.5.0"
