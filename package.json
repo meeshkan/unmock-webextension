@@ -4,7 +4,7 @@
   "description": "Unmock chrome extension with webpack",
   "license": "MIT",
   "scripts": {
-    "build": "NODE_ENV=production webpack --config ./webpack/prod.config.js --display-error-details",
+    "build": "NODE_ENV=production DEBUG= webpack --config ./webpack/prod.config.js --display-error-details",
     "start": "NODE_ENV=development DEBUG=unmock* webpack-dev-server --config ./webpack/dev.config.js --display-error-details",
     "lint": "tslint --project .",
     "lint-fix": "tslint --project . --fix",

@@ -1,7 +1,11 @@
 const merge = require("webpack-merge");
+const WriteFilePlugin = require("write-file-webpack-plugin");
+const webpack = require("webpack");
+const SourceMapDevToolPlugin = webpack.SourceMapDevToolPlugin;
+
 const path = require("path");
 const baseConfig = require("./base.config.js");
-const webpack = require("webpack");
+
 const _cloneDeep = require("lodash/cloneDeep");
 
 const config = _cloneDeep(baseConfig);
@@ -20,10 +24,6 @@ for (let entryName in config.entry) {
   }
 }
 
-config.plugins = [new webpack.HotModuleReplacementPlugin()].concat(
-  config.plugins || []
-);
-
 const devServer = {
   hot: true,
   contentBase: path.join(__dirname, "../build"),
@@ -33,6 +33,11 @@ const devServer = {
 
 const devOptions = {
   devServer,
+  plugins: [
+    new WriteFilePlugin(),
+    new SourceMapDevToolPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+  ],
 };
 
 module.exports = merge(config, devOptions);
