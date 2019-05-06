@@ -4,11 +4,13 @@ import {
   OpenAPIObject,
   PathsObject,
   OperationObject,
+  PathItemObject,
 } from "openapi3-ts";
 import { merge as _merge } from "lodash";
 import * as _ from "lodash";
 import * as SwaggerParser from "swagger-parser";
 import debug from "../common/logging";
+import { cleanPathAndExtractParameters } from "./paths";
 
 const debugLog = debug("unmock:parsers:page");
 
@@ -21,25 +23,44 @@ const specBase = {
   paths: {},
 };
 
-const operationBase = (): OperationObject => ({
+const operationBase: OperationObject = {
   responses: {
     200: {
       description: "OK",
     },
   },
-});
+};
+
+/**
+ * Pattern for matching expressions like
+ * GET /v1/pets
+ * PUT /v2/:id
+ * DELETE /v1/(int: id)
+ */
+export const httpCallPattern = /(GET|POST|DELETE|PUT)\s((?:\/(?:[\w:]+|\([\w:\s]+\)|))+)/g;
+
+export const parsePathsObjectFromHttpCallMatch = (
+  match: RegExpExecArray
+): PathsObject => {
+  const path = { name: match[2], pathParameters: [] };
+  const cleanedPath = cleanPathAndExtractParameters(path);
+  const operationName = match[1].toLowerCase();
+  const operation = _merge({}, operationBase, {
+    parameters: cleanedPath.pathParameters,
+  });
+  const pathItem: PathItemObject = { [operationName]: operation };
+  return { [cleanedPath.name]: pathItem };
+};
 
 export const parsePathsFromPage = (pageContent: PageContent): PathsObject => {
-  // TODO Revisit the pattern if the greedy quantifiers are a performance hazard
-  const pattern = /(GET|POST|DELETE|PUT)\s((?:\/[\w.\/-:{}]*)+)/g;
-  const paths: PathsObject = {};
-  let patternExecResult = pattern.exec(pageContent.textContent);
+  let paths: PathsObject = {};
+  let patternExecResult = httpCallPattern.exec(pageContent.textContent);
 
   while (patternExecResult !== null) {
-    const pathName = patternExecResult[2];
-    const operationName = patternExecResult[1].toLowerCase();
-    _merge(paths, { [pathName]: { [operationName]: operationBase() } });
-    patternExecResult = pattern.exec(pageContent.textContent);
+    const fullMatch: RegExpExecArray = patternExecResult;
+    const pathsObject = parsePathsObjectFromHttpCallMatch(fullMatch);
+    paths = _merge({}, paths, pathsObject);
+    patternExecResult = httpCallPattern.exec(pageContent.textContent);
   }
   debugLog(`Got paths`, paths);
   return paths;

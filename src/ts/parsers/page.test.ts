@@ -1,19 +1,37 @@
 import { buildSpecFrom } from "./page";
 import { PageContent } from "../common/types";
 
-const pageContent: PageContent = {
-  title: "Page title",
-  innerHtml: "<html></html><body>GET /v1/pets PUT /v2/pets</body>",
-  textContent: "GET /v1/pets PUT /v2/pets",
-};
-
 describe("Building spec from page content", () => {
   test("parses paths", async () => {
-    const spec = await buildSpecFrom(pageContent);
+    const petsPageContent: PageContent = {
+      title: "Page title",
+      innerHtml: "<html><body>GET /v1/pets/:id PUT /v2/pets</body></html>",
+      textContent: "GET /v1/pets/:id PUT /v2/pets",
+    };
+    const spec = await buildSpecFrom(petsPageContent);
     expect(Object.keys(spec.paths)).toHaveLength(2);
-    const pathItem = spec.paths["/v1/pets"];
+    expect(spec.paths).toHaveProperty("/v1/pets/:id");
+    const pathItem = spec.paths["/v1/pets/:id"];
     expect(pathItem).toBeDefined();
     const operationItem = pathItem.get;
     expect(operationItem).toBeDefined();
+    expect(operationItem.parameters).toHaveLength(1);
+    expect(operationItem.parameters[0].name).toBe("id");
+  });
+  test("parses RTD-style paths", async () => {
+    const rtdPageContent: PageContent = {
+      title: "Page title",
+      innerHtml:
+        "<html><<body>GET /api/v2/project/(int: id)/ plus some other stuff</body>/html>",
+      textContent: "GET /api/v2/project/(int: id)/ plus some other stuff",
+    };
+    const spec = await buildSpecFrom(rtdPageContent);
+    expect(Object.keys(spec.paths)).toHaveLength(1);
+    expect(spec.paths).toHaveProperty("/api/v2/project/:id/");
+    const pathItem = spec.paths["/api/v2/project/:id/"];
+    expect(pathItem).toBeDefined();
+    const operationItem = pathItem.get;
+    expect(operationItem).toBeDefined();
+    expect(operationItem.parameters).toHaveLength(1);
   });
 });
