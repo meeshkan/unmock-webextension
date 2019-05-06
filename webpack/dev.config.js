@@ -24,12 +24,6 @@ for (let entryName in config.entry) {
   }
 }
 
-config.plugins = [
-  new WriteFilePlugin(),
-  new SourceMapDevToolPlugin(),
-  new webpack.HotModuleReplacementPlugin(),
-].concat(config.plugins || []);
-
 const devServer = {
   hot: true,
   contentBase: path.join(__dirname, "../build"),
@@ -39,6 +33,11 @@ const devServer = {
 
 const devOptions = {
   devServer,
+  plugins: [
+    new WriteFilePlugin(),
+    new SourceMapDevToolPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+  ],
 };
 
 module.exports = merge(config, devOptions);
