@@ -3,17 +3,29 @@ import * as _ from "lodash";
 import { Optional } from "typescript-optional";
 
 export interface PartOfPath {
+  /**
+   * Part of path, for example `:id`
+   */
   name: string;
+  /**
+   * Path parameter extracted from `name`, would be present and have `name: id` for `:id`.
+   */
   pathParameter?: ParameterObject;
 }
 
 export interface Path {
+  /**
+   * Full path, for example `/v1/pets/:id`
+   */
   name: string;
+  /**
+   * Path parameters extracted from parts of path such as `:id`
+   */
   pathParameters: ParameterObject[];
 }
 
 /**
- * @param str Part of route, for example, `(int :id)`
+ * @param str Part of path, for example, `(int: id)`
  * @returns Filled optional if part of route matches the expected pattern, empty otherwise.
  */
 const tryHandleRouteWithParentheses = (str: string): Optional<PartOfPath> => {
@@ -38,10 +50,10 @@ const tryHandleRouteWithParentheses = (str: string): Optional<PartOfPath> => {
 };
 
 /**
- * @param str Part of route, for example, `:id`
- * @returns Filled optional if part of route matches the expected pattern, empty otherwise.
+ * @param str Part of path, for example, `:id`
+ * @returns Filled optional if part of path matches the expected pattern, empty otherwise.
  */
-const tryHandleRouteWithColon = (str: string): Optional<PartOfPath> => {
+const tryHandleRouteStartingWithColon = (str: string): Optional<PartOfPath> => {
   const colonPathPattern = /^:([\w_]+)/;
   const colonMatch = str.match(colonPathPattern);
   if (!colonMatch) {
@@ -70,7 +82,7 @@ export const cleanPathAndExtractParameters = (path: Path): Path => {
   const pathParameterObjects: ParameterObject[] = [];
   const cleanedPathSplit = pathSplit.map(partOfPath => {
     const cleanedPartOfPath: PartOfPath = Optional.of(partOfPath)
-      .flatMap(tryHandleRouteWithColon)
+      .flatMap(tryHandleRouteStartingWithColon)
       .or(() => tryHandleRouteWithParentheses(partOfPath))
       .orElse({ name: partOfPath });
 

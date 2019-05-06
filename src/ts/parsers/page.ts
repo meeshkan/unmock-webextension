@@ -5,7 +5,6 @@ import {
   PathsObject,
   OperationObject,
   PathItemObject,
-  ParameterObject,
 } from "openapi3-ts";
 import { merge as _merge } from "lodash";
 import * as _ from "lodash";
@@ -54,10 +53,6 @@ export const parsePathsObjectFromHttpCallMatch = (
 };
 
 export const parsePathsFromPage = (pageContent: PageContent): PathsObject => {
-  // TODO Revisit the pattern if the greedy quantifiers are a performance hazard
-  /*
-  const pattern = /(GET|POST|DELETE|PUT)\s((?:\/[\w.\/-:{}\(\)]*)+)/g;*/
-
   let paths: PathsObject = {};
   let patternExecResult = httpCallPattern.exec(pageContent.textContent);
 

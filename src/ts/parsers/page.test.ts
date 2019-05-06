@@ -5,16 +5,18 @@ describe("Building spec from page content", () => {
   test("parses paths", async () => {
     const petsPageContent: PageContent = {
       title: "Page title",
-      innerHtml: "<html><body>GET /v1/pets PUT /v2/pets</body></html>",
-      textContent: "GET /v1/pets PUT /v2/pets",
+      innerHtml: "<html><body>GET /v1/pets/:id PUT /v2/pets</body></html>",
+      textContent: "GET /v1/pets/:id PUT /v2/pets",
     };
     const spec = await buildSpecFrom(petsPageContent);
     expect(Object.keys(spec.paths)).toHaveLength(2);
-    expect(spec.paths).toHaveProperty("/v1/pets");
-    const pathItem = spec.paths["/v1/pets"];
+    expect(spec.paths).toHaveProperty("/v1/pets/:id");
+    const pathItem = spec.paths["/v1/pets/:id"];
     expect(pathItem).toBeDefined();
     const operationItem = pathItem.get;
     expect(operationItem).toBeDefined();
+    expect(operationItem.parameters).toHaveLength(1);
+    expect(operationItem.parameters[0].name).toBe("id");
   });
   test("parses RTD-style paths", async () => {
     const rtdPageContent: PageContent = {
@@ -30,5 +32,6 @@ describe("Building spec from page content", () => {
     expect(pathItem).toBeDefined();
     const operationItem = pathItem.get;
     expect(operationItem).toBeDefined();
+    expect(operationItem.parameters).toHaveLength(1);
   });
 });
