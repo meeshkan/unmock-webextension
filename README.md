@@ -77,11 +77,15 @@ Follow the instructions [here](https://developer.mozilla.org/en-US/docs/Mozilla/
 
 ## License
 
+[MIT](./LICENSE)
+
+Copyright (c) 2018–2019 [Meeshkan](https://meeshkan.com) and other [contributors](https://github.com/unmock/unmock-webextension/graphs/contributors).
+
 This project acknowledges code from the open-source projects below.
 
 ### [Swagger editor](https://github.com/swagger-api/swagger-editor)
 
-Copyright 2018 SmartBear Software.
+Copyright (c) 2018 SmartBear Software.
 
 ### [Chrome webextension boilerplate](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate)
 
