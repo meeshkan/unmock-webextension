@@ -1,4 +1,4 @@
-# Unmock web extension
+# Unmock OpenAPI builder
 
 [![CircleCI](https://circleci.com/gh/unmock/unmock-webextension.svg?style=svg)](https://circleci.com/gh/unmock/unmock-webextension)
 
@@ -6,7 +6,7 @@ Made with ❤️ by [unmock](https://www.unmock.io/).
 
 ### Description
 
-Are you a developer using third-party APIs? Easily create formal OpenAPI specification from written API documentation directly in-browser to:
+Are you a developer using third-party APIs? Easily create formal OpenAPI specification from API documentation in browser to:
 
 - write better tests
 - automatically generate client code
@@ -15,7 +15,7 @@ Are you a developer using third-party APIs? Easily create formal OpenAPI specifi
 ### Features
 
 - Smartly parse OpenAPI specification from written documentation
-- Use Swagger editor directly in-browser to fill in the blanks
+- Use Swagger editor in-browser to fill in the missing parts
 
 Note that the smart parser is in early-stage development. We welcome contributions and feature requests at https://github.com/unmock/unmock-webextension/issues.
 
@@ -29,7 +29,7 @@ Note that the smart parser is in early-stage development. We welcome contributio
 
 ### Get in touch
 
-- Learn more about unmock, your favorite tool for developing with APIs: https://unmock.io/
+- Learn more about unmock, your favorite tool for developing apps with third-party APIs: https://unmock.io/
 
 - Email us: dev@meeshkan.com
 
@@ -38,6 +38,8 @@ Note that the smart parser is in early-stage development. We welcome contributio
 - Tweet @MeeshkanML
 
 - Add issues, feature requests and pull requests in GitHub: https://github.com/unmock/unmock-webextension
+
+- Learn more about Swagger editor: https://github.com/swagger-api/swagger-editor
 
 ## Development
 

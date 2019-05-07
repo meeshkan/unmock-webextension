@@ -1,7 +1,7 @@
 {
-  "name": "Unmock",
+  "name": "Unmock OpenAPI builder",
   "version": "0.0.1",
-  "description": "Create OpenAPI specification from written API documentation",
+  "description": "Build OpenAPI specification from API documentation",
   "short_name": "Unmock",
   "homepage_url": "https://unmock.io",
   "permissions": [
