@@ -6,7 +6,7 @@ Web extension for building OpenAPI specifications. Runs in Chrome and Firefox.
 
 Made with ❤️ by [unmock](https://www.unmock.io/).
 
-### Description
+## Description
 
 Are you a developer using third-party APIs? Easily create formal OpenAPI specification from API documentation in browser to:
 
