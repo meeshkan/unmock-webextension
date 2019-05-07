@@ -79,7 +79,7 @@ const options = {
   },
   plugins: [
     // clean the build folder
-    new CleanWebpackPlugin(["build"]),
+    new CleanWebpackPlugin(),
     // expose and write the allowed env vars on the compiled bundle
     new webpack.EnvironmentPlugin(["NODE_ENV", "DEBUG"]),
     new CopyWebpackPlugin([
