@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/unmock/unmock-webextension.svg?style=svg)](https://circleci.com/gh/unmock/unmock-webextension)
 
-Web extension for building OpenAPI specifications, running in Chrome and Firefox.
+Web extension for building OpenAPI specifications. Runs in Chrome and Firefox.
 
 Made with ❤️ by [unmock](https://www.unmock.io/).
 
