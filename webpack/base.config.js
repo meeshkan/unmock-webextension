@@ -27,7 +27,6 @@ const options = {
   entry: {
     popup: path.join(basePath, "src", "ts", "popup", "index.ts"),
     background: path.join(basePath, "src", "ts", "background", "index.ts"),
-    explorer: path.join(basePath, "src", "ts", "explorer", "index.tsx"),
     contentScript: path.join(basePath, "src", "ts", "content", "index.ts"),
     swagger: path.join(basePath, "src", "ts", "swagger", "index.ts"),
   },
@@ -118,11 +117,6 @@ const options = {
       template: path.join("src", "background.html"),
       filename: "background.html",
       chunks: ["background"],
-    }),
-    new HtmlWebpackPlugin({
-      template: path.join("src", "explorer.html"),
-      filename: "explorer.html",
-      chunks: ["explorer"],
     }),
     new HtmlWebpackPlugin({
       template: path.join("src", "swagger.html"),

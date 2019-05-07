@@ -17,13 +17,6 @@ export const downloadTo = ({ url }) => {
   });
 };
 
-export const openExplorer = async () => {
-  return await browser.windows.create({
-    url: browser.runtime.getURL("explorer.html"),
-    type: "popup",
-  });
-};
-
 export const openSwaggerEditor = async () => {
   const width = window.screen.availWidth;
   // Remember which tab opened the Swagger editor
