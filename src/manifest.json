@@ -27,7 +27,7 @@
     "default_icon": {
       "48": "icon48.png"
     },
-    "default_title": "Unmock tools",
+    "default_title": "Unmock OpenAPI builder",
     "default_popup": "popup.html"
   },
   "commands": {
