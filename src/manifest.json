@@ -1,7 +1,7 @@
 {
-  "name": "Unmock API tools",
+  "name": "Unmock",
   "version": "0.0.1",
-  "description": "Easily create OpenAPI specification from written API documentation",
+  "description": "Create OpenAPI specification from written API documentation",
   "short_name": "Unmock",
   "homepage_url": "https://unmock.io",
   "permissions": [
@@ -27,7 +27,7 @@
     "default_icon": {
       "48": "icon48.png"
     },
-    "default_title": "Label APIs",
+    "default_title": "Unmock tools",
     "default_popup": "popup.html"
   },
   "commands": {
