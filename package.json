@@ -20,7 +20,7 @@
     "bootstrap": "^4.3.1",
     "debug": "^4.1.1",
     "js-yaml": "^3.13.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.12",
     "openapi3-ts": "^1.2.0",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.8",
@@ -89,5 +89,11 @@
   "jest-junit": {
     "outputDirectory": "reports",
     "outputName": "junit.xml"
+  },
+  "resolutions": {
+    "fstream": "^1.0.12",
+    "lodash-es": "^4.17.14",
+    "lodash.mergewith": "^4.6.2",
+    "serialize-javascript": "^2.1.1"
   }
 }
