@@ -4,6 +4,8 @@
 
 Web extension for building OpenAPI specifications. Runs in Chrome and Firefox.
 
+:warning: **This web extension is using an outdated version of Unmock.** If you'd be interested in helping us update this, please check out this [open issue](https://github.com/unmock/unmock-webextension/issues/37).
+
 Made with ❤️ by [unmock](https://www.unmock.io/).
 
 ## Description
