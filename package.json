@@ -68,7 +68,7 @@
     "jest": "^24.7.1",
     "jest-junit": "^6.3.0",
     "jest-webextension-mock": "^3.5.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "prettier": "^1.17.0",
     "react-hot-loader": "^4.6.3",
     "react-test-renderer": "^16.8.6",
